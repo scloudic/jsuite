@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "../include/layout.html"/>
+    <@header/>
+    <body class="gray-bg">
+        <#include "../include/loading.html"/>
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>个人信息</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="text-center">
+                                <p>
+                                    <img src="${basePath}/static/images/profile_small.jpg" id="imgFileUpload" width="64"
+                                         height="64"
+                                         class="img-circle"/>
+                                </p>
+                                <input type="file" id="addfilePath" name="file" style="display: none">
+                                <p>
+                                    <a href="javascript:void(0)" id="updateAvatar">修改头像</a>
+                                    <a href="javascript:void(0)" id="uploadAvatar">上传头像</a>
+                                </p>
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="fa fa-user"></i>
+                                    <b class="font-noraml">登录名称：</b>
+                                    <p class="pull-right" id="loginName"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-users"></i>
+                                    <b class="font-noraml">角色名称：</b>
+                                    <p class="pull-right" id="roleName"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-phone"></i>
+                                    <b class="font-noraml">手机号：</b>
+                                    <p class="pull-right" id="userPhone"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-group"></i>
+                                    <b class="font-noraml">所属部门：</b>
+                                    <p class="pull-right" id="deptNames"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-group"></i>
+                                    <b class="font-noraml">岗位职责：</b>
+                                    <p class="pull-right" id="postName"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-envelope-o"></i>
+                                    <b class="font-noraml">邮箱地址：</b>
+                                    <p class="pull-right" id="userMail"></p>
+                                </li>
+                                <li class="list-group-item"><i class="fa fa-calendar"></i>
+                                    <b class="font-noraml">创建时间：</b>
+                                    <p class="pull-right" id="createTime"></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>基本信息</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="wrapper wrapper-content">
+                                <form class="form-horizontal" id="editUserForm" name="editUserForm">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label is-required">姓名：</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" name="realName" id="editRealName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label is-required">手机号：</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" name="userPhone" id="editUserPhone">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">电子邮件：</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" name="userMail" id="editUserMail">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 m-r-n control-label">性别：</label>
+                                        <div class="col-sm-8">
+                                            <label class="radio-box">
+                                                <input type="radio" name="gender" value="1"/>
+                                                男
+                                            </label>
+                                            <label class="radio-box">
+                                                <input type="radio" name="gender" value="2"/> 女
+                                            </label>
+                                            <label class="radio-box">
+                                                <input type="radio" name="gender" value="3" checked/> 保密
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <a class="btn btn-success" id="btnUpdateUser" href="javascript:void(0)">
+                                            <i class="fa fa-save"></i> 保存</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <@script/>
+        <@moment/>
+        <script>
+            $(function () {
+                $.getAjax("${basePath}/jsuite/user/profile",
+                    function (status, data, message) {
+                        $("#loginName").text(data.loginName);
+                        if (data.avatarPath) {
+                            $('#imgFileUpload').attr('src', data.avatarPath);
+                        }
+                        $("#loginName").text(data.loginName);
+                        if (data.realName) {
+                            $("#editRealName").val(data.realName);
+                        }
+                        if (data.postName) {
+                            $("#postName").text(data.postName);
+                        }
+                        if (data.userPhone) {
+                            $("#userPhone").text(data.userPhone);
+                            $("#editUserPhone").val(data.userPhone);
+                        }
+                        if (data.deptNames) {
+                            $("#deptNames").text(data.deptNames);
+                        }
+                        if (data.userMail) {
+                            $("#userMail").text(data.userMail);
+                            $("#editUserMail").val(data.userMail);
+
+                        }
+                        if (data.createTime) {
+                            $("#createTime").text($.formatDate(data.createTime, 'YYYY-MM-DD'));
+                        }
+                        if (data.sysRoles) {
+                            var roleName = "";
+                            $.each(data.sysRoles, function (i, field) {
+                                if (roleName == "") {
+                                    roleName = field.roleName;
+                                } else {
+                                    roleName = roleName + "," + field.roleName;
+                                }
+                            });
+                            $("#roleName").text(roleName);
+                        }
+
+                        $("#editUserForm input[name='gender']").each(function () {
+                            if (data.gender == this.value) {
+                                this.checked = true;
+                                return false;
+                            }
+                        });
+                    });
+                $("#btnUpdateUser").click(function () {
+                    $.form.mobileValidator();
+                    var rules = {
+                        realName: {
+                            required: true
+                        },
+                        userPhone: {
+                            required: true,
+                            mobile: true
+                        },
+                    };
+                    if (!$.form.validate("editUserForm", rules)) {
+                        return false;
+                    }
+                    var data = $.form.getData("editUserForm");
+                    $.loading();
+                    $.postAjax("${basePath}/jsuite/user/update",
+                        data, function (status, respData) {
+                            toastr.info("修改用户成功！");
+                        });
+                });
+
+                $("#updateAvatar").click(function () {
+                    $("#addfilePath").click();
+                });
+                $('#addfilePath').change(function (e) {
+                    //当前选择的文件
+                    var currImg = e.target.files[0];
+                    var imgSrc = URL.createObjectURL(currImg);
+                    //更换原图片路径，回显图片
+                    $('#imgFileUpload').attr('src', imgSrc);
+                });
+                $("#uploadAvatar").click(function () {
+                    var filePath = $("#addfilePath").val();
+                    if (filePath == '') {
+                        toastr.info("请上传文件");
+                        return;
+                    }
+                    $.loading();
+                    var formData = new FormData();
+                    formData.append("files", $("#addfilePath")[0].files[0]);
+                    $.fileAjax("${basePath}/jsuite/user/avatar",
+                        formData, function (status, respData) {
+                            toastr.info("头像上传成功");
+                        });
+                });
+            });
+        </script>
+    </body>
+</html>

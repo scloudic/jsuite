@@ -1,0 +1,161 @@
+<script>
+    <#if updateRole?length gt 0>
+
+    function roleEdit(id) {
+        $.form.clearForm();
+        var currRole = $.table.getSelection(id);
+        $("#editRoleName").val(currRole.roleName);
+        $("#editSysRoleId").val(id);
+        $("#editRoleDesc").val(currRole.roleDesc);
+        $("#editRoleCode").val(currRole.roleCode);
+        $.modal.dialog('修改角色', 'editRole', '', '',
+            function () {
+                var rules = {
+                    roleName: {
+                        required: true
+                    },
+                    roleCode: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formEditRole", rules)) {
+                    return false;
+                }
+                var data = $.form.getData("formEditRole");
+                $.loading();
+                $.postAjax("${updateRole}",
+                    data, function (status, respData) {
+                        $.table.search();
+                    });
+                return true;
+            });
+    }
+
+    </#if>
+    <#if findRoleMenu?length gt 0>
+
+    function findRoleMenu(id) {
+        var url = "${findRoleMenu}?sysRoleId=" + id;
+        $.loading();
+        $.getAjax(url, function (status, data, message) {
+            var currRole = $.table.getSelection(id);
+            var roleCode = currRole.roleCode;
+            var url = "${basePath}/jsuite/roleMgr/addRoleMenu";
+            var jsonData = $.common.deleteChildren(data);
+            var config = {
+                isCheckBox: true,
+                idKey: "menuId",
+                pIdKey: "parentMenuId",
+                checkedKey: "checkStatus",
+                nameKey: "menuName",
+                urlKey: "xUrl",
+            };
+            $.tree.treeDataLoad(config, jsonData);
+            $.modal.dialog('添加角色菜单', 'openRoleMenu', 350, '',
+                function () {
+                    var menuIds = "";
+                    var nodes = $.tree.getCheckedNodes(true);
+                    $.each(nodes, function (i, field) {
+                        if (i == 0) {
+                            menuIds = "";
+                        } else {
+                            menuIds = menuIds + ",";
+                        }
+                        menuIds = menuIds + field.menuId;
+                    });
+                    var data = {
+                        "sysRoleId": id,
+                        "roleCode": roleCode,
+                        "menuIds": menuIds
+                    };
+                    $.postAjax(url, data, function () {
+                        toastr.info("添加成功");
+                    });
+                    return true;
+                });
+        });
+    }
+
+    </#if>
+    $(function () {
+        <#if addRole?length gt 0>
+        $("#roleAdd").click(function () {
+            $.form.clearForm();
+            $.modal.dialog('添加角色', 'addRole', '', 400,
+                function () {
+                    var rules = {
+                        roleName: {
+                            required: true
+                        },
+                        roleCode: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formAddRole", rules)) {
+                        return false;
+                    }
+
+                    var data = $.form.getData("formAddRole");
+                    $.loading();
+                    $.postAjax("${addRole}",
+                        data, function (status, respData) {
+                            $.table.search();
+                        });
+                    return true;
+                });
+        });
+        </#if>
+        var options = {
+            id: "roleTable",
+            uniqueId: "sysRoleId",
+            delKey: "sysRoleId",
+            delUrl: "${delRole}",
+            url: "${basePath}/jsuite/roleMgr/findRolesPage",
+            columns: [{
+                checkbox: true,
+                visible: false                  //是否显示复选框
+            }, {
+                title: '角色名称',
+                field: 'roleName',
+                width: '20%',
+                align: "center",
+                valign: "middle",
+            }, {
+                title: '角色编码',
+                field: 'roleCode',
+                width: '25%',
+                align: "center",
+                valign: "middle",
+            }, {
+                title: '角色描述',
+                field: 'roleDesc',
+                width: '30%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '操作',
+                field: 'sysRoleId',
+                width: '25%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if updateRole?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="roleEdit(' + row.sysRoleId + ')"><i class="fa fa-edit"></i>编辑</a> ');
+                    </#if>
+                    <#if delRole?length gt 0>
+                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(' + row.sysRoleId + ')"><i class="fa fa-remove"></i>删除</a> ');
+                    </#if>
+                    <#if findRoleMenu?length gt 0>
+                    actions.push(' <a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="findRoleMenu(' + row.sysRoleId + ')"><i class="fa fa-plus"></i> 添加角色菜单</a>');
+                    </#if>
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.table.load(options);
+    });
+</script>

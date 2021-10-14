@@ -1,0 +1,186 @@
+<script type="text/javascript">
+    $(function () {
+        <#if addDept?length gt 0>
+        addDept = function (id) {
+            $.form.clearForm();
+            $("#addDeptParentId").val(id);
+            $.modal.dialog('添加部门', 'addDeptDialog', '', '',
+                function () {
+                    var rules = {
+                        deptName: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formAddDept", rules)) {
+                        return false;
+                    }
+
+                    var data = $.form.getData("formAddDept");
+                    $.loading();
+                    $.postAjax("${addDept}",
+                        data, function (status, respData) {
+                            $.treeTable.search();
+                        });
+                    return true;
+                });
+        };
+        </#if>
+        <#if updateDept?length gt 0>
+        updateDept = function (id) {
+            $.form.clearForm();
+            var currDept = $.treeTable.getSelection(id);
+            $("#editDeptName").val(currDept.deptName);
+            $("#editDeptId").val(id);
+            $("#editDeptLead").val(currDept.deptLead);
+            $("#editDeptPhone").val(currDept.deptPhone);
+            $("#editDeptMail").val(currDept.deptMail);
+            $("#editSortNum").val(currDept.sortNum);
+            $("#editRemark").val(currDept.remark);
+            $.modal.dialog('修改部门', 'editDeptDialog', '', '',
+                function () {
+                    var rules = {
+                        deptName: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formEditDept", rules)) {
+                        return false;
+                    }
+                    var data = $.form.getData("formEditDept");
+                    $.loading();
+                    $.postAjax("${updateDept}",
+                        data, function (status, respData) {
+                            $.treeTable.search();
+                        });
+                    return true;
+                });
+        };
+        </#if>
+        <#if updateActiveStatus?length gt 0>
+
+        enable = function (id) {
+            if (id == 1) {
+                return;
+            }
+            var params = {
+                "deptId": id,
+                "activeStatus": 1
+            };
+            $.modal.confirm('是否启用该部门', function () {
+                $.postAjax('${updateActiveStatus}', params, function () {
+                    $.treeTable.search();
+                });
+            });
+        };
+
+        disable = function (id) {
+            if (id == 1) {
+                return;
+            }
+            var params = {
+                "deptId": id,
+                "activeStatus": 2,
+            };
+            $.modal.confirm('是否禁用该部门', function () {
+                $.postAjax('${updateActiveStatus}', params, function () {
+                    $.treeTable.search();
+                });
+            });
+        }
+
+        </#if>
+        var options = {
+            menuId: "deptId",
+            delKey: 'deptId',
+            expandFirst: true,
+            parentMenuId: "deptParentId",
+            id: 'deptTreeTable',
+            rootIdValue: 0,
+            delUrl: "${delDept}",
+            url: "${basePath}/jsuite/deptMgr/listAll",
+            columns: [{
+                field: 'deptName',
+                title: '部门名称',
+                width: '20%',
+                align: "center",
+            }, {
+                field: 'deptLead',
+                title: '部门负责人',
+                width: '15%',
+                align: "center",
+            }, {
+                field: 'deptPhone',
+                title: '部门电话',
+                width: '10%',
+                align: "center",
+            }, {
+                field: 'deptMail',
+                title: '部门邮箱',
+                width: '10%',
+                align: "center",
+            }, {
+                title: '启用状态',
+                field: 'activeStatus',
+                width: '10%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    <#if updateActiveStatus?length gt 0>
+                    if (row.activeStatus == 1) {
+                        return '<i class="fa fa-toggle-on fa-2x text-info" onclick="disable(\'' + row.deptId + '\');"></i>';
+                    } else {
+                        return '<i class="fa fa-toggle-off fa-2x text-info" onclick="enable(\'' + row.deptId + '\');"></i>';
+                    }
+                    <#else>
+                    if (row.activeStatus == 1) {
+                        return '<i class="fa fa-toggle-on fa-2x text-info"></i>';
+                    } else {
+                        return '<i class="fa fa-toggle-off fa-2x text-info"></i>';
+                    }
+                    </#if>
+                }
+            }, {
+                field: 'sortNum',
+                title: '排序',
+                width: '7%',
+                align: "center",
+            }, {
+                field: 'remark',
+                title: '描述',
+                width: '20%',
+                align: "center",
+            }, {
+                field: 'createTime',
+                title: '创建时间',
+                width: '18%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                width: '25%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if addDept?length gt 0>
+                    actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="addDept(' + row.deptId + ')"><i class="fa fa-plus"></i>新增</a> ');
+                    </#if>
+                    <#if updateDept?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateDept(' + row.deptId + ')"><i class="fa fa-edit"></i>编辑</a> ');
+                    </#if>
+                    if (row.deptId != 1) {
+                        <#if delDept?length gt 0>
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(' + row.deptId + ')"><i class="fa fa-remove"></i>删除</a>');
+                        </#if>
+                    }
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.treeTable.load(options);
+    });
+</script>

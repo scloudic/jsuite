@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <properties resource="generator.properties">
+    </properties>
+    <jdbcConnection driverClass="${jdbc.driverClassName}"
+                    catalog="${catalog}" connectionURL="${jdbc.url}" userName="${jdbc.username}"
+                    password="${jdbc.password}" dialect="mysql">
+        <!--<property name="other" value="demo"/> -->
+    </jdbcConnection>
+    <generators parentPackage="${parentPackage}" targetPath="${targetPath}"
+                entity="entity" mapper="mapper" service="service">
+    </generators>
+    <!--type分为：all:所有表，assign:指定表名, filter:过滤,根据关键字过滤表 逻辑说明： 1、如果类型为all，将不再解析以下的table元素
+        2、如果类型为assign,先解析table元素,如果没有将类型更改为all 3、默认类型为all -->
+    <tables type="assign">
+        <table tableName="contract_info" objectName="ContractInfo"/>
+        <table tableName="contract_second_info" objectName="ContractSecondInfo"/>
+        <table tableName="contract_product_info" objectName="ContractProductInfo"/>
+        <table tableName="contract_first_info" objectName="ContractFirstInfo"/>
+        <table tableName="contract_renewal_info" objectName="ContractRenewalInfo"/>
+    </tables>
+</configuration>

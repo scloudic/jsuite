@@ -1,0 +1,326 @@
+<script>
+    $(function () {
+            var userId = '0';
+            <#if postList?length gt 0>
+            $.getAjax("${postList}", function (status, data, message) {
+                let editPost = $("#editPostId");
+                let addPost = $("#addPostId");
+                editPost.append("<option value='0'>请选择</option>");
+                addPost.append("<option value='0'>请选择</option>");
+                for (let i = 0; i < data.length; i++) {
+                    let post = data[i];
+                    editPost.append("<option value='" + post.postId + "'>" + post.postName + "</option>");
+                    addPost.append("<option value='" + post.postId + "'>" + post.postName + "</option>");
+                }
+            });
+            </#if>
+
+            deptTree = function (type) {
+                $.getAjax("${basePath}/jsuite/deptMgr/deptTree?userId=" + userId, function (status, data, message) {
+                    var jsonData = $.common.deleteChildren(data);
+                    var config = {
+                        isCheckBox: true,
+                        chkStyle: "radio",
+                        idKey: "deptId",
+                        pIdKey: "deptParentId",
+                        checkedKey: "checkStatus",
+                        nameKey: "deptName",
+                        urlKey: "xUrl",
+                    };
+                    $.tree.treeDataLoad(config, jsonData);
+                    $.tree.expandAll();
+                    var deptIdObj = $("#addDeptId");
+                    var deptNameObj = $("#addDeptName");
+                    if (type == 2) {
+                        deptIdObj = $("#updateDeptId");
+                        deptNameObj = $("#updateDeptName");
+                    }
+                    $.modal.dialog('添加部门', 'openDeptTree', 350, '',
+                        function () {
+                            var nodes = $.tree.getCheckedNodes(true);
+                            var deptId = "";
+                            var deptName = "";
+                            $.each(nodes, function (i, field) {
+                                deptId = field.deptId;
+                                deptName = field.deptName;
+                            });
+                            deptIdObj.val(deptId);
+                            deptNameObj.val(deptName);
+                            return true;
+                        });
+                });
+            };
+            $.form.mobileValidator();
+            laydate.render({
+                elem: '#select-time'
+                , range: ['#startDate', '#endDate']
+            });
+            <#if pwdReset?length gt 0>
+            pwdReset = function (id) {
+                var params = {
+                    "sysUserId": id,
+                };
+                $.modal.confirm('是否确定重置密码！', function () {
+                    $.postAjax("${pwdReset}", params, function () {
+                        toastr.info("重置成功！");
+                    });
+                    return true;
+                });
+            }
+            </#if>
+
+            <#if updateUser?length gt 0>
+
+            updateUser = function (id) {
+                $.form.clearForm();
+                var selectUser = $.table.getSelection(id);
+                userId = id;
+                $("#editSysUserId").val(id);
+                $("#editLoginName").val(selectUser.loginName);
+                $("#editNickName").val(selectUser.nickName);
+                $("#editRealName").val(selectUser.realName);
+                $("#editUserPhone").val(selectUser.userPhone);
+                $("#editUserMail").val(selectUser.userMail);
+                $("#editActiveStatus").val(selectUser.activeStatus);
+                $("#updateDeptId").val(selectUser.deptId);
+                var deptNameArr = selectUser.deptNames.split(",");
+                $("#updateDeptName").val(deptNameArr[deptNameArr.length - 1]);
+
+                var postId = selectUser.postId;
+                $("#editPostId option[value='" + postId + "']")
+                    .attr("selected", true);
+                $("#formEditUser input[name='gender']").each(function () {
+                    if (selectUser.gender == this.value) {
+                        this.checked = true;
+                        return false;
+                    }
+                });
+                $("#editRoleIds option").each(function (n) {
+                    $(this).attr("selected", false);
+                });
+
+                $.each(selectUser.sysRoles, function (n, value) {
+                    $("#editRoleIds option[value='" + value.sysRoleId + "']")
+                        .attr("selected", true);
+                });
+                $.modal.dialog('修改用户', 'editUser', '', '',
+                    function () {
+                        var rules = {
+                            loginName: {
+                                required: true
+                            },
+                            realName: {
+                                required: true
+                            },
+                            userPhone: {
+                                required: true,
+                                mobile: true
+                            },
+                            userMail: {
+                                email: true
+                            },
+                        };
+                        if (!$.form.validate("formEditUser", rules)) {
+                            return false;
+                        }
+                        var data = $.form.getData("formEditUser");
+                        $.loading();
+                        $.postAjax("${updateUser}",
+                            data, function (status, respData) {
+                                $.table.search();
+                            });
+                        return true;
+                    });
+            }
+
+            </#if>
+            <#if updateActiveStatus?length gt 0>
+
+            enable = function (id) {
+                var params = {
+                    "sysUserId": id,
+                    "activeStatus": 1
+                };
+                $.modal.confirm('是否启用该用户', function () {
+                    $.postAjax('${updateActiveStatus}', params, function () {
+                        $.table.search();
+                    });
+                });
+            };
+
+            function disable(id) {
+                var params = {
+                    "sysUserId": id,
+                    "activeStatus": 2,
+                };
+                $.modal.confirm('是否禁用该用户', function () {
+                    $.postAjax('${updateActiveStatus}', params, function () {
+                        $.table.search();
+                    });
+                });
+            }
+
+            </#if>
+            <#if saveUser?length gt 0>
+            $("#userAdd").click(function () {
+                $.form.clearForm();
+                userId = '0';
+                $.modal.dialog('添加用户', 'addUser', '', '',
+                    function () {
+                        var rules = {
+                            loginName: {
+                                required: true
+                            },
+                            realName: {
+                                required: true
+                            },
+                            userPhone: {
+                                required: true,
+                                mobile: true
+                            },
+                            userMail: {
+                                email: true
+                            },
+                        };
+                        if (!$.form.validate("formAddUser", rules)) {
+                            return false;
+                        }
+                        var data = $.form.getData("formAddUser");
+                        $.loading();
+                        $.postAjax("${saveUser}",
+                            data, function (status, respData) {
+                                $.table.search();
+                            });
+                        return true;
+                    });
+            });
+            </#if>
+            var options = {
+                id: "userTable",
+                uniqueId: "sysUserId",
+                delKey: "sysUserId",
+                delUrl: "${delUser}",
+                url: "${basePath}/jsuite/userMgr/findUser",
+                columns: [{
+                    checkbox: true,
+                    visible: false                  //是否显示复选框
+                }, {
+                    title: '登录名',
+                    align: "center",
+                    valign: "middle",
+                    field: 'loginName',
+                    width: '10%',
+                }, {
+                    title: '真实姓名',
+                    field: 'realName',
+                    width: '10%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '手机号',
+                    field: 'userPhone',
+                    width: '5%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '邮箱',
+                    field: 'userMail',
+                    width: '5%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '岗位',
+                    field: 'postName',
+                    width: '10%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '部门',
+                    field: 'deptNames',
+                    width: '20%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '角色',
+                    field: 'sysRoles',
+                    width: '20%',
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        if (!value) {
+                            return "";
+                        }
+                        var result = [];
+                        for (var i = 0; i < value.length; i++) {
+                            result.push(value[i].roleName);
+                        }
+                        return result.join(",");
+                    }
+                }, {
+                    title: '启用状态',
+                    field: 'activeStatus',
+                    width: 1,
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        <#if updateActiveStatus?length gt 0>
+                        if (row.activeStatus == 1) {
+                            return '<i class="fa fa-toggle-on fa-2x text-info" onclick="disable(\'' + row.sysUserId + '\');"></i>';
+                        } else {
+                            return '<i class="fa fa-toggle-off fa-2x text-info" onclick="enable(\'' + row.sysUserId + '\');"></i>';
+                        }
+                        <#else>
+                        if (row.activeStatus == 1) {
+                            return '<i class="fa fa-toggle-on fa-2x text-info"></i>';
+                        } else {
+                            return '<i class="fa fa-toggle-off fa-2x text-info"></i>';
+                        }
+                        </#if>
+                    }
+                }, {
+                    title: '创建时间',
+                    field: 'createTime',
+                    width: '20%',
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                    }
+                }, {
+                    title: '操作',
+                    field: 'sysUserId',
+                    width: '50%',
+                    align: "center",
+                    valign: "middle",
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                "white-space": "nowrap",
+                            }
+                        }
+                    },
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        <#if updateUser?length gt 0>
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateUser(\'' + row.sysUserId + '\')"><i class="fa fa-edit"></i> 编辑</a> ');
+                        </#if>
+                        <#if delUser?length gt 0>
+                        if (row.sysUserId != 1) {
+                            actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(\'' + row.sysUserId + '\')"><i class="fa fa-remove"></i> 删除</a> ');
+                        }
+                        </#if>
+                        <#if pwdReset?length gt 0>
+                        actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="pwdReset(\'' + row.sysUserId + '\')"><i class="fa fa-lock"></i> 密码重置</a>');
+                        </#if>
+                        if (actions.length > 0) {
+                            return actions.join('');
+                        } else {
+                            return "-";
+                        }
+                    }
+                }],
+            };
+            $.table.load(options);
+        }
+    );
+</script>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "../include/layout.html"/>
+    <@header>
+        <@treetableLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "../include/loading.html"/>
+        <#include "add.html"/>
+        <#include "edit.html"/>
+        <@permission url="/jsuite/deptMgr/addDept">
+            <#if isPermission==true>
+                <#assign addDept="${basePath}/jsuite/deptMgr/addDept"/>
+            <#else>
+                <#assign addDept=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/deptMgr/updateDept">
+            <#if isPermission>
+                <#assign updateDept="${basePath}/jsuite/deptMgr/updateDept"/>
+            <#else>
+                <#assign updateDept=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/deptMgr/updateActiveStatus">
+            <#if isPermission>
+                <#assign updateActiveStatus="${basePath}/jsuite/deptMgr/updateActiveStatus"/>
+            <#else>
+                <#assign updateActiveStatus=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/deptMgr/del">
+            <#if isPermission>
+                <#assign delDept="${basePath}/jsuite/deptMgr/del"/>
+            <#else>
+                <#assign delDept=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="formDept" name="formDept" class="form-horizontal">
+                        <label class="col-label">部门名称：</label>
+                        <input type="text" name="deptName" id="deptName" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.treeTable.search('formDept')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="deptTreeTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@treetable/>
+            <@moment/>
+            <#include "script.html"/>
+        </@script>
+    </body>
+</html>

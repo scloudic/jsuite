@@ -1,0 +1,134 @@
+<script>
+    <#if updateSetting?length gt 0>
+    function updateSetting(id) {
+        $.form.clearForm();
+        var currRole = $.table.getSelection(id);
+        $("#editSettingName").val(currRole.settingName);
+        $("#editSettingId").val(id);
+        $("#editSettingCode").val(currRole.settingCode);
+        $("#editSettingValue").val(currRole.settingValue);
+        $("#editRemark").val(currRole.remark);
+        $.modal.dialog('修改配置', 'editSetting', '', '400',
+            function () {
+                var rules = {
+                    settingName: {
+                        required: true
+                    },
+                    settingCode: {
+                        required: true
+                    },
+                    settingValue: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formEditSetting", rules)) {
+                    return false;
+                }
+                var data = $.form.getData("formEditSetting");
+                $.loading();
+                $.postAjax("${updateSetting}",
+                    data, function (status, respData) {
+                        $.table.search();
+                    });
+                return true;
+            });
+    }
+
+    </#if>
+    $(function () {
+        <#if addSetting?length gt 0>
+        $("#settingAdd").click(function () {
+            $.form.clearForm();
+            $.modal.dialog('添加配置', 'addSetting', '', 400,
+                function () {
+                    var rules = {
+                        settingName: {
+                            required: true
+                        },
+                        settingCode: {
+                            required: true
+                        },
+                        settingValue: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formAddSetting", rules)) {
+                        return false;
+                    }
+
+                    var data = $.form.getData("formAddSetting");
+                    $.loading();
+                    $.postAjax("${addSetting}",
+                        data, function (status, respData) {
+                            $.table.search();
+                        });
+                    return true;
+                });
+        });
+        </#if>
+        var options = {
+            id: "settingTable",
+            uniqueId: "settingId",
+            delKey: "settingId",
+            delUrl: "${delSetting}",
+            url: "${basePath}/jsuite/settingMgr/list",
+            columns: [{
+                checkbox: true,
+                visible: false                  //是否显示复选框
+            }, {
+                title: '配置名称',
+                field: 'settingName',
+                width: '20%',
+                align: "center",
+                valign: "middle",
+            }, {
+                title: '配置编码',
+                field: 'settingCode',
+                width: '25%',
+                align: "center",
+                valign: "middle",
+            }, {
+                title: '配置值',
+                field: 'settingValue',
+                width: '30%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '配置描述',
+                field: 'remark',
+                width: '30%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '创建时间',
+                field: 'createTime',
+                width: '15%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                field: 'settingId',
+                width: '25%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if updateSetting?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateSetting(' + row.settingId + ')"><i class="fa fa-edit"></i>编辑</a> ');
+                    </#if>
+                    <#if delSetting?length gt 0>
+                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(' + row.settingId + ')"><i class="fa fa-remove"></i>删除</a> ');
+                    </#if>
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.table.load(options);
+    });
+</script>

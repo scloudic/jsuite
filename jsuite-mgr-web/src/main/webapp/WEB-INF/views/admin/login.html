@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "include/layout.html"/>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>JSuite后台管理系统 - 登录</title>
+        <link rel="shortcut icon" href="${basePath}/static/images/favicon.ico"/>
+        <meta name="keywords" content="JSuite后台管理系统">
+        <meta name="description" content="JSuite后台管理系统">
+        <@commlink/>
+        <link href="${basePath}/static/css/jsuite.css?v=0.8" rel="stylesheet">
+        <link href="${basePath}/static/css/login.css?v=0.9" rel="stylesheet">
+        <script>
+            if (window.top !== window.self) {
+                window.top.location = window.location;
+            }
+            projectPath = "${basePath}";
+        </script>
+    </head>
+    <body class="signin">
+        <div class="signinpanel">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="signin-info">
+                        <div class="logopanel m-b">
+                            <h1>JSuite</h1>
+                        </div>
+                        <div class="m-b"></div>
+                        <h4>欢迎使用 <strong>JSuite后台管理系统</strong></h4>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <form id="loginForm" name="loginForm" method="post">
+                        <h4 class="no-margins">JSuite后台管理系统</h4>
+                        <div class="m-t-md"></div>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input id="userName" name="userName" type="text" class="text-dark form-control"
+                                       placeholder="用户登录名">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fa fa-user"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="password" id="password" name="password" class="text-dark form-control"
+                                       placeholder="密码">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fa fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group col-xs-6">
+                                <input type="password" id="validateCode" name="validateCode"
+                                       class="text-dark form-control" placeholder="验证码">
+                                <div class="col-xs-6">
+                                    <a href="javascript:void(0);" title="更换验证码">
+                                        <img src="${basePath}/jsuite/captcha/captchaImage" class="captchaImage"
+                                             width="100%"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button id="btnLogin" type="submit" class="btn btn-success btn-block">登录</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="signup-footer">
+                <strong>Copyright &copy; 2000-2021 JSuite企业应用管理系统</strong>
+                <div class=" pull- float-right d-none d-sm-inline-block">
+                    <b>Version</b> 1.0
+                </div>
+            </div>
+        </div>
+        <@script/>
+        <script>
+            $(function () {
+                $.validator.setDefaults({
+                    submitHandler: function () {
+                        var loginData = $.form.getData("loginForm");
+                        $.loading('登录中....');
+                        $.postAjax("${basePath}/userLogin", loginData,
+                            function (status) {
+                                window.location.href = "${basePath}/";
+                            });
+                    }
+                });
+                $('#loginForm').validate({
+                    rules: {
+                        userName: {
+                            required: true
+                        },
+                        validateCode: {
+                            required: true
+                        },
+                        password: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        userName: "请输入用户名",
+                        password: "请输入用户密码"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function (error, element) {
+                        error.addClass('has-error');
+                        element.closest('.form-group').append(error);
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass('has-error');
+                    }
+                });
+                $('.captchaImage').click(function () {
+                    var url = "${basePath}/jsuite/captcha/captchaImage?s="+Math.random();
+                    $('.captchaImage').attr("src",url);
+                });
+            });
+        </script>
+    </body>
+
+</html>

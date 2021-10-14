@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "../include/layout.html"/>
+    <@header>
+        <@treetableLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "../include/loading.html"/>
+        <@permission url="/jsuite/areaMgr/add">
+            <#if isPermission==true>
+                <#include "add.html"/>
+                <#assign addArea="${basePath}/jsuite/areaMgr/add"/>
+            <#else>
+                <#assign addArea=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/update">
+            <#if isPermission>
+                <#include "edit.html"/>
+                <#assign updateArea="${basePath}/jsuite/areaMgr/update"/>
+            <#else>
+                <#assign updateArea=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/updateActiveStatus">
+            <#if isPermission>
+                <#assign updateActiveStatus="${basePath}/jsuite/areaMgr/updateActiveStatus"/>
+            <#else>
+                <#assign updateActiveStatus=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/del">
+            <#if isPermission>
+                <#assign delArea="${basePath}/jsuite/areaMgr/del"/>
+            <#else>
+                <#assign delArea=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="formArea" name="formArea" class="form-horizontal">
+                        <label class="col-label">地区名称：</label>
+                        <input type="text" name="areaName" id="areaName" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.treeTable.search('formArea')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="areaTreeTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@treetable/>
+            <@moment/>
+            <#include "script.html"/>
+        </@script>
+    </body>
+</html>

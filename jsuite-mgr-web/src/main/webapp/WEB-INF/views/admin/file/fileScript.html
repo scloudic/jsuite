@@ -1,0 +1,213 @@
+<script>
+
+    function fileCleanSearchForm() {
+        var fileCategoryId = $("#fileCategoryId").val();
+        $.form.clearForm();
+        $("#fileCategoryId").val(fileCategoryId);
+
+    };
+    <#if updateFile?length gt 0>
+
+    function updateFile(id) {
+        fileCleanSearchForm();
+        var selectFile = $.table.getSelection(id);
+        $("#editFileId").val(id);
+        $("#editFileName").val(selectFile.fileName);
+        var fileCategoryId = selectFile.fileCategoryId;
+        $("#editFileCategoryId option[value='" + fileCategoryId + "']")
+            .attr("selected", true);
+        $.modal.dialog('修改文件', 'editFile', '', '300',
+            function () {
+                var rules = {
+                    fileName: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formFileEdit", rules)) {
+                    return false;
+                }
+                var data = $.form.getData("formFileEdit");
+                $.loading();
+                $.postAjax("${updateFile}",
+                    data, function (status, respData) {
+                        $.table.search();
+                    });
+                return true;
+            });
+    }
+
+    </#if>
+    $(function () {
+        //选择图片
+        $("#imgFileUpload").click(function () {
+            $("#addfilePath").click();
+        });
+        //选取文件后回显当前显示图片
+        $('#addfilePath').change(function (e) {
+            //当前选择的文件
+            var currImg = e.target.files[0];
+            var imgSrc = URL.createObjectURL(currImg);
+            //更换原图片路径，回显图片
+            $('#imgFileUpload').attr('src', imgSrc);
+        });
+
+        $("#fileAdd").click(function () {
+
+            var fileCategoryId = $("#fileCategoryId").val();
+            if (fileCategoryId == '') {
+                fileCategoryId = 0;
+            }
+            fileCleanSearchForm();
+            $("#addFileCategoryId option[value='" + fileCategoryId + "']")
+                .attr("selected", true);
+            $.modal.dialog('添加文件', 'addFile', '', '',
+                function () {
+                    var rules = {
+                        fileName: {
+                            required: true
+                        },
+
+                    };
+                    if (!$.form.validate("formAddFile", rules)) {
+                        return false;
+                    }
+                    var filePath = $("#addfilePath").val();
+                    if (filePath == '') {
+                        alert("请上传文件");
+                        return;
+                    }
+                    var formData = new FormData();
+                    var jsonData = $.common.formToJSON("formAddFile");
+                    formData.append("files", $("#addfilePath")[0].files[0]);
+                    formData.append("fileCategoryId", jsonData.fileCategoryId);
+                    formData.append("fileName", jsonData.fileName);
+                    $.loading();
+                    $.fileAjax("${basePath}/jsuite/fileMgr/upload",
+                        formData, function (status, respData) {
+                            $.table.search();
+                        });
+                    return true;
+                });
+        });
+
+        $.getAjax("${basePath}/jsuite/file/categoryMgr/listAll",
+            function (status, data, message) {
+                var config = {
+                    idKey: "fileCategoryId",
+                    pIdKey: "parentCategoryId",
+                    nameKey: "fileCategoryName",
+                    urlKey: "xUrl",
+                    showId: "categoryTree",
+                    rootPidId: -1,
+                    callBackClick: function (event, treeId, treeNode) {
+                        let fileCategoryId = treeNode.fileCategoryId;
+                        let fileCategoryName = treeNode.fileCategoryName;
+                        $.form.clearForm();
+                        $("#fileCategoryId").val(fileCategoryId);
+                        $("#fileCategoryName").val(fileCategoryName);
+                        if ("-1" == fileCategoryId) {
+                            $("#fileCategoryId").val("");
+                            $("#fileCategoryName").val("");
+                        }
+                        $.table.search('formSearchFile');
+                    },
+                };
+                let root = [];
+                let rootData = {
+                    fileCategoryId: "-1",
+                    parentCategoryId: "-2",
+                    fileCategoryName: "文件分类",
+                };
+                rootData.children = data;
+                root.push(rootData);
+                let eCategory = $("#editFileCategoryId");
+                let addCategory = $("#addFileCategoryId");
+                for (let i = 0; i < data.length; i++) {
+                    let category = data[i];
+                    eCategory.append("<option value='" + category.fileCategoryId + "'>" + category.fileCategoryName + "</option>");
+                    addCategory.append("<option value='" + category.fileCategoryId + "'>" + category.fileCategoryName + "</option>");
+                }
+
+
+                $.tree.treeDataLoad(config, root);
+                $.tree.expandAll();
+            });
+        var panehHidden = false;
+        if ($(this).width() < 769) {
+            panehHidden = true;
+        }
+        $('body').layout("", {initClosed: panehHidden, west__size: 150});
+
+        var options = {
+            id: "fileTable",
+            uniqueId: "fileId",
+            delKey: "fileId",
+            delUrl: "${delFile}",
+            url: "${basePath}/jsuite/fileMgr/list",
+            columns: [{
+                checkbox: true,
+                visible: false                  //是否显示复选框
+            }, {
+                title: '文件名',
+                align: "center",
+                valign: "middle",
+                field: 'fileName',
+                width: '10%',
+            }, {
+                title: '请求地址',
+                field: 'httpUrl',
+                valign: "middle",
+                width: '10%',
+            }, {
+                title: '文件路径',
+                field: 'filePath',
+                width: '10%',
+                align: "center",
+                valign: "middle",
+                width: '10%',
+            }, {
+                title: '存储介质',
+                field: 'fileStoreType',
+                width: 1,
+                align: "center",
+                valign: "middle",
+            }, {
+                title: '文件类型',
+                field: 'fileType',
+                width: '10%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '创建时间',
+                field: 'createTime',
+                width: '20%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                field: 'fileId',
+                width: 150,
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if updateFile?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateFile(\'' + row.fileId + '\')"><i class="fa fa-edit"></i> 编辑</a> ');
+                    </#if>
+                    <#if delFile?length gt 0>
+                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(\'' + row.fileId + '\')"><i class="fa fa-remove"></i> 删除</a> ');
+                    </#if>
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.table.load(options);
+    });
+</script>

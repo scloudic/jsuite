@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "../include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "../include/loading.html"/>
+        <#include "add.html"/>
+        <#include "edit.html"/>
+        <@permission url="/jsuite/postMgr/add">
+            <#if isPermission==true>
+                <#assign addPost="${basePath}/jsuite/postMgr/add"/>
+            <#else>
+                <#assign addPost=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/postMgr/update">
+            <#if isPermission>
+                <#assign updatePost="${basePath}/jsuite/postMgr/update"/>
+            <#else>
+                <#assign updatePost=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/postMgr/del">
+            <#if isPermission>
+                <#assign delPost="${basePath}/jsuite/postMgr/del"/>
+            <#else>
+                <#assign delPost=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/postMgr/updateActiveStatus">
+            <#if isPermission>
+                <#assign updateActiveStatus="${basePath}/jsuite/postMgr/updateActiveStatus"/>
+            <#else>
+                <#assign updateActiveStatus=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="postForm" name="postForm" class="form-horizontal">
+                        <label  class="col-label">岗位名称：</label>
+                        <input type="text" name="postName" id="postName" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.table.search('postForm')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if addPost?length gt 0>
+                        <a class="btn btn-success" id="postAdd" href="javascript:void(0)"><i
+                                    class="fa fa-plus"></i>新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="postTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@moment/>
+            <#include "script.html"/>
+        </@script>
+    </body>
+</html>

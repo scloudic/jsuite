@@ -1,0 +1,179 @@
+<script type="text/javascript">
+    $(function () {
+        <#if addArea?length gt 0>
+        addArea = function (id) {
+            $.form.clearForm();
+            $("#addParentAreaId").val(id);
+            $.modal.dialog('添加地区', 'addAreaDialog', '550', '380',
+                function () {
+                    var rules = {
+                        areaName: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formAddArea", rules)) {
+                        return false;
+                    }
+
+                    var data = $.form.getData("formAddArea");
+                    $.loading();
+                    $.postAjax("${addArea}",
+                        data, function (status, respData) {
+                            $.treeTable.search();
+                        });
+                    return true;
+                });
+        };
+        </#if>
+        <#if updateArea?length gt 0>
+        updateArea = function (id) {
+            $.form.clearForm();
+            var currArea = $.treeTable.getSelection(id);
+            $("#editAreaName").val(currArea.areaName);
+            $("#editAreaId").val(id);
+            $("#editLatitude").val(currArea.latitude);
+            $("#editLongitude").val(currArea.longitude);
+            $("#formEditArea input[name='hotStatus']").each(function () {
+                if (currArea.hotStatus == this.value) {
+                    this.checked = true;
+                    return false;
+                }
+            });
+            $("#editSortNum").val(currArea.sortNum);
+            $.modal.dialog('修改部门', 'editAreaDialog', '550', '380',
+                function () {
+                    var rules = {
+                        deptName: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formEditArea", rules)) {
+                        return false;
+                    }
+                    var data = $.form.getData("formEditArea");
+                    $.loading();
+                    $.postAjax("${updateArea}",
+                        data, function (status, respData) {
+                            $.treeTable.search();
+                        });
+                    return true;
+                });
+        };
+        </#if>
+        <#if updateActiveStatus?length gt 0>
+        enable = function (id) {
+            if (id == 1) {
+                return;
+            }
+            var params = {
+                "areaId": id,
+                "activeStatus": 1
+            };
+            $.modal.confirm('是否启', function () {
+                $.postAjax('${updateActiveStatus}', params, function () {
+                    $.treeTable.search();
+                });
+            });
+        };
+
+        disable = function (id) {
+            if (id == 1) {
+                return;
+            }
+            var params = {
+                "areaId": id,
+                "activeStatus": 2,
+            };
+            $.modal.confirm('是否禁用', function () {
+                $.postAjax('${updateActiveStatus}', params, function () {
+                    $.treeTable.search();
+                });
+            });
+        }
+
+        </#if>
+        var options = {
+            menuId: "areaId",
+            delKey: 'areaId',
+            expandFirst: true,
+            parentMenuId: "parentAreaId",
+            id: 'areaTreeTable',
+            rootIdValue: 0,
+            delUrl: "${delArea}",
+            url: "${basePath}/jsuite/areaMgr/areaListAll",
+            columns: [{
+                field: 'areaName',
+                title: '地区名称',
+                width: '30%',
+                align: "center",
+            }, {
+                field: 'areaLevel',
+                title: '级别',
+                width: '5%',
+                align: "center",
+            }, {
+                field: 'latitude',
+                title: '纬度',
+                width: '10%',
+                align: "center",
+            }, {
+                field: 'longitude',
+                title: '经度',
+                width: '10%',
+                align: "center",
+            }, {
+                title: '启用状态',
+                field: 'activeStatus',
+                width: '10%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    <#if updateActiveStatus?length gt 0>
+                    if (row.activeStatus == 1) {
+                        return '<i class="fa fa-toggle-on fa-2x text-info" onclick="disable(\'' + row.areaId + '\');"></i>';
+                    } else {
+                        return '<i class="fa fa-toggle-off fa-2x text-info" onclick="enable(\'' + row.areaId + '\');"></i>';
+                    }
+                    <#else>
+                    if (row.activeStatus == 1) {
+                        return '<i class="fa fa-toggle-on fa-2x text-info"></i>';
+                    } else {
+                        return '<i class="fa fa-toggle-off fa-2x text-info"></i>';
+                    }
+                    </#if>
+                }
+            }, {
+                field: 'createTime',
+                title: '创建时间',
+                width: '18%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                width: '25%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if addArea?length gt 0>
+                    actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="addArea(' + row.areaId + ')"><i class="fa fa-plus"></i>新增</a> ');
+                    </#if>
+                    <#if updateArea?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateArea(' + row.areaId + ')"><i class="fa fa-edit"></i>编辑</a> ');
+                    </#if>
+                    if (row.areaId != 1) {
+                        <#if delArea?length gt 0>
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(' + row.areaId + ')"><i class="fa fa-remove"></i>删除</a>');
+                        </#if>
+                    }
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.treeTable.load(options);
+    });
+</script>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "./include/layout.html"/>
+    <@header/>
+    <body class="gray-bg">
+        <#include "./include/loading.html"/>
+        <div class="row border-bottom white-bg dashboard-header">
+            <div class="col-sm-5">
+                <h2>jsuite后台管理框架介绍</h2>
+                <p>jsuite是一个企业级快速开发平台，也是一个基于业务的业务组件框架,提供业务管理及api接口调用，
+                    便于二次开发及集成，它可以用于所有的Web应用程序，如<b>网站管理后台</b>，
+                    <b>网站会员中心</b>，<b>CMS</b>，<b>CRM</b>，<b>OA</b>等等，
+                    也可以对它进行深度定制，以做出更强系统。</p>
+                <p>
+                    <b>当前版本：</b><span>1.0</span>
+                </p>
+                <p>
+                    <span class="label label-warning">&yen;免费开源</span>
+                </p>
+                <br>
+                <p>
+                    <a class="btn btn-success btn-outline" href="#" target="_blank">
+                        <i class="fa fa-cloud"> </i> 源码
+                    </a>
+                    <a class="btn btn-white btn-bitbucket" href="http://www.scloudic.com" target="_blank">
+                        <i class="fa fa-home"></i> 访问主页
+                    </a>
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <h4>源码工程介绍：</h4>
+                <ui>
+                    <li>jsuite-article：文章管理</li>
+                    <li>jsuite-common：公共管理，包括：地区管理</li>
+                    <li>jsuite-log:日志模块，提供内部操作日志相关的拦截</li>
+                    <li>jsuite-user：用户模块，主要是系统后台管理模块,提供首页菜单、用户管理、菜单管理、角色管理。</li>
+                    <li>jsuite-file-pom：文件上传,支持本地文件上传、阿里云oss文件上传</li>
+                    <li>jsuite-generator：代码生成器。</li>
+                    <li>jsuite-mgr-web：管理应用启动工程示例使用freemarker</li>
+                </ui>
+            </div>
+            <div class="col-sm-3">
+                <h4>技术选型：</h4>
+                <ui>
+                    <li>核心框架：<a href="">rabbitframework</a></li>
+                    <li>spring框架：Spring Boot。</li>
+                    <li>安全框架：Apache Shiro。</li>
+                    <li>模板引擎：freemarker。</li>
+                    <li>数据库连接池：Druid。</li>
+                    <li>工具类：Fastjson。</li>
+                    <li>前端：jquery、hplus等。</li>
+                </ui>
+            </div>
+
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>联系信息</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <p><i class="fa fa-send-o"></i>官网：<a href="http://www.scloudic.com">http://www.scloudic.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>更新日志</h5>
+                        </div>
+                        <div class="ibox-content no-padding">
+                            <div class="panel-body">
+                                <div class="panel-group" id="version">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h5 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#version" href="#v21">v1.0</a>
+                                            </h5>
+                                        </div>
+                                        <div id="v21" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <ol>
+                                                    <li>jusite初始化版本</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <@script/>
+    </body>
+</html>

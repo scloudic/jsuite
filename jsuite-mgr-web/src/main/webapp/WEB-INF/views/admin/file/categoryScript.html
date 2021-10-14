@@ -1,0 +1,124 @@
+<script>
+    <#if updateCategory?length gt 0>
+
+    function updateCategory(fileCategoryId) {
+        $.form.clearForm();
+        var categoryObj = $.table.getSelection(fileCategoryId);
+        $("#updateFileCategoryId").val(fileCategoryId);
+        $("#updateFileCategoryName").val(categoryObj.fileCategoryName);
+        $("#updateFileCategoryNameCode").val(categoryObj.fileCategoryNameCode);
+        $("#updateSortNum").val(categoryObj.sortNum);
+        $.modal.dialog('修改分类', 'updateCategory', '600', '300',
+            function () {
+                var rules = {
+                    fileCategoryName: {
+                        required: true
+                    },
+                    fileCategoryNameCode: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formUpdateCategory", rules)) {
+                    return false;
+                }
+                var data = $.form.getData("formUpdateCategory");
+                $.loading();
+                $.postAjax("${updateCategory}",
+                    data, function (status, respData) {
+                        $.table.search();
+                    });
+                return true;
+            });
+    }
+
+    </#if>
+    $(function () {
+        <#if saveCategory?length gt 0>
+        $("#categoryAdd").click(function () {
+            $.form.clearForm();
+            $.modal.dialog('添加分类', 'addCategory', '600', '300',
+                function () {
+                    var rules = {
+                        fileCategoryName: {
+                            required: true
+                        },
+                        fileCategoryNameCode: {
+                            required: true
+                        },
+                    };
+                    if (!$.form.validate("formAddCategory", rules)) {
+                        return false;
+                    }
+                    var data = $.form.getData("formAddCategory");
+                    $.loading();
+                    $.postAjax("${saveCategory}",
+                        data, function (status, respData) {
+                            $.table.search();
+                        });
+                    return true;
+                });
+        });
+        </#if>
+        var options = {
+            id: "categoryTable",
+            uniqueId: "fileCategoryId",
+            delKey: "fileCategoryId",
+            delUrl: "${delCategory}",
+            url: "${basePath}/jsuite/file/categoryMgr/listPage",
+            columns: [{
+                checkbox: true,
+                visible: false
+            }, {
+                title: '分类名称',
+                align: "center",
+                valign: 'middle',
+                field: 'fileCategoryName',
+                width: '30%',
+            }, {
+                title: '分类编码',
+                align: "center",
+                valign: 'middle',
+                field: 'fileCategoryNameCode',
+                width: '30%',
+            }, {
+                title: '排序序号',
+                align: "center",
+                valign: 'middle',
+                field: 'sortNum',
+                width: '10%',
+            }, {
+                title: '创建时间',
+                field: 'createTime',
+                align: 'center',
+                valign: 'middle',
+                width: '20%',
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime);
+                }
+            }, {
+                title: '操作',
+                field: 'fileCategoryId',
+                width: '40%',
+                align: 'center',
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if updateCategory?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateCategory(\'' + row.fileCategoryId + '\')"><i class="fa fa-edit"></i> 编辑</a> ');
+                    </#if>
+                    if (row.fileCategoryId != 1) {
+                        <#if delCategory?length gt 0>
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(\'' + row.fileCategoryId + '\')"><i class="fa fa-remove"></i> 删除</a> ');
+                        </#if>
+                    }
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.table.load(options);
+    });
+</script>
