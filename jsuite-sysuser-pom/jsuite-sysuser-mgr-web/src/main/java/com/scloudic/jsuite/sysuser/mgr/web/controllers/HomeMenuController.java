@@ -45,7 +45,7 @@ public class HomeMenuController extends AbstractContextResource {
     @GET
     @Path("list")
     @UserAuthentication
-    public Result<List<Map<String, Object>>> homeMenu(@QueryParam("parentMenuId") @DefaultValue("1") Long parentMenuId) {
+    public Result<List<Map<String, Object>>> homeMenu(@QueryParam("parentMenuId") @DefaultValue("1") String parentMenuId) {
         List<Map<String, Object>> homeMenu = homeMenuComponent.homeMenu(parentMenuId);
         return success(homeMenu);
     }
@@ -59,7 +59,7 @@ public class HomeMenuController extends AbstractContextResource {
     @GET
     @Path("findRoleMenuByParentId")
     @UserAuthentication
-    public Result<List<Map<String, Object>>> findRoleMenuByMenuParentId(@QueryParam("parentMenuId") @DefaultValue("-1") Long parentMenuId) {
+    public Result<List<Map<String, Object>>> findRoleMenuByMenuParentId(@QueryParam("parentMenuId") @DefaultValue("-1") String parentMenuId) {
         List<Map<String, Object>> result = homeMenuComponent.findRoleMenuByMenuParentId(parentMenuId);
         return success(result);
     }

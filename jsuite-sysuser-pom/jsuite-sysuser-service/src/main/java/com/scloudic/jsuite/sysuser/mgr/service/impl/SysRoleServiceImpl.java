@@ -100,7 +100,7 @@ public class SysRoleServiceImpl extends
         try {
             Where roleMenuParam = new Where();
             Criteria criteria = roleMenuParam.createCriteria();
-            criteria.andEqual(SysRoleMenu.SYS_ROLE_ID, roleId);
+            criteria.andEqual(SysRoleMenu::getSysRoleId, roleId);
             sysRoleMenuMapper.deleteByParams(roleMenuParam);
             sysUserRoleMapper.deleteByParams(roleMenuParam);
             return sysRoleMapper.deleteById(roleId);
@@ -124,7 +124,7 @@ public class SysRoleServiceImpl extends
         try {
             Where roleMenuParam = new Where();
             Criteria criteria = roleMenuParam.createCriteria();
-            criteria.andEqual(SysRoleMenu.SYS_ROLE_ID, roleId);
+            criteria.andEqual(SysRoleMenu::getSysRoleId, roleId);
             sysRoleMenuMapper.deleteByParams(roleMenuParam);
             List<SysRoleMenu> roleMenus = new ArrayList<SysRoleMenu>();
             int menuIdSize = menuIds.length;
@@ -134,7 +134,7 @@ public class SysRoleServiceImpl extends
                 sysRoleMenu.setSysRoleMenuId(UUIDUtils.getTimeUUID32());
                 sysRoleMenu.setSysRoleId(roleId);
                 sysRoleMenu.setRoleCode(roleCode);
-                sysRoleMenu.setSysMenuId(Long.valueOf(menuId));
+                sysRoleMenu.setSysMenuId(menuId);
                 roleMenus.add(sysRoleMenu);
             }
             if (roleMenus.size() > 0) {

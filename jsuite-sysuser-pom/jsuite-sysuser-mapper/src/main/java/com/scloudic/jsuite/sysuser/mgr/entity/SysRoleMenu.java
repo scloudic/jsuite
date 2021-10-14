@@ -13,11 +13,6 @@ import java.io.Serializable;
 @Table
 public class SysRoleMenu implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static final String SYS_ROLE_MENU_ID = "sys_role_menu_id";
-	public static final String SYS_ROLE_ID = "sys_role_id";
-	public static final String ROLE_CODE = "role_code";
-	public static final String SYS_MENU_ID = "sys_menu_id";
-
     /**
     * This field corresponds to the database column sys_role_menu.sys_role_menu_id
     * <p>
@@ -48,7 +43,7 @@ public class SysRoleMenu implements Serializable {
     * description:菜单主键
     */
     @Column
-    private Long sysMenuId;
+    private String sysMenuId;
 
     public void setSysRoleMenuId(String sysRoleMenuId) {
         this.sysRoleMenuId = sysRoleMenuId;
@@ -74,11 +69,11 @@ public class SysRoleMenu implements Serializable {
         return roleCode;
     }
 
-    public void setSysMenuId(Long sysMenuId) {
+    public void setSysMenuId(String sysMenuId) {
         this.sysMenuId = sysMenuId;
     }
 
-    public Long getSysMenuId() {
+    public String getSysMenuId() {
         return sysMenuId;
     }
 

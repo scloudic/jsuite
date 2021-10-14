@@ -7,6 +7,7 @@ import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateNumberModel;
+import freemarker.template.TemplateScalarModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +29,8 @@ public class HomeMenuTag extends TemplateDirective {
     public void render(Environment environment, Map map,
                        TemplateModel[] templateModels,
                        TemplateDirectiveBody templateDirectiveBody) throws Exception {
-        TemplateNumberModel templateNumberModel = (TemplateNumberModel) map.get("menuParentId");
-        long parentId = templateNumberModel.getAsNumber().longValue();
+        TemplateScalarModel templateNumberModel = (TemplateScalarModel) map.get("menuParentId");
+        String parentId = templateNumberModel.getAsString();
         List<Map<String, Object>> result = homeMenuComponent.findRoleMenuByMenuParentId(parentId);
         TemplateModel templateModel = getBeansWrapper().wrap(result);
         environment.setVariable("menuInfos", templateModel);

@@ -3,6 +3,7 @@ package com.scloudic.jsuite.sysuser.mgr.entity;
 import com.scloudic.rabbitframework.jbatis.annontations.Column;
 import com.scloudic.rabbitframework.jbatis.annontations.ID;
 import com.scloudic.rabbitframework.jbatis.annontations.Table;
+import com.scloudic.rabbitframework.jbatis.mapping.GenerationType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,8 +20,8 @@ public class SysMenu implements Serializable {
      * <p>
      * description:菜单主键
      */
-    @ID
-    private Long sysMenuId;
+    @ID(keyType = GenerationType.MANUAL)
+    private String sysMenuId;
 
     /**
      * This field corresponds to the database column sys_menu.create_time
@@ -68,7 +69,7 @@ public class SysMenu implements Serializable {
      * description:父菜单ID
      */
     @Column
-    private Long parentMenuId;
+    private String parentMenuId;
 
     /**
      * This field corresponds to the database column sys_menu.target
@@ -141,14 +142,6 @@ public class SysMenu implements Serializable {
     @Column
     private String menuCode;
 
-    public void setSysMenuId(Long sysMenuId) {
-        this.sysMenuId = sysMenuId;
-    }
-
-    public Long getSysMenuId() {
-        return sysMenuId;
-    }
-
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
@@ -205,12 +198,20 @@ public class SysMenu implements Serializable {
         this.frontEndUrl = frontEndUrl;
     }
 
-    public void setParentMenuId(Long parentMenuId) {
-        this.parentMenuId = parentMenuId;
+    public String getSysMenuId() {
+        return sysMenuId;
     }
 
-    public Long getParentMenuId() {
+    public void setSysMenuId(String sysMenuId) {
+        this.sysMenuId = sysMenuId;
+    }
+
+    public String getParentMenuId() {
         return parentMenuId;
+    }
+
+    public void setParentMenuId(String parentMenuId) {
+        this.parentMenuId = parentMenuId;
     }
 
     public void setTarget(Integer target) {

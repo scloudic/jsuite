@@ -17,7 +17,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param menuBtnFlag  可以为空
      * @return
      */
-    List<SysMenu> findChildMenuByParentMenuId(Long parentMenuId, Integer menuBtnFlag);
+    List<SysMenu> findChildMenuByParentMenuId(String parentMenuId, Integer menuBtnFlag);
 
     /**
      * 保存菜单
@@ -41,7 +41,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param menuId
      * @return
      */
-    int delMenu(Long menuId);
+    int delMenu(String menuId);
 
     /**
      * 根据角色主键获取当前角色下的子菜单
@@ -51,7 +51,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param parentMenuId
      * @return
      */
-    List<SysMenu> findMenuByRole(List<Long> roleIds, Long parentMenuId, Integer btnFlag);
+    List<SysMenu> findMenuByRole(List<Long> roleIds, String parentMenuId, Integer btnFlag);
 
     /**
      * 根据角色等参数获取当前角色下的子菜单数量
@@ -61,7 +61,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param btnFlag
      * @return
      */
-    Integer getCountMenuByRole(List<Long> roleIds, Long parentMenuId, Integer btnFlag);
+    Integer getCountMenuByRole(List<Long> roleIds, String parentMenuId, Integer btnFlag);
 
     /**
      * 根用户主键获取

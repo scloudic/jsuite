@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MenuVo implements java.io.Serializable {
-    private Long menuId;
+    private String menuId;
     private Integer menuType;
     private String iconPath;
     private String menuName;
@@ -12,7 +12,7 @@ public class MenuVo implements java.io.Serializable {
     private Integer sortNum;
     private String menuDesc;
     private Integer btnFlag;
-    private Long parentMenuId;
+    private String parentMenuId;
     private Integer target;
     private Integer childMenuNum;
     private String frontEndParamName;
@@ -24,11 +24,11 @@ public class MenuVo implements java.io.Serializable {
     private String menuCode;
     private List<MenuVo> children;
 
-    public Long getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Long menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 
@@ -80,11 +80,11 @@ public class MenuVo implements java.io.Serializable {
         this.btnFlag = btnFlag;
     }
 
-    public Long getParentMenuId() {
+    public String getParentMenuId() {
         return parentMenuId;
     }
 
-    public void setParentMenuId(Long parentMenuId) {
+    public void setParentMenuId(String parentMenuId) {
         this.parentMenuId = parentMenuId;
     }
 

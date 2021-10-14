@@ -4,9 +4,9 @@
 /*==============================================================*/
 create table sys_menu
 (
-   sys_menu_id          bigint not null auto_increment comment '菜单主键',
+   sys_menu_id          varchar(64) not null comment '菜单主键',
    menu_name            varchar(256) comment '菜单名称',
-   parent_menu_id       bigint comment '父菜单ID',
+   parent_menu_id       varchar(64) comment '父菜单ID',
    front_end_url        varchar(256) comment '前端url地址',
    target               int comment '打开方式(1、当前页,2、新页面，3、模式对话框)',
    btn_flag             int comment '按钮标记(1、按钮接口,2、菜单接口)',
@@ -65,7 +65,7 @@ create table sys_role_menu
 (
    sys_role_menu_id     varchar(64) not null comment '角色菜单主键',
    sys_role_id          bigint comment '角色主键',
-   sys_menu_id          bigint comment '菜单主键',
+   sys_menu_id          varchar(64) comment '菜单主键',
    role_code            varchar(128) comment '角色编码',
    primary key (sys_role_menu_id)
 );
@@ -118,6 +118,7 @@ create table sys_user
    user_mail            varchar(256) comment '邮箱',
    gender               int comment '性别(1男2女3保密)',
    remark               varchar(1024) comment '备注',
+   dept_id            int comment '部门id',
    primary key (sys_user_id)
 );
 

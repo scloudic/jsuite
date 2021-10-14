@@ -31,7 +31,7 @@ public class HomeMenuComponent {
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
-    public List<Map<String, Object>> homeMenu(Long parentMenuId) {
+    public List<Map<String, Object>> homeMenu(String parentMenuId) {
         List<Map<String, Object>> result = new ArrayList<>();
         long userId = StringUtils.stringToLong(SecurityUtils.getUserId(), 0);
         if (userId == 0) {
@@ -52,11 +52,11 @@ public class HomeMenuComponent {
         return result;
     }
 
-    private List<Map<String, Object>> findRoleMenuByParentId(Long parentMenuId, List<Long> roleIds) {
+    private List<Map<String, Object>> findRoleMenuByParentId(String parentMenuId, List<Long> roleIds) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         List<SysMenu> menus = sysMenuService.findMenuByRole(roleIds, parentMenuId, Enums.BtnFlag.MENU.getValue());
         for (SysMenu menu : menus) {
-            Long parentId = menu.getSysMenuId();
+            String parentId = menu.getSysMenuId();
             String icon = menu.getIconPath();
             String path = menu.getFrontEndUrl();
             Map<String, Object> hashMap = new HashMap<>();
@@ -77,15 +77,15 @@ public class HomeMenuComponent {
         return result;
     }
 
-    public List<Map<String, Object>> findRoleMenuByMenuParentId(Long parentMenuId) {
+    public List<Map<String, Object>> findRoleMenuByMenuParentId(String parentMenuId) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         long userId = StringUtils.stringToLong(SecurityUtils.getUserId(), 0);
         if (userId == 0) {
             logger.warn("当前用户没有登录,不能获取功能菜单信息");
             return result;
         }
-        Long parentId = parentMenuId;
-        if (-1L == parentMenuId.longValue()) {
+        String parentId = parentMenuId;
+        if ("-1".equals(parentMenuId)) {
             List<SysMenu> menus = sysMenuService.findChildMenuByParentMenuId(parentMenuId, Enums.BtnFlag.MENU.getValue());
             for (SysMenu menu : menus) {
                 String icon = menu.getIconPath();

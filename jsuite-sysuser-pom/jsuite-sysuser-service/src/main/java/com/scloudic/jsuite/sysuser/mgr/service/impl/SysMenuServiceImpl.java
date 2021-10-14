@@ -35,7 +35,7 @@ public class SysMenuServiceImpl extends
     }
 
     @Override
-    public List<SysMenu> findChildMenuByParentMenuId(Long parentMenuId, Integer menuBtnFlag) {
+    public List<SysMenu> findChildMenuByParentMenuId(String parentMenuId, Integer menuBtnFlag) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SysMenu::getParentMenuId, parentMenuId);
@@ -79,7 +79,7 @@ public class SysMenuServiceImpl extends
      */
     @Transactional
     @Override
-    public int delMenu(Long menuId) {
+    public int delMenu(String menuId) {
         Where paramType = new Where();
         Criteria criteria = paramType.createCriteria();
         criteria.andEqual(SysMenu::getParentMenuId, menuId);
@@ -104,13 +104,14 @@ public class SysMenuServiceImpl extends
      * @return
      */
     @Override
-    public List<SysMenu> findMenuByRole(List<Long> roleIds, Long parentMenuId, Integer btnFlag) {
+    public List<SysMenu> findMenuByRole(List<Long> roleIds, String parentMenuId, Integer btnFlag) {
         if (CollectionUtils.isEmpty(roleIds)) {
             throw new NullPointerException("roleIds is null");
         }
         Where where = new Where();
         Criteria criteria = where.createCriteria();
-        criteria.andIn("rm." + SysRoleMenu.SYS_ROLE_ID, roleIds);
+        String roleIdField = SFunctionUtils.getFieldName(SysRoleMenu::getSysRoleId);
+        criteria.andIn("rm." + roleIdField, roleIds);
         if (btnFlag != null) {
             String btnFlagField = SFunctionUtils.getFieldName(SysMenu::getBtnFlag);
             criteria.andEqual("menu." + btnFlagField, btnFlag);
@@ -125,13 +126,14 @@ public class SysMenuServiceImpl extends
     }
 
     @Override
-    public Integer getCountMenuByRole(List<Long> roleIds, Long parentMenuId, Integer btnFlag) {
+    public Integer getCountMenuByRole(List<Long> roleIds, String parentMenuId, Integer btnFlag) {
         if (CollectionUtils.isEmpty(roleIds)) {
             throw new NullPointerException("roleIds is null");
         }
         Where where = new Where();
         Criteria criteria = where.createCriteria();
-        criteria.andIn("rm." + SysRoleMenu.SYS_ROLE_ID, roleIds);
+        String roleIdField = SFunctionUtils.getFieldName(SysRoleMenu::getSysRoleId);
+        criteria.andIn("rm." + roleIdField, roleIds);
         if (btnFlag != null) {
             String btnFlagField = SFunctionUtils.getFieldName(SysMenu::getBtnFlag);
             criteria.andEqual("menu." + btnFlagField, btnFlag);

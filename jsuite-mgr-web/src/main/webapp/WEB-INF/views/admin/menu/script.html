@@ -137,13 +137,13 @@
                 formatter: function (value, row, index) {
                     var actions = [];
                     <#if addMenu?length gt 0>
-                    actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="menuAdd(' + row.sysMenuId + ')"><i class="fa fa-plus"></i>新增</a> ');
+                    actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="menuAdd(\''+ row.sysMenuId+'\')"><i class="fa fa-plus"></i>新增</a> ');
                     </#if>
                     <#if updateMenu?length gt 0>
-                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="menuEdit(' + row.sysMenuId + ')"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="menuEdit(\''+ row.sysMenuId+'\')"><i class="fa fa-edit"></i>编辑</a> ');
                     </#if>
                     <#if delMenu?length gt 0>
-                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(' + row.sysMenuId + ')"><i class="fa fa-remove"></i>删除</a>');
+                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(\''+ row.sysMenuId+'\')"><i class="fa fa-remove"></i>删除</a>');
                     </#if>
                     if (actions.length > 0) {
                         return actions.join('');
