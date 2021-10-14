@@ -118,7 +118,6 @@ create table sys_user
    user_mail            varchar(256) comment '邮箱',
    gender               int comment '性别(1男2女3保密)',
    remark               varchar(1024) comment '备注',
-   dept_id            int comment '部门id',
    primary key (sys_user_id)
 );
 
