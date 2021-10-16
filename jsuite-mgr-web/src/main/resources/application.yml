@@ -6,6 +6,8 @@ spring:
   messages:
     basename: messages/globalMessages
 rabbit:
+  redisson:
+    open-status: false
   web:
     rest-packages: com.scloudic.jsuite.**.controllers
     request-log: true
@@ -17,9 +19,9 @@ rabbit:
       name: jsuite
       path: /
     session-type: local
-    cache-type: redis
+    cache-type: memory
     filter-chain-definitions:
-      authc: /jsuite/file/**,/jsuite/api/file/**
+      authc: /jsuite/api/file/**
     session-dao-key-prefix: jsuite_session_test
     realm-bean-names:
       - jsuiteRealm
