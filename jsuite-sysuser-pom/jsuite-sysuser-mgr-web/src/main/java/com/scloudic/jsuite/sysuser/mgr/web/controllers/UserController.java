@@ -91,7 +91,7 @@ public class UserController extends AbstractContextResource {
                            @NotBlank @FormParam("loginName") String loginName,
                            @NotBlank @FormParam("realName") String realName,
                            @NotBlank @FormParam("userPhone") String userPhone,
-                           @DefaultValue("0") @FormParam("postId") Integer postId,
+                           @DefaultValue("1") @FormParam("postId") Integer postId,
                            @DefaultValue("1") @FormParam("deptId") Integer deptId,
                            @FormParam("userMail") String userMail,
                            @DefaultValue("3") @FormParam("gender") Integer gender,
