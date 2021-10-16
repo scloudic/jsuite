@@ -50,12 +50,11 @@
             //更换原图片路径，回显图片
             $('#imgFileUpload').attr('src', imgSrc);
         });
-
+        <#if uploadFile?length gt 0>
         $("#fileAdd").click(function () {
-
             var fileCategoryId = $("#fileCategoryId").val();
             if (fileCategoryId == '') {
-                fileCategoryId = 0;
+                fileCategoryId = 1;
             }
             fileCleanSearchForm();
             $("#addFileCategoryId option[value='" + fileCategoryId + "']")
@@ -89,7 +88,7 @@
                     return true;
                 });
         });
-
+        </#if>
         $.getAjax("${basePath}/jsuite/file/categoryMgr/listAll",
             function (status, data, message) {
                 var config = {

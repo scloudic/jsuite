@@ -10,6 +10,13 @@
         <#include "../include/loading.html"/>
         <#include "fileEdit.html"/>
         <#include  "fileAdd.html"/>
+        <@permission url="/jsuite/fileMgr/upload">
+            <#if isPermission==true>
+                <#assign uploadFile="${basePath}/jsuite/fileMgr/upload"/>
+            <#else>
+                <#assign uploadFile=""/>
+            </#if>
+        </@permission>
         <@permission url="/jsuite/fileMgr/update">
             <#if isPermission==true>
                 <#assign updateFile="${basePath}/jsuite/fileMgr/update"/>
@@ -49,8 +56,10 @@
                         </form>
                     </div>
                     <div class="btn-group-sm" id="toolbar" role="group">
+                        <#if uploadFile?length gt 0>
                         <a class="btn btn-success" id="fileAdd" href="javascript:void(0)"><i
                                     class="fa fa-plus"></i> 新增</a>
+                        </#if>
                     </div>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="fileTable"></table>
