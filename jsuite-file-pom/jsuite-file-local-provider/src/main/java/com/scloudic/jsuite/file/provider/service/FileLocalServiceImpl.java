@@ -93,11 +93,15 @@ public class FileLocalServiceImpl implements FileService {
         ByteArrayOutputStream smallOutput = null;
         ByteArrayInputStream smallInputStream = null;
         FileInputStream smallfileInputStream = null;
-        String fileFullPath = jsuiteProperties.getLocalFileStore() + File.separator + fileCategoryName;
+        String fileFullPath = jsuiteProperties.getLocalFileStore();
+        if (StringUtils.isNotBlank(fileCategoryName)) {
+            fileFullPath = fileFullPath + File.separator + fileCategoryName;
+        }
         File file = new File(fileFullPath);
         if (!file.exists()) {
             file.mkdirs();
         }
+
         try {
             File localFile = new File(fileFullPath + File.separator + saveFileName);
             File sSmallFile = new File(fileFullPath + File.separator + thumbFileName + "_ssmall" + extName);
