@@ -15,7 +15,6 @@ public class JsuiteProperties {
     private int imgThumbSsmallWith;
     @Value("${file.imgthumb.small.with:500}")
     private int imgThumbSmallWith;
-
     @Value("${security.realmServiceName:}")
     private String realmServiceName;
 

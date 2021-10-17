@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class JsuiteSysUserProperties {
     @Value("${sysuser.avatar.path:avatar}")
     private String avatarPath;
+    @Value("${sysuser.showAdmin.list:false}")
+    private boolean showAdmin;
 
     public String getAvatarPath() {
         return avatarPath;
@@ -16,5 +18,13 @@ public class JsuiteSysUserProperties {
 
     public void setAvatarPath(String avatarPath) {
         this.avatarPath = avatarPath;
+    }
+
+    public boolean isShowAdmin() {
+        return showAdmin;
+    }
+
+    public void setShowAdmin(boolean showAdmin) {
+        this.showAdmin = showAdmin;
     }
 }

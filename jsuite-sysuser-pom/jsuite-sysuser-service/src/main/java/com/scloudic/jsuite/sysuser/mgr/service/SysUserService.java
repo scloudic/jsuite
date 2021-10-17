@@ -20,7 +20,7 @@ public interface SysUserService extends IService<SysUser> {
     SysUser getSysUserByLoginName(String loginName);
 
     PageBean<SysUser> findUserInfoByParams(String name, String userPhone, Long pageNum, Long pageSize,
-                                           Integer activeStatus, String startDate, String endDate);
+                                           Integer activeStatus, String startDate, String endDate, boolean showAdmin);
 
     int saveSysUserAndRoles(SysUser sysUser, List<Long> roleIds);
 

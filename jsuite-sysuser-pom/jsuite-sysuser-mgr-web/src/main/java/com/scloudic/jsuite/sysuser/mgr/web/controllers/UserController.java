@@ -9,6 +9,7 @@ import com.scloudic.jsuite.sysuser.mgr.entity.SysUserRole;
 import com.scloudic.jsuite.sysuser.mgr.service.SysDeptService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysRoleService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
+import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.*;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
@@ -46,6 +47,8 @@ public class UserController extends AbstractContextResource {
     private JsuiteProperties jsuiteProperties;
     @Autowired
     private SysDeptService sysDeptService;
+    @Autowired
+    private JsuiteSysUserProperties jsuiteSysUserProperties;
 
     /**
      * 分页查询用户信息
@@ -75,7 +78,8 @@ public class UserController extends AbstractContextResource {
         if (activeStatus.intValue() == 0) {
             activeStatus = null;
         }
-        PageBean<SysUser> sysUserPageBean = sysUserService.findUserInfoByParams(name, userPhone, pageNum, pageSize, activeStatus, startDate, endDate);
+        PageBean<SysUser> sysUserPageBean = sysUserService.findUserInfoByParams(name, userPhone, pageNum,
+                pageSize, activeStatus, startDate, endDate, jsuiteSysUserProperties.isShowAdmin());
         return success(sysUserPageBean);
     }
 

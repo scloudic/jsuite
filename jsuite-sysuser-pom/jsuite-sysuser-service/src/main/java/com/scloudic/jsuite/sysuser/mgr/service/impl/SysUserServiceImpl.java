@@ -38,6 +38,7 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
     @Autowired
     private SysPostMapper sysPostMapper;
 
+
     @Override
     public SysUserMapper getBaseMapper() {
         return sysUserMapper;
@@ -59,7 +60,7 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
     @Transactional(readOnly = true)
     @Override
     public PageBean<SysUser> findUserInfoByParams(String name, String userPhone, Long pageNum, Long pageSize,
-                                                  Integer activeStatus, String startDate, String endDate) {
+                                                  Integer activeStatus, String startDate, String endDate, boolean showAdmin) {
         Where whereParamType = new Where();
         Criteria criteria = whereParamType.createCriteria();
         criteria.andEqual(SysUser::getDelStatus, Enums.DelStatus.NORMAL.getValue());
@@ -69,6 +70,9 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
         }
         if (activeStatus != null) {
             criteria.andEqual(SysUser::getActiveStatus, activeStatus);
+        }
+        if (!showAdmin) {
+            criteria.andNotEqual(SysUser::getSysUserId, "1");
         }
         if (StringUtils.isNotBlank(userPhone)) {
             criteria.andEqual(SysUser::getUserPhone, userPhone);
