@@ -23,7 +23,8 @@
 | Fastjson | json解释器 |
    
 3、示例地址：
-  [jsuite示例](http://jsuitedemo.scloudic.com/jsuiteMgr)
+
+  <a href="http://jsuitedemo.scloudic.com/jsuiteMgr" target="_blank">示例地址</a>
   
 4、联系方式：
 
