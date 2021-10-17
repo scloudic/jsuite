@@ -33,8 +33,8 @@ public class HomeMenuComponent {
 
     public List<Map<String, Object>> homeMenu(String parentMenuId) {
         List<Map<String, Object>> result = new ArrayList<>();
-        long userId = StringUtils.stringToLong(SecurityUtils.getUserId(), 0);
-        if (userId == 0) {
+        String userId = SecurityUtils.getUserId();
+        if (StringUtils.isBlank(userId)) {
             logger.warn("当前用户没有登录,不能获取功能菜单信息");
             return result;
         }

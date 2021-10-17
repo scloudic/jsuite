@@ -12,6 +12,7 @@ import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.RowBounds;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
+import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
 import com.scloudic.rabbitframework.security.realm.SecurityAuthorizingRealm;
 import com.scloudic.rabbitframework.web.AbstractContextResource;
@@ -87,6 +88,9 @@ public class RoleController extends AbstractContextResource {
         Criteria criteria = where.createCriteria();
         if (StringUtils.isNotBlank(roleName)) {
             criteria.andEqual(SysRole::getRoleName, roleName);
+        }
+        if (!"1".equals(SecurityUtils.getUserId())) {
+            criteria.andNotEqual(SysRole::getSysRoleId, 1L);
         }
         Long totalCount = sysRoleService.selectCountByParams(where);
         PageBean<SysRole> pageBean = new PageBean<SysRole>(pageNum, pageSize, totalCount);
