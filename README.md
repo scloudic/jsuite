@@ -15,4 +15,17 @@
 | :-----:| :----: |
 | rabbit-framework | [rabbit框架](https://github.com/scloudic/rabbit-framework) |
 | jquery | 前端框架 |
+| hplus | 前端框架 |
+| springboot | spring框架 |
+| freemarker | 模板框架 |
+| shiro | 安全框架 |
+| Druid | 数据库连接池 |
+| Fastjson | json解释器 |
+   
+3、示例地址：
+  [jsuite示例](http://jsuitedemo.scloudic.com/jsuiteMgr)
+  
+4、联系方式：
+
+    微信号：jsuitesc
    
