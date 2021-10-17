@@ -22,9 +22,7 @@
 | Druid | 数据库连接池 |
 | Fastjson | json解释器 |
    
-3、示例地址：
-
-  <a href="http://jsuitedemo.scloudic.com/jsuiteMgr" target="_blank">示例地址</a>
+3、示例地址：<a href="http://jsuitedemo.scloudic.com/jsuiteMgr" target="_blank">示例地址</a>
   
 4、联系方式：
 
