@@ -92,6 +92,9 @@
                         $.postAjax("${basePath}/userLogin", loginData,
                             function (status) {
                                 window.location.href = "${basePath}/";
+                            }, function () {
+                                var url = "${basePath}/jsuite/captcha/captchaImage?s=" + Math.random();
+                                $('.captchaImage').attr("src", url);
                             });
                     }
                 });
@@ -121,8 +124,8 @@
                     }
                 });
                 $('.captchaImage').click(function () {
-                    var url = "${basePath}/jsuite/captcha/captchaImage?s="+Math.random();
-                    $('.captchaImage').attr("src",url);
+                    var url = "${basePath}/jsuite/captcha/captchaImage?s=" + Math.random();
+                    $('.captchaImage').attr("src", url);
                 });
             });
         </script>

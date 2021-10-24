@@ -98,7 +98,7 @@ $(function () {
                 });
             },
         },
-        postAjax: function (url, data, callback) {
+        postAjax: function (url, data, callback,failCallback) {
             $.ajax({
                 url: url,
                 type: "post",
@@ -112,6 +112,9 @@ $(function () {
                     let status = data.status;
                     if (status != 200) {
                         $.respError(data.status, data.message);
+                        if (failCallback) {
+                            failCallback(data.status, data.message);
+                        }
                     } else {
                         callback(data.status, data.data, data.message);
                     }
