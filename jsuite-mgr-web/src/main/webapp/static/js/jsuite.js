@@ -98,7 +98,7 @@ $(function () {
                 });
             },
         },
-        postAjax: function (url, data, callback,failCallback) {
+        postAjax: function (url, data, callback, failCallback) {
             $.ajax({
                 url: url,
                 type: "post",
@@ -157,7 +157,6 @@ $(function () {
         },
         respError: function (status, message) {
             $.unblockUI();
-            console.info("message:" + message);
             if (status == 4) {
                 toastr.error('用户或密码错误');
             } else {
@@ -446,13 +445,14 @@ $(function () {
                     isCheckBox: false,
                     idKey: "",
                     pIdKey: "",
-                    rootPidId: 1,
+                    rootPidId: "1",
                     checkedKey: "",
                     nameKey: "",
                     urlKey: "",
                     callBackClick: null,
                     chkStyle: "checkbox",
                     radioType: "all",
+                    async: {}
                 };
 
                 options = $.extend(defaults, options);
@@ -466,8 +466,10 @@ $(function () {
                         chkStyle: options.chkStyle,
                         radioType: options.radioType,
                     },
+                    async: options.async,
                     callback: {
                         onClick: options.callBackClick,
+                        onAsyncSuccess: options.onAsyncSuccess,
                     },
                     data: {
                         simpleData: {
@@ -489,6 +491,11 @@ $(function () {
                 var setting = this.initConfig(options);
                 var id = $.ztreeOptions.showId;
                 $.fn.zTree.init($("#" + id), setting, data);
+            },
+            treeAsyncLoad: function (options) {
+                var setting = this.initConfig(options);
+                var id = $.ztreeOptions.showId;
+                $.fn.zTree.init($("#" + id), setting);
             },
             getCheckedNodes: function (checked) {
                 var zTree = $.fn.zTree.getZTreeObj($.ztreeOptions.showId);
