@@ -70,6 +70,12 @@
 
                     }
                 }, {
+                    title: '请求IP',
+                    align: "center",
+                    valign: "middle",
+                    field: 'ipAddress',
+                    width: '30%',
+                }, {
                     title: '请求参数',
                     align: "center",
                     valign: "middle",
@@ -88,7 +94,7 @@
                     align: "center",
                     valign: "middle",
                     formatter: function (value, row, index) {
-                        return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                        return $.formatDate(row.createTime, 'YYYY-MM-DD HH:mm:ss');
                     }
                 }],
             };

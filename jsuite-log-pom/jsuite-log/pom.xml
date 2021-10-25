@@ -13,5 +13,9 @@
             <groupId>com.scloudic</groupId>
             <artifactId>rabbit-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

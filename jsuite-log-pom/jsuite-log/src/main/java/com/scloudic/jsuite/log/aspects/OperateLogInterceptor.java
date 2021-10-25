@@ -6,6 +6,7 @@ import com.scloudic.jsuite.log.model.LogBean;
 import com.scloudic.jsuite.log.notification.OperateLogEvent;
 import com.scloudic.rabbitframework.core.notification.NotificationServerManager;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
+import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.security.SecurityUser;
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
@@ -17,6 +18,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -60,8 +62,13 @@ public class OperateLogInterceptor {
             if (parameters != null) {
                 parameterLength = parameters.length;
             }
+            String ip = "";
             for (int i = 0; i < parameterLength; i++) {
                 Parameter parameter = parameters[i];
+                if (HttpServletRequest.class == parameter.getType()) {
+                    HttpServletRequest request = (HttpServletRequest) args[i];
+                    ip = getRemoteAddr(request);
+                }
                 Annotation[] annotations = parameter.getAnnotations();
                 LogParamExclude logParamExclude = parameter.getAnnotation(LogParamExclude.class);
                 if (logParamExclude != null) {
@@ -73,7 +80,6 @@ public class OperateLogInterceptor {
                 }
                 paramsValue.put(parameter.getName(), args[i]);
             }
-
             LogBean operateLog = new LogBean();
             if (paramsValue.size() > 0) {
                 operateLog.setContent(JsonUtils.toJson(paramsValue, true, true));
@@ -87,6 +93,7 @@ public class OperateLogInterceptor {
                 loginName = securityUser.getLoginName();
                 userName = securityUser.getNickName();
             }
+            operateLog.setIpAddress(ip);
             operateLog.setUserId(userId);
             operateLog.setLoginName(loginName);
             operateLog.setUserName(userName);
@@ -155,6 +162,39 @@ public class OperateLogInterceptor {
         return result;
     }
 
+    private final String getRemoteAddr(HttpServletRequest request) {
+        String ipAddress = request.getHeader("x-forwarded-for");
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if (StringUtils.isNotBlank(ipAddress) && ipAddress.length() > 15) { //"***.***.***.***".length() = 15
+            if (ipAddress.indexOf(",") > 0) {
+                ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+                return ipAddress;
+            } else if (ipAddress.length() == 15) {
+                return ipAddress;
+            }
+        }
+
+        ipAddress = request.getHeader("X-Real-IP");
+        if (StringUtils.isNotEmpty(ipAddress) && !"unKnown".equalsIgnoreCase(ipAddress)) {
+            return ipAddress;
+        }
+        return request.getRemoteAddr();
+    }
+
+    private static boolean isUnAvailableIp(String ip) {
+        return (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip));
+    }
 
     public boolean isSaveSelect() {
         return saveSelect;

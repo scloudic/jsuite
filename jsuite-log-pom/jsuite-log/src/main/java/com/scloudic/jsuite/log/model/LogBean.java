@@ -54,6 +54,15 @@ public class LogBean implements Serializable {
      */
     private String operateType;
 
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    private String ipAddress;
 
     public String getLogRemark() {
         return logRemark;
