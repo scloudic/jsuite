@@ -132,7 +132,6 @@ $(function () {
                 url: url,
                 type: "post",
                 dataType: "json",
-
                 contentType: false,
                 processData: false,
                 data: data,
