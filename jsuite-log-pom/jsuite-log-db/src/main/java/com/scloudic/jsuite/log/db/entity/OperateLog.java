@@ -106,6 +106,11 @@ public class OperateLog implements Serializable {
 
     @Column
     private String ipAddress;
+    /**
+     * description:操作来源(如微信小程序)
+     */
+    @Column
+    private String operateSource;
 
     public String getIpAddress() {
         return ipAddress;
@@ -114,7 +119,7 @@ public class OperateLog implements Serializable {
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
-    
+
     public String getOperateLogId() {
         return operateLogId;
     }
@@ -193,6 +198,14 @@ public class OperateLog implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getOperateSource() {
+        return operateSource;
+    }
+
+    public void setOperateSource(String operateSource) {
+        this.operateSource = operateSource;
     }
 
     public String getOperateType() {

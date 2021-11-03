@@ -54,6 +54,11 @@ public class LogBean implements Serializable {
      */
     private String operateType;
 
+    /**
+     * description:操作来源(如微信小程序)
+     */
+    private String operateSource;
+
     public String getIpAddress() {
         return ipAddress;
     }
@@ -134,6 +139,14 @@ public class LogBean implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getOperateSource() {
+        return operateSource;
+    }
+
+    public void setOperateSource(String operateSource) {
+        this.operateSource = operateSource;
     }
 
     public String getOperateType() {

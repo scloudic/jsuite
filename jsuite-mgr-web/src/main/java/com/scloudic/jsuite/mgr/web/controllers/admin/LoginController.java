@@ -78,6 +78,7 @@ public class LoginController extends AbstractContextResource {
             operateLog.setCreateTime(new Date());
             operateLog.setUserName(userName);
             operateLog.setLoginName(userName);
+            operateLog.setOperateSource("PC");
             operateLog.setIpAddress(new WebUtils().getRemoteAddr(request));
             operateLog.setContent("登录名：" + userName);
             operateLog.setMethodFullName(LoginController.class.getName() + ".userLogin");
@@ -107,6 +108,7 @@ public class LoginController extends AbstractContextResource {
         LogBean operateLog = new LogBean();
         operateLog.setLogRemark("登录");
         operateLog.setReturnResult("登录成功");
+        operateLog.setOperateSource("PC");
         operateLog.setUserId(userId);
         operateLog.setCreateTime(new Date());
         operateLog.setUserName(securityUser.getRealName());

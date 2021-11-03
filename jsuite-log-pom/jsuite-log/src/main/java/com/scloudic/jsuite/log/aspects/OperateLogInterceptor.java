@@ -63,11 +63,13 @@ public class OperateLogInterceptor {
                 parameterLength = parameters.length;
             }
             String ip = "";
+            String operateSource = "";
             for (int i = 0; i < parameterLength; i++) {
                 Parameter parameter = parameters[i];
                 if (HttpServletRequest.class == parameter.getType()) {
                     HttpServletRequest request = (HttpServletRequest) args[i];
                     ip = getRemoteAddr(request);
+                    operateSource = getOperatorSource(request);
                 }
                 Annotation[] annotations = parameter.getAnnotations();
                 LogParamExclude logParamExclude = parameter.getAnnotation(LogParamExclude.class);
@@ -94,6 +96,7 @@ public class OperateLogInterceptor {
                 userName = securityUser.getNickName();
             }
             operateLog.setIpAddress(ip);
+            operateLog.setOperateSource(operateSource);
             operateLog.setUserId(userId);
             operateLog.setLoginName(loginName);
             operateLog.setUserName(userName);
@@ -190,6 +193,14 @@ public class OperateLogInterceptor {
             return ipAddress;
         }
         return request.getRemoteAddr();
+    }
+
+    private String getOperatorSource(HttpServletRequest request) {
+        String operateSource = request.getHeader("operate-source");
+        if (StringUtils.isBlank(operateSource)) {
+            operateSource = "";
+        }
+        return operateSource;
     }
 
     private static boolean isUnAvailableIp(String ip) {

@@ -104,9 +104,9 @@ $(function () {
                 type: "post",
                 dataType: "json",
                 data: data,
-                // beforeSend: function (XMLHttpRequest) {
-                //     XMLHttpRequest.setRequestHeader("x-requested-with", "XMLHttpRequest");
-                // },
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("operate-source", "PC");
+                },
                 success: function (data, textStatus, XMLHttpRequest) {
                     $.unblockUI();
                     let status = data.status;
@@ -132,12 +132,13 @@ $(function () {
                 url: url,
                 type: "post",
                 dataType: "json",
+
                 contentType: false,
                 processData: false,
                 data: data,
-                // beforeSend: function (XMLHttpRequest) {
-                //     XMLHttpRequest.setRequestHeader("x-requested-with", "XMLHttpRequest");
-                // },
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("operate-source", "PC");
+                },
                 success: function (data, textStatus, XMLHttpRequest) {
                     $.unblockUI();
                     let status = data.status;
@@ -168,9 +169,9 @@ $(function () {
                 url: url,
                 type: "GET",
                 dataType: "json",
-                // beforeSend: function (XMLHttpRequest) {
-                //     XMLHttpRequest.setRequestHeader("x-requested-with", "XMLHttpRequest");
-                // },
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("operate-source", "PC");
+                },
                 success: function (data, textStatus, XMLHttpRequest) {
                     $.unblockUI();
                     let status = data.status;
