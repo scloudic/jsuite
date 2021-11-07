@@ -344,6 +344,7 @@ $(function () {
         table: {
             load: function (options) {
                 var defaults = {
+                    formId: null,
                     id: 'table',
                     cache: false,
                     delKey: "",
@@ -361,6 +362,7 @@ $(function () {
                     loadingFontSize: 12,
                     toolbar: 'toolbar',
                     pageSize: 10,
+                    params: {},
                     url: "",
                     strictSearch: true,
                     showToggle: true, //是否显示详细视图和列表视图的切换按钮
@@ -403,13 +405,16 @@ $(function () {
                 }
             },
             queryParams: function (params) {
-                var curParams = {
-                    // 传递参数查询参数
-                    pageSize: params.limit,
-                    pageNum: (params.offset / params.limit) + 1,
-                };
+                var curParams = {};
+                if ($.options.pagination) {
+                    curParams = {
+                        // 传递参数查询参数
+                        pageSize: params.limit,
+                        pageNum: (params.offset / params.limit) + 1,
+                    };
+                }
                 curParams = $.extend(curParams, params);
-                curParams = $.extend(curParams, $.options.queryParams);
+                curParams = $.extend(curParams, $.options.params);
                 delete curParams["limit"];
                 delete curParams["offset"];
                 return curParams;
@@ -419,7 +424,12 @@ $(function () {
                 if (formId != null) {
                     searchParams = $.common.formToJSON(formId);
                 }
-                $.options.queryParams = searchParams;
+                console.info(searchParams);
+                $.options.params = searchParams;
+                $.btnTable.bootstrapTable('refresh', {pageNumber: $.options.pageNumber, pageSize: $.options.pageSize});
+            },
+            searchByParams: function (params) {
+                $.options.params = params;
                 $.btnTable.bootstrapTable('refresh', {pageNumber: $.options.pageNumber, pageSize: $.options.pageSize});
             },
             getSelection: function (id) {
@@ -430,7 +440,7 @@ $(function () {
                 var params = $.options.delKey + "=" + id;
                 $.modal.confirm('是否确认删除', function () {
                     $.postAjax($.options.delUrl, params, function () {
-                        $.table.search();
+                        $.table.search($.options.formId);
                         if (callback != null) {
                             callback();
                         }
@@ -446,7 +456,10 @@ $(function () {
                     idKey: "",
                     pIdKey: "",
                     rootPidId: "1",
-                    checkedKey: "",
+                    checkedKey: "checked",
+                    childrenKey: "children",
+                    isParentKey: "isParent",
+                    isHiddenKey: "isHidden",
                     nameKey: "",
                     urlKey: "",
                     callBackClick: null,
@@ -458,33 +471,37 @@ $(function () {
                 options = $.extend(defaults, options);
                 $.ztreeOptions = options;
                 var setting = {
-                    view: {
-                        selectedMulti: false
-                    },
-                    check: {
-                        enable: options.isCheckBox,
-                        chkStyle: options.chkStyle,
-                        radioType: options.radioType,
-                    },
-                    async: options.async,
-                    callback: {
-                        onClick: options.callBackClick,
-                        onAsyncSuccess: options.onAsyncSuccess,
-                    },
-                    data: {
-                        simpleData: {
-                            enable: false,
-                            idKey: options.idKey,
-                            pIdKey: options.pIdKey,
-                            rootPidId: options.rootPidId,
+                        view: {
+                            selectedMulti: false
                         },
-                        key: {
-                            checked: options.checkedKey,
-                            name: options.nameKey,
-                            url: options.urlKey,
+                        check: {
+                            enable: options.isCheckBox,
+                            chkStyle: options.chkStyle,
+                            radioType: options.radioType,
                         },
-                    },
-                };
+                        async: options.async,
+                        callback: {
+                            onClick: options.callBackClick,
+                            onAsyncSuccess: options.onAsyncSuccess,
+                        },
+                        data: {
+                            simpleData: {
+                                enable: false,
+                                idKey: options.idKey,
+                                pIdKey: options.pIdKey,
+                                rootPidId: options.rootPidId,
+                            },
+                            key: {
+                                checked: options.checkedKey,
+                                name: options.nameKey,
+                                url: options.urlKey,
+                                children: options.childrenKey,
+                                isParent: options.isParentKey,
+                                isHidden: options.isHiddenKey,
+                            },
+                        },
+                    }
+                ;
                 return setting;
             },
             treeDataLoad: function (options, data) {
@@ -496,6 +513,11 @@ $(function () {
                 var setting = this.initConfig(options);
                 var id = $.ztreeOptions.showId;
                 $.fn.zTree.init($("#" + id), setting);
+            },
+            asyncRefresh: function (key, value) {
+                var zTree = $.fn.zTree.getZTreeObj($.ztreeOptions.showId);
+                var node = zTree.getNodeByParam(key, value);
+                zTree.reAsyncChildNodes(node, "refresh", false);
             },
             getCheckedNodes: function (checked) {
                 var zTree = $.fn.zTree.getZTreeObj($.ztreeOptions.showId);

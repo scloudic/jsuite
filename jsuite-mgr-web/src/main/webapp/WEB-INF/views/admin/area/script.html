@@ -1,5 +1,10 @@
 <script type="text/javascript">
     $(function () {
+        var panehHidden = false;
+        if ($(this).width() < 769) {
+            panehHidden = true;
+        }
+        $('body').layout("", {initClosed: panehHidden, west__size: 200});
         <#if addArea?length gt 0>
         addArea = function (id) {
             $.form.clearForm();
@@ -19,16 +24,31 @@
                     $.loading();
                     $.postAjax("${addArea}",
                         data, function (status, respData) {
-                            $.treeTable.search();
+                            var params = {
+                                areaId: $("#areaId").val(),
+                            }
+                            $.table.searchByParams(params);
+                            $.tree.asyncRefresh("areaId", id);
                         });
                     return true;
                 });
         };
+        $("#parentAddArea").click(function () {
+            addArea($("#areaId").val());
+        });
+        </#if>
+        <#if delArea?length gt 0>
+        delArea = function (id) {
+            var areaId = $("#areaId").val();
+            $.table.del(id, function () {
+                $.tree.asyncRefresh("areaId", areaId);
+            });
+        }
         </#if>
         <#if updateArea?length gt 0>
         updateArea = function (id) {
             $.form.clearForm();
-            var currArea = $.treeTable.getSelection(id);
+            var currArea = $.table.getSelection(id);
             $("#editAreaName").val(currArea.areaName);
             $("#editAreaId").val(id);
             $("#editLatitude").val(currArea.latitude);
@@ -54,7 +74,11 @@
                     $.loading();
                     $.postAjax("${updateArea}",
                         data, function (status, respData) {
-                            $.treeTable.search();
+                            var params = {
+                                areaId: $("#areaId").val(),
+                            }
+                            $.table.searchByParams(params);
+                            $.tree.asyncRefresh("areaId", $("#areaId").val());
                         });
                     return true;
                 });
@@ -69,9 +93,12 @@
                 "areaId": id,
                 "activeStatus": 1
             };
-            $.modal.confirm('是否启', function () {
+            $.modal.confirm('是否启用', function () {
                 $.postAjax('${updateActiveStatus}', params, function () {
-                    $.treeTable.search();
+                    var params = {
+                        areaId: $("#areaId").val(),
+                    }
+                    $.table.searchByParams(params);
                 });
             });
         };
@@ -90,18 +117,32 @@
                 });
             });
         }
-
         </#if>
+
+        responseHandler = function (res) {
+            if (res.status == 200) {
+                return {rows: res.data};
+            } else {
+                $.respError(res.status, res.message);
+                return {rows: [], total: 0};
+            }
+        };
         var options = {
-            menuId: "areaId",
-            delKey: 'areaId',
-            expandFirst: true,
-            parentMenuId: "parentAreaId",
-            id: 'areaTreeTable',
-            rootIdValue: 0,
+            id: "areaTable",
+            formId: "areaForm",
+            uniqueId: "areaId",
+            pagination: false,
+            delKey: "areaId",
             delUrl: "${delArea}",
-            url: "${basePath}/jsuite/areaMgr/areaListAll",
+            url: "${basePath}/jsuite/areaMgr/areaTree",
+            responseHandler: responseHandler,
+            params: {
+                "areaId": 1
+            },
             columns: [{
+                checkbox: true,
+                visible: false                  //是否显示复选框
+            }, {
                 field: 'areaName',
                 title: '地区名称',
                 width: '30%',
@@ -161,9 +202,9 @@
                     <#if updateArea?length gt 0>
                     actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="updateArea(' + row.areaId + ')"><i class="fa fa-edit"></i>编辑</a> ');
                     </#if>
-                    if (row.areaId != 1) {
+                    if (row.areaId != 1 && row.childrenNum == 0) {
                         <#if delArea?length gt 0>
-                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(' + row.areaId + ')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="delArea(' + row.areaId + ')"><i class="fa fa-remove"></i>删除</a>');
                         </#if>
                     }
                     if (actions.length > 0) {
@@ -174,6 +215,49 @@
                 }
             }],
         };
-        $.treeTable.load(options);
+        $.table.load(options);
+
+        var treeCallBackClick = function (event, treeId, treeNode) {
+            $("#areaId").val(treeNode.areaId);
+            var params = {
+                areaId: treeNode.areaId,
+            }
+            $.table.searchByParams(params);
+        };
+        var isFirst = true;
+        var onAsyncSuccess = function (event, treeId, treeNode, msg) {
+            if (isFirst) {
+                var zTree = $.fn.zTree.getZTreeObj($.ztreeOptions.showId);
+                var nodeList = zTree.getNodes();
+                zTree.expandNode(nodeList[0], true);
+            }
+            isFirst = false;
+        };
+        filter = function (treeId, parentNode, childNodes) {
+            if (!childNodes) {
+                return null;
+            }
+            return childNodes.data;
+        };
+        var config = {
+            isCheckBox: false,
+            idKey: "areaId",
+            pIdKey: "parentAreaId",
+            nameKey: "areaName",
+            urlKey: "xUrl",
+            rootPidId: "0",
+            isParentKey: "isParentNode",
+            callBackClick: treeCallBackClick,
+            onAsyncSuccess: onAsyncSuccess,
+            async: {
+                enable: true,
+                autoParam: ["areaId=areaId"],
+                dataFilter: filter,
+                dataType: 'json',
+                type: "get",
+                url: "${basePath}/jsuite/areaMgr/areaTree",
+            }
+        };
+        $.tree.treeAsyncLoad(config);
     });
 </script>

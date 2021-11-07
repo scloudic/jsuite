@@ -85,6 +85,28 @@ public class AreaInfo implements Serializable {
     private Integer sortNum;
     @Column
     private Integer hotStatus;
+    /**
+     * 是否父节点
+     */
+    private String isParentNode;
+
+    private Integer childrenNum;
+
+    public Integer getChildrenNum() {
+        return childrenNum;
+    }
+
+    public void setChildrenNum(Integer childrenNum) {
+        this.childrenNum = childrenNum;
+    }
+
+    public String getIsParentNode() {
+        return isParentNode;
+    }
+
+    public void setIsParentNode(String isParentNode) {
+        this.isParentNode = isParentNode;
+    }
 
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;

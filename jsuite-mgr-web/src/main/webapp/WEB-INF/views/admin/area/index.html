@@ -2,7 +2,9 @@
 <html lang="en">
     <#include "../include/layout.html"/>
     <@header>
-        <@treetableLink/>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+        <@jquerylayoutLink />
     </@header>
     <body class="gray-bg">
         <#include "../include/loading.html"/>
@@ -36,27 +38,34 @@
                 <#assign delArea=""/>
             </#if>
         </@permission>
-        <div class="jsuite-wrapper">
-            <div class="row">
-                <div class="col-sm-12 search-collapse">
-                    <form id="formArea" name="formArea" class="form-horizontal">
-                        <label class="col-label">地区名称：</label>
-                        <input type="text" name="areaName" id="areaName" class="col-form width-sm"/>
-                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
-                           onclick="$.treeTable.search('formArea')">
-                            <i class="fa fa-search"></i> 搜索</a>
-                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
-                            <i class="fa fa-refresh"></i> 重置</a>
+        <div class="ui-layout-west white-bg">
+            <div class="m-t-md">
+                <ul id="menuTree" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="jsuite-wrapper">
+                <div class="row">
+                    <form id="areaForm" name="areaForm">
+                        <input id="areaId" name="areaId" value="1" type="hidden"/>
                     </form>
-                </div>
-                <div class="col-sm-12 select-table table-striped">
-                    <table id="areaTreeTable"></table>
+                    <div class="btn-group-sm" id="toolbar" role="group">
+                        <#if addArea?length gt 0>
+                            <a class="btn btn-success" id="parentAddArea" href="javascript:void(0)"><i
+                                        class="fa fa-plus"></i>新增</a>
+                        </#if>
+                    </div>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="areaTable"></table>
+                    </div>
                 </div>
             </div>
         </div>
         <@script>
-            <@treetable/>
+            <@bootstraptable/>
             <@moment/>
+            <@jquerylayout/>
+            <@ztree/>
             <#include "script.html"/>
         </@script>
     </body>

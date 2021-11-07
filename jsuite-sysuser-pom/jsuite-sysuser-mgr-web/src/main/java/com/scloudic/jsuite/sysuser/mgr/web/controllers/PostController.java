@@ -71,7 +71,7 @@ public class PostController extends AbstractContextResource {
     public Result add(@Context HttpServletRequest request, @NotBlank @FormParam("postName") String postName,
                       @NotBlank @FormParam("postCode") String postCode,
                       @NotBlank @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                      @NotBlank @FormParam("remark") String remark) {
+                      @FormParam("remark") String remark) {
         Where where = new Where();
         where.createCriteria()
                 .andNotEqual(SysPost::getDelStatus, Enums.DelStatus.NORMAL.getValue())

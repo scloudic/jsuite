@@ -1,7 +1,6 @@
 package com.scloudic.jsuite.common.mgr.web.controllers;
 
 import com.scloudic.jsuite.common.entity.AreaInfo;
-import com.scloudic.jsuite.common.mgr.web.vo.AreaVO;
 import com.scloudic.jsuite.common.service.AreaInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
@@ -21,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,29 +36,6 @@ public class AreaInfoController extends AbstractContextResource {
     private AreaInfoService areaInfoService;
 
     /**
-     * 查询地区信息(列表结构)
-     *
-     * @param request  request
-     * @param areaName 地区名称
-     * @return obj
-     */
-    @GET
-    @Path("areaListAll")
-    @UriPermissions
-    //@Log(operatorType = Log.OperateType.SELECT, remark = "地区查询")
-    public Result<List<AreaInfo>> areaListAll(@Context HttpServletRequest request,
-                                              @QueryParam("areaName") String areaName) {
-        Where where = new Where();
-        Criteria criteria = where.createCriteria();
-        if (StringUtils.isNotBlank(areaName)) {
-            criteria.andLike(AreaInfo::getAreaName, "%" + areaName + "%");
-        }
-        where.setOrderBy(AreaInfo::getAreaName);
-        List<AreaInfo> areaInfos = areaInfoService.selectByParams(where);
-        return success(areaInfos);
-    }
-
-    /**
      * 查询地区信息树型结构
      *
      * @param request request
@@ -69,36 +46,20 @@ public class AreaInfoController extends AbstractContextResource {
     @Path("areaTree")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "地区查询")
-    public Result<List<AreaVO>> findAreaInfo(@Context HttpServletRequest request,
-                                             @DefaultValue("0") @QueryParam("areaId") Integer areaId) {
-        List<AreaVO> areaVos = findChildArea(areaId);
-        return success(areaVos);
-    }
-
-    private List<AreaVO> findChildArea(int parentAreaId) {
-        List<AreaVO> areaVos = new ArrayList<>();
-        List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(parentAreaId, null);
-        for (AreaInfo areaInfo : areaInfos) {
-            Integer areaId = areaInfo.getAreaId();
-            AreaVO areaVo = new AreaVO();
-            areaVo.setAreaId(areaId);
-            areaVo.setAreaName(areaInfo.getAreaName());
-            areaVo.setParentAreaId(areaInfo.getParentAreaId());
-            areaVo.setAreaLevel(areaInfo.getAreaLevel());
-            areaVo.setSortNum(areaInfo.getSortNum());
-            areaVo.setHotStatus(areaInfo.getHotStatus());
-            areaVo.setActiveStatus(areaInfo.getActiveStatus());
-            areaVo.setLatitude(areaInfo.getLatitude());
-            areaVo.setLongitude(areaInfo.getLongitude());
-            int childrenNum = areaInfoService.findAreaByParentAreaId(areaId, null).size();
+    public Result<List<AreaInfo>> findAreaInfo(@Context HttpServletRequest request,
+                                               @DefaultValue("0") @QueryParam("areaId") Integer areaId) {
+        List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaId, null);
+        areaInfos.forEach(areaInfo -> {
+            Integer pAreaId = areaInfo.getAreaId();
+            int childrenNum = areaInfoService.findAreaByParentAreaId(pAreaId, null).size();
+            areaInfo.setChildrenNum(childrenNum);
             if (childrenNum > 0) {
-                areaVo.setChildren(findChildArea(areaId));
+                areaInfo.setIsParentNode("true");
             } else {
-                areaVo.setChildren(new ArrayList<>());
+                areaInfo.setIsParentNode("false");
             }
-            areaVos.add(areaVo);
-        }
-        return areaVos;
+        });
+        return success(areaInfos);
     }
 
     @POST
@@ -120,6 +81,7 @@ public class AreaInfoController extends AbstractContextResource {
         areaInfo.setSortNum(sortNum);
         areaInfo.setHotStatus(hotStatus);
         areaInfo.setAreaName(areaName);
+        areaInfo.setCreateTime(new Date());
         areaInfoService.addAreaInfo(areaInfo);
 
         AreaInfo parentAreaInfo = areaInfoService.selectById(parentAreaId);
@@ -133,7 +95,7 @@ public class AreaInfoController extends AbstractContextResource {
         AreaInfo updateAreaInfo = new AreaInfo();
         updateAreaInfo.setAreaId(areaInfo.getAreaId());
         updateAreaInfo.setAreaIds(areaIds);
-        updateAreaInfo.setAreaName(areaNames);
+        updateAreaInfo.setAreaNames(areaNames);
         areaInfoService.updateAreaInfo(updateAreaInfo);
         return success();
     }
