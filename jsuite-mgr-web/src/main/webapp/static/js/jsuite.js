@@ -424,7 +424,6 @@ $(function () {
                 if (formId != null) {
                     searchParams = $.common.formToJSON(formId);
                 }
-                console.info(searchParams);
                 $.options.params = searchParams;
                 $.btnTable.bootstrapTable('refresh', {pageNumber: $.options.pageNumber, pageSize: $.options.pageSize});
             },
