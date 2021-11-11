@@ -143,7 +143,7 @@ public class AreaInfoController extends AbstractContextResource {
     @Path("updateActiveStatus")
     @FormValid
     @UriPermissions
-    @Log(operatorType = Log.OperateType.UPDATE, remark = "修改部门启用状态")
+    @Log(operatorType = Log.OperateType.UPDATE, remark = "修改地区启用状态")
     public Result<Object> updateActiveStatus(@Context HttpServletRequest request,
                                              @NotBlank @FormParam("areaId") Integer areaId,
                                              @NotBlank @FormParam("activeStatus") Integer activeStatus) {
@@ -157,7 +157,7 @@ public class AreaInfoController extends AbstractContextResource {
         criteria.andEqual(AreaInfo::getParentAreaId, areaId);
         long count = areaInfoService.selectCountByParams(where);
         if (count > 0) {
-            return failure("还有子集修改活动状态！");
+            return failure("还有子栏目不能修改！");
         }
         areaInfo.setActiveStatus(activeStatus);
         areaInfoService.updateByEntity(areaInfo);
