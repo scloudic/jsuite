@@ -46,8 +46,6 @@ public class UserController extends AbstractContextResource {
     @Autowired
     private JsuiteProperties jsuiteProperties;
     @Autowired
-    private SysDeptService sysDeptService;
-    @Autowired
     private JsuiteSysUserProperties jsuiteSysUserProperties;
 
     /**
