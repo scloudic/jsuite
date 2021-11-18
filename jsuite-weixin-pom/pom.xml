@@ -10,6 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>jsuite-weixin-core</module>
-        <module>jsuite-weixin-fficialaccount</module>
+        <module>jsuite-weixin-officialaccount</module>
     </modules>
 </project>

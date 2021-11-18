@@ -130,6 +130,16 @@
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.scloudic</groupId>
+                <artifactId>jsuite-weixin-core</artifactId>
+                <version>${jsuite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.scloudic</groupId>
+                <artifactId>jsuite-weixin-officialaccount</artifactId>
+                <version>${jsuite.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <profiles>
