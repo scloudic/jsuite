@@ -3,24 +3,27 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.scloudic</groupId>
-        <artifactId>jsuite</artifactId>
+        <artifactId>jsuite-weixin-pom</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>jsuite-generator</artifactId>
+    <artifactId>jsuite-weixin-mgr-web</artifactId>
     <packaging>jar</packaging>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.scloudic</groupId>-->
-<!--            <artifactId>rabbit-jbatis</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>rabbit-generator</artifactId>
-            <scope>compile</scope>
+            <artifactId>rabbit-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.scloudic</groupId>
+            <artifactId>rabbit-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
+            <artifactId>jsuite-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
 </project>
