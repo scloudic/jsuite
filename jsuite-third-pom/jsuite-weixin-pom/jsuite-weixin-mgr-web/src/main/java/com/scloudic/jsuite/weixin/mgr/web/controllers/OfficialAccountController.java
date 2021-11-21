@@ -7,6 +7,7 @@ import com.scloudic.jsuite.weixin.core.exception.AesException;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountProperties;
 import com.scloudic.jsuite.weixin.fficialaccount.service.OfficialAccountService;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
+import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.web.AbstractContextResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -51,5 +49,16 @@ public class OfficialAccountController extends AbstractContextResource {
             return echostr;
         }
         throw new AesException(AesException.ValidateSignatureError);
+    }
+    
+    @POST
+    @Path("notifyMsg")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String notifyMsg(String msg) {
+        if (StringUtils.isBlank(msg)) {
+            throw new AesException(AesException.ComputeSignatureError);
+        }
+        logger.debug("msg:" + msg);
+        return "success";
     }
 }
