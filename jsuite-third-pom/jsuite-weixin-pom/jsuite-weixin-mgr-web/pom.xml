@@ -25,5 +25,13 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
+            <artifactId>jsuite-common-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
+            <artifactId>jsuite-weixin-officialaccount</artifactId>
+        </dependency>
     </dependencies>
 </project>

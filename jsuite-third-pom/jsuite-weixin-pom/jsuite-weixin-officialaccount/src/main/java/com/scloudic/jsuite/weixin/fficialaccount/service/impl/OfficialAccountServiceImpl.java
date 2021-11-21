@@ -1,9 +1,11 @@
 package com.scloudic.jsuite.weixin.fficialaccount.service.impl;
 
 import com.scloudic.jsuite.weixin.core.service.impl.WeiXinServiceImpl;
+import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountProperties;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountUser;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountUserDetail;
 import com.scloudic.jsuite.weixin.fficialaccount.service.OfficialAccountService;
+import com.scloudic.jsuite.weixin.fficialaccount.utils.SignUtil;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.httpclient.HttpClient;
 import com.scloudic.rabbitframework.core.httpclient.RequestParams;
@@ -61,5 +63,10 @@ public class OfficialAccountServiceImpl extends WeiXinServiceImpl
         }
         OfficialAccountUserDetail detail = JsonUtils.getObject(result, OfficialAccountUserDetail.class);
         return detail;
+    }
+
+    @Override
+    public String notifyVerify(OfficialAccountProperties officialAccountProperties, String timestamp, String nonce) {
+        return SignUtil.getSHA1(officialAccountProperties.getToken(), timestamp, nonce);
     }
 }
