@@ -34,7 +34,7 @@ public class OfficialAccountController extends AbstractContextResource {
     private ThirdBindInfoService thirdBindInfoService;
 
     @GET
-    @Path("notify")
+    @Path("notifyMsg")
     @Produces(MediaType.TEXT_PLAIN)
     public String notify(@QueryParam("signature") String signature,
                          @QueryParam("timestamp") String timestamp,
