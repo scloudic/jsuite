@@ -10,3 +10,8 @@ create table third_bind_info
 );
 
 alter table third_bind_info comment '第三方绑定信息表';
+
+create unique index uidx_third_bind_code on third_bind_info
+(
+   third_bind_code
+);
