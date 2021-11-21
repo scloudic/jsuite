@@ -13,12 +13,14 @@ import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 /**
  * 服务公众号服务接口
  */
+@Service("officialAccountService")
 public class OfficialAccountServiceImpl extends WeiXinServiceImpl
         implements OfficialAccountService {
     private static final Logger logger = LoggerFactory.getLogger(OfficialAccountServiceImpl.class);
