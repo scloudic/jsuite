@@ -1,5 +1,6 @@
 package com.scloudic.jsuite.weixin.mgr.web.controllers;
 
+import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.web.AbstractContextResource;
 import com.scloudic.rabbitframework.web.Result;
 import org.slf4j.Logger;
@@ -24,13 +25,12 @@ public class OfficialAccountController extends AbstractContextResource {
 
     @GET
     @Path("notify")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.TEXT_PLAIN)
     public String notify(@QueryParam("signature") String signature,
                          @QueryParam("timestamp") String timestamp,
                          @QueryParam("nonce") String nonce,
                          @QueryParam("echostr") String echostr) {
         logger.debug("signature:" + signature + ",timestamp:" + timestamp + ",nonce:" + nonce + ",echostr:" + echostr);
         return echostr;
-
     }
 }
