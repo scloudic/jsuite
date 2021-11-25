@@ -82,5 +82,9 @@
             <groupId>com.scloudic</groupId>
             <artifactId>jsuite-file-local-provider</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
+            <artifactId>jsuite-weixin-mgr-web</artifactId>
+        </dependency>
     </dependencies>
 </project>

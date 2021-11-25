@@ -20,7 +20,7 @@
         <module>jsuite-common-pom</module>
         <module>jsuite-file-pom</module>
         <module>jsuite-sysuser-pom</module>
-        <module>jsuite-weixin-pom</module>
+        <module>jsuite-third-pom</module>
         <module>jsuite-generator</module>
         <module>jsuite-mgr-web</module>
     </modules>
@@ -138,6 +138,11 @@
             <dependency>
                 <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-weixin-officialaccount</artifactId>
+                <version>${jsuite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.scloudic</groupId>
+                <artifactId>jsuite-weixin-mgr-web</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>
         </dependencies>

@@ -136,4 +136,25 @@ public class Enums {
             return message;
         }
     }
+
+    public enum ThirdKey {
+        WEIXINO_FFICIAL_ACCOUNT("weixinOfficialAccount", "微信公众号"),
+        WEIXIN_MINI("weixinMini", "微信小程序"),
+        ;
+        private String value;
+        private String message;
+
+        ThirdKey(String value, String message) {
+            this.message = message;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 }
