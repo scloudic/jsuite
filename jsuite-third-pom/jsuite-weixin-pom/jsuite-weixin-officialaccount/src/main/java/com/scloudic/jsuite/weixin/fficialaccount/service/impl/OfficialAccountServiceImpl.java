@@ -1,5 +1,6 @@
 package com.scloudic.jsuite.weixin.fficialaccount.service.impl;
 
+import com.scloudic.jsuite.weixin.core.WeiXinEnums;
 import com.scloudic.jsuite.weixin.core.service.impl.WeiXinServiceImpl;
 import com.scloudic.jsuite.weixin.fficialaccount.model.*;
 import com.scloudic.jsuite.weixin.fficialaccount.service.OfficialAccountService;
@@ -157,6 +158,7 @@ public class OfficialAccountServiceImpl extends WeiXinServiceImpl
         message.setFromUserName(fromUserName);
         message.setCreateTime(createTime);
         message.setMsgId(msgId);
+        message.setSendStatus(WeiXinEnums.SendStatus.SEND.getValue());
         return message;
     }
 }
