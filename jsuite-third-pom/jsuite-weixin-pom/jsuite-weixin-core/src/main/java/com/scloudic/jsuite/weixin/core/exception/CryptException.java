@@ -1,7 +1,7 @@
 package com.scloudic.jsuite.weixin.core.exception;
 
 @SuppressWarnings("serial")
-public class AesException extends RuntimeException {
+public class CryptException extends RuntimeException {
 
     public final static int OK = 0;
     public final static int ValidateSignatureError = -40001;
@@ -51,7 +51,7 @@ public class AesException extends RuntimeException {
         return code;
     }
 
-    public AesException(int code) {
+    public CryptException(int code) {
         super(getMessage(code));
         this.code = code;
     }

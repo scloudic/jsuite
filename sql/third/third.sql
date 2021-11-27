@@ -1,4 +1,4 @@
-create table weixin_official_account_message
+create table wei_xin_official_account_message
 (
    message_id           varchar(64) not null comment '公众号消息主键',
    from_user_name       varchar(512) comment '发送人',
@@ -13,4 +13,4 @@ create table weixin_official_account_message
    primary key (message_id)
 );
 
-alter table weixin_official_account_message comment '微信公众号消息表';
+alter table wei_xin_official_account_message comment '微信公众号消息表';

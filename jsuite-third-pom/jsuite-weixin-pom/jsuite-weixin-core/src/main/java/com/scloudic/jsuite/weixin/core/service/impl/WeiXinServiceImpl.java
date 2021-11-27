@@ -1,5 +1,6 @@
 package com.scloudic.jsuite.weixin.core.service.impl;
 
+import com.scloudic.jsuite.weixin.core.exception.WeiXinException;
 import com.scloudic.jsuite.weixin.core.service.WeiXinAccessTokenCache;
 import com.scloudic.jsuite.weixin.core.service.WeiXinService;
 import com.scloudic.jsuite.weixin.core.model.AccessToken;
@@ -23,22 +24,36 @@ public abstract class WeiXinServiceImpl implements WeiXinService {
                 return accessToken;
             }
         }
-        String requestUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-        HttpClient httpClient = HttpClient.getInstance();
-        ResponseBody r = httpClient.get(String.format(requestUrl, appId, secret));
-        String str = r.string();
-        logger.debug("获取微信accessToken:" + str);
-        Map<String, Object> map = JsonUtils.getObject(str, Map.class);
-        Object obj = map.get("errcode");
-        if (obj != null) {
-            String msg = "获取accessToken失败,errorCode:" + obj.toString() + ",errmsg:" + map.get("errmsg");
-            logger.error(msg);
-            throw new BizException(msg);
+        try {
+            if (cache != null) {
+                boolean lockStatus = cache.lock(appId);
+                if (!lockStatus) {
+                    throw new WeiXinException("获取accessToken锁失败,请重新获取");
+                }
+                AccessToken accessToken = cache.getAccessToken();
+                if (accessToken != null) {
+                    return accessToken;
+                }
+            }
+            String requestUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+            HttpClient httpClient = HttpClient.getInstance();
+            ResponseBody r = httpClient.get(String.format(requestUrl, appId, secret));
+            String str = r.string();
+            logger.debug("获取微信accessToken:" + str);
+            Map<String, Object> map = JsonUtils.getObject(str, Map.class);
+            Object obj = map.get("errcode");
+            if (obj != null) {
+                String msg = "获取accessToken失败,errorCode:" + obj.toString() + ",errmsg:" + map.get("errmsg");
+                logger.error(msg);
+                throw new BizException(msg);
+            }
+            AccessToken accessToken = JsonUtils.getObject(str, AccessToken.class);
+            if (cache != null) {
+                cache.setAccessToken(accessToken);
+            }
+            return accessToken;
+        } finally {
+            cache.unLock(appId);
         }
-        AccessToken accessToken = JsonUtils.getObject(str, AccessToken.class);
-        if (cache != null) {
-            cache.setAccessToken(accessToken);
-        }
-        return accessToken;
     }
 }

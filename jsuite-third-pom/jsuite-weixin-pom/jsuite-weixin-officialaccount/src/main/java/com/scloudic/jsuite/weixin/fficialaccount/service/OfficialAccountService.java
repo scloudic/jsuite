@@ -1,6 +1,7 @@
 package com.scloudic.jsuite.weixin.fficialaccount.service;
 
 import com.scloudic.jsuite.weixin.core.service.WeiXinService;
+import com.scloudic.jsuite.weixin.fficialaccount.model.Message;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountProperties;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountUser;
 import com.scloudic.jsuite.weixin.fficialaccount.model.OfficialAccountUserDetail;
@@ -28,11 +29,22 @@ public interface OfficialAccountService extends WeiXinService {
 
     /**
      * 公众号基础配置通知验证
-     * @param  officialAccountProperties officialAccountProperties
-     * @param timestamp timestamp
-     * @param nonce nonce
+     *
+     * @param officialAccountProperties officialAccountProperties
+     * @param timestamp                 timestamp
+     * @param nonce                     nonce
      * @return string
      */
     public String notifyVerify(OfficialAccountProperties officialAccountProperties, String timestamp, String nonce);
+
+    /**
+     * 接收普通消息
+     *
+     * @param officialAccountProperties officialAccountProperties
+     * @param msg                       消息内容
+     * @return message
+     */
+    public Message receiveMessage(OfficialAccountProperties officialAccountProperties, String msg);
+
 
 }

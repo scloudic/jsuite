@@ -11,6 +11,7 @@
     <modules>
         <module>jsuite-weixin-core</module>
         <module>jsuite-weixin-officialaccount</module>
+        <module>jsuite-weixin-service</module>
         <module>jsuite-weixin-mgr-web</module>
     </modules>
 </project>

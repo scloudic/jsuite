@@ -19,4 +19,9 @@ public interface WeiXinAccessTokenCache {
      * @param accessToken AccessToken
      */
     public void setAccessToken(AccessToken accessToken);
+
+    public boolean lock(String appId);
+
+    public void unLock(String appId);
+
 }
