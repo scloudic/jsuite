@@ -28,8 +28,4 @@
 | Fastjson | json解释器 |
    
 3、示例地址：<a href="http://jsuitedemo.scloudic.com/jsuiteMgr" target="_blank">示例地址</a>
-  
-4、联系方式：
-
-    微信号：jsuitesc
    
