@@ -34,9 +34,7 @@ public class SysPostServiceImpl extends IServiceImpl<SysPostMapper, SysPost> imp
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SysPost::getDelStatus, Enums.DelStatus.NORMAL.getValue());
-        if (StringUtils.isNotBlank(postName)) {
-            criteria.andEqual(SysPost::getPostName, postName);
-        }
+        criteria.andEqual(StringUtils.isNotBlank(postName), SysPost::getPostName, postName);
         long totalCount = sysPostMapper.selectCountByParams(where);
         PageBean<SysPost> pageBean = new PageBean<SysPost>(pageNum, pageSize, totalCount);
         pageBean.setDatas(new ArrayList<SysPost>());

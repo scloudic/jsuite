@@ -7,6 +7,7 @@ import com.scloudic.jsuite.sysuser.mgr.mapper.SysMenuMapper;
 import com.scloudic.jsuite.sysuser.mgr.mapper.SysRoleMenuMapper;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
+import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.lambda.SFunctionUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
@@ -39,9 +40,7 @@ public class SysMenuServiceImpl extends
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SysMenu::getParentMenuId, parentMenuId);
-        if (menuBtnFlag != null) {
-            criteria.andEqual(SysMenu::getBtnFlag, menuBtnFlag);
-        }
+        criteria.andEqual(menuBtnFlag != null, SysMenu::getBtnFlag, menuBtnFlag);
         where.setOrderBy(SysMenu::getSortNum, Where.OrderByType.DESC);
         return sysMenuMapper.selectByParams(where);
     }
@@ -80,6 +79,9 @@ public class SysMenuServiceImpl extends
     @Transactional
     @Override
     public int delMenu(String menuId) {
+        if (StringUtils.isBlank(menuId)) {
+            throw new BizException("menuId is null");
+        }
         Where paramType = new Where();
         Criteria criteria = paramType.createCriteria();
         criteria.andEqual(SysMenu::getParentMenuId, menuId);
@@ -87,7 +89,6 @@ public class SysMenuServiceImpl extends
         if (count > 0) {
             throw new BizException("have.child.menu");
         }
-        SysMenu menu = sysMenuMapper.selectById(menuId);
         Where delWhere = new Where();
         Criteria delCriteria = delWhere.createCriteria();
         delCriteria.andEqual(SysMenu::getSysMenuId, menuId);
