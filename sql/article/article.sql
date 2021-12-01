@@ -16,6 +16,7 @@ create table article
    article_status       int comment '文章状态(1、已发布,2、草稿)',
    edit_mode            varchar(32) comment '编辑模式(html,markdown)',
    user_id              varchar(36) comment '发布人',
+   user_name            varchar(128) comment '作者',
    summary              text comment '摘要',
    comment_count        int comment '评论总数',
    view_count           int comment '访问量',
