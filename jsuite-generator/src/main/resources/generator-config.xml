@@ -13,6 +13,10 @@
     <!--type分为：all:所有表，assign:指定表名, filter:过滤,根据关键字过滤表 逻辑说明： 1、如果类型为all，将不再解析以下的table元素
         2、如果类型为assign,先解析table元素,如果没有将类型更改为all 3、默认类型为all -->
     <tables type="assign">
-        <table tableName="wei_xin_official_account_message" objectName="WeiXinOfficialAccountMessage"/>
+        <table tableName="article" objectName="Article"/>
+        <table tableName="article_category" objectName="ArticleCategory"/>
+        <table tableName="article_category_mapping" objectName="ArticleCategoryMapping"/>
+        <table tableName="article_comment" objectName="ArticleComment"/>
+        <table tableName="user_article_favorite" objectName="UserArticleFavorite"/>
     </tables>
 </configuration>

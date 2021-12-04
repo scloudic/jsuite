@@ -84,6 +84,10 @@
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>
+            <artifactId>jsuite-article-mgr-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
             <artifactId>jsuite-weixin-mgr-web</artifactId>
         </dependency>
     </dependencies>
