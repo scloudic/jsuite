@@ -138,8 +138,8 @@ public class Enums {
     }
 
     public enum ThirdKey {
-        WEIXINO_FFICIAL_ACCOUNT("weixinOfficialAccount", "微信公众号"),
-        WEIXIN_MINI("weixinMini", "微信小程序"),
+        WEIXIN_MP("weiXinMp", "微信公众号"),
+        WEIXIN_MINI("weiXinMini", "微信小程序"),
         ;
         private String value;
         private String message;

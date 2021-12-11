@@ -6,7 +6,7 @@
         <artifactId>jsuite-weixin-pom</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>jsuite-weixin-mgr-web</artifactId>
+    <artifactId>jsuite-weixin-mp-service</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -14,20 +14,12 @@
             <artifactId>rabbit-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.scloudic</groupId>
-            <artifactId>rabbit-web</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-common-service</artifactId>
+            <artifactId>rabbit-jbatis</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>

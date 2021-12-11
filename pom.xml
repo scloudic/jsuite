@@ -138,7 +138,7 @@
             </dependency>
             <dependency>
                 <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-weixin-officialaccount</artifactId>
+                <artifactId>jsuite-weixin-mp</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>
             <dependency>
