@@ -10,23 +10,23 @@
     <#include "../include/loading.html" />
     <#include "categoryAdd.html" />
     <#include "categoryEdit.html" />
-    <@permission url="/jsuite/articleCategory/add">
+    <@permission url="/jsuite/articleCategoryMgr/add">
         <#if isPermission==true>
-            <#assign addCategory="${basePath}/jsuite/articleCategory/add" />
+            <#assign addCategory="${basePath}/jsuite/articleCategoryMgr/add" />
             <#else>
                 <#assign addCategory="" />
         </#if>
     </@permission>
-    <@permission url="/jsuite/articleCategory/update">
+    <@permission url="/jsuite/articleCategoryMgr/update">
         <#if isPermission>
-            <#assign updateCategory="${basePath}/jsuite/articleCategory/update" />
+            <#assign updateCategory="${basePath}/jsuite/articleCategoryMgr/update" />
             <#else>
                 <#assign updateCategory="" />
         </#if>
     </@permission>
-    <@permission url="/jsuite/articleCategory/del">
+    <@permission url="/jsuite/articleCategoryMgr/del">
         <#if isPermission>
-            <#assign delCategory="${basePath}/jsuite/articleCategory/del" />
+            <#assign delCategory="${basePath}/jsuite/articleCategoryMgr/del" />
             <#else>
                 <#assign delCategory="" />
         </#if>

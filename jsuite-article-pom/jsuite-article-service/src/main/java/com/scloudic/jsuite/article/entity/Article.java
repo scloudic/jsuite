@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Article implements Serializable {
 	private static final long serialVersionUID = 1L;
     public static final String FIELDS = " article_id,summary,comment_count,create_time,article_content,user_name,comment_status,link_to,article_title,thumbnail_path,update_time,article_status,user_id,sort_num,edit_mode,view_count ";
+    public static final String NO_CONTENT_FIELDS = " article_id,summary,comment_count,create_time,user_name,comment_status,link_to,article_title,thumbnail_path,update_time,article_status,user_id,sort_num,edit_mode,view_count ";
 
     /**
     *

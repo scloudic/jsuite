@@ -25,7 +25,7 @@ import javax.ws.rs.core.Context;
 import java.util.Date;
 
 @Component
-@Path("/jsuite/articleCategory")
+@Path("/jsuite/articleCategoryMgr")
 @Singleton
 public class ArticleCategoryController extends AbstractContextResource {
     @Autowired
