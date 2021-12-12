@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-common-mapper</artifactId>
+            <artifactId>rabbit-jbatis</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>

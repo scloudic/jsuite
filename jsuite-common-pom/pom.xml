@@ -11,7 +11,6 @@
     <modules>
         <module>jsuite-common-mgr-web</module>
         <module>jsuite-common-api-web</module>
-        <module>jsuite-common-mapper</module>
         <module>jsuite-common-service</module>
     </modules>
 </project>

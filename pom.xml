@@ -108,11 +108,6 @@
             </dependency>
             <dependency>
                 <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-common-mapper</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-common-service</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>

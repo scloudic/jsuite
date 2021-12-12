@@ -1,6 +1,6 @@
 package com.scloudic.jsuite.weixin.notification;
 
-import com.scloudic.jsuite.weixin.entity.WeiXinOfficialAccountMessage;
+import com.scloudic.jsuite.weixin.entity.WeiXinMpMessage;
 import com.scloudic.jsuite.weixin.mp.model.Message;
 import com.scloudic.jsuite.weixin.service.WeiXinMpMessageService;
 import com.scloudic.rabbitframework.core.notification.NotificationEvent;
@@ -30,17 +30,17 @@ public class WeiXinMpListener implements NotificationServerListener {
     @Override
     public void onNotification(NotificationEvent notificationEvent) {
         Message message = (Message) notificationEvent.getSource();
-        WeiXinOfficialAccountMessage weiXinOfficialAccountMessage = new WeiXinOfficialAccountMessage();
-        weiXinOfficialAccountMessage.setMsgType(message.getMsgType().getValue());
-        weiXinOfficialAccountMessage.setMessageId(UUIDUtils.getTimeUUID32());
-        weiXinOfficialAccountMessage.setMsgId(message.getMsgId());
-        weiXinOfficialAccountMessage.setAppId(message.getAppId());
-        weiXinOfficialAccountMessage.setCreateTime(new Date());
-        weiXinOfficialAccountMessage.setFromUserName(message.getFromUserName());
-        weiXinOfficialAccountMessage.setToUserName(message.getToUserName());
+        WeiXinMpMessage weiXinMpMessage = new WeiXinMpMessage();
+        weiXinMpMessage.setMsgType(message.getMsgType().getValue());
+        weiXinMpMessage.setMessageId(UUIDUtils.getTimeUUID32());
+        weiXinMpMessage.setMsgId(message.getMsgId());
+        weiXinMpMessage.setAppId(message.getAppId());
+        weiXinMpMessage.setCreateTime(new Date());
+        weiXinMpMessage.setFromUserName(message.getFromUserName());
+        weiXinMpMessage.setToUserName(message.getToUserName());
         Date sendDate = new Date(message.getCreateTime());
-        weiXinOfficialAccountMessage.setSendTime(sendDate);
-        weiXinOfficialAccountMessage.setSendStatus(message.getSendStatus());
-        weiXinMpMessageService.insertByEntity(weiXinOfficialAccountMessage);
+        weiXinMpMessage.setSendTime(sendDate);
+        weiXinMpMessage.setSendStatus(message.getSendStatus());
+        weiXinMpMessageService.insertByEntity(weiXinMpMessage);
     }
 }

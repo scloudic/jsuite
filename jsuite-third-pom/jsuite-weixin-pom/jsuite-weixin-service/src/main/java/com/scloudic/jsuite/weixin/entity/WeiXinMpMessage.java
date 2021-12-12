@@ -5,7 +5,7 @@ import com.scloudic.rabbitframework.jbatis.annontations.*;
 import java.io.Serializable;
 
 @Table
-public class WeiXinOfficialAccountMessage implements Serializable {
+public class WeiXinMpMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
     public static final String FIELDS = " message_id,from_user_name,send_time,create_time,msg_content,to_user_name,msg_type,send_status,msg_id,app_id ";
 
