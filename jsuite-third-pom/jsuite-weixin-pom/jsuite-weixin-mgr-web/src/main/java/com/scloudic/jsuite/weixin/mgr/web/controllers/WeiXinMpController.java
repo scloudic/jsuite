@@ -1,8 +1,8 @@
 package com.scloudic.jsuite.weixin.mgr.web.controllers;
 
-import com.scloudic.jsuite.common.entity.ThirdBindInfo;
-import com.scloudic.jsuite.common.service.ThirdBindInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
+import com.scloudic.jsuite.third.entity.ThirdBindInfo;
+import com.scloudic.jsuite.third.service.ThirdBindInfoService;
 import com.scloudic.jsuite.weixin.core.exception.CryptException;
 import com.scloudic.jsuite.weixin.mp.model.WeiXinMpProperties;
 import com.scloudic.jsuite.weixin.mp.service.WeiXinMpService;

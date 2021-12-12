@@ -1,13 +1,13 @@
-package com.scloudic.jsuite.common.service.impl;
+package com.scloudic.jsuite.third.service.impl;
 
-import com.scloudic.jsuite.common.entity.ThirdBindInfo;
-import com.scloudic.jsuite.common.mapper.ThirdBindInfoMapper;
-import com.scloudic.jsuite.common.service.ThirdBindInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
+import com.scloudic.jsuite.third.entity.ThirdBindInfo;
+import com.scloudic.jsuite.third.mapper.ThirdBindInfoMapper;
+import com.scloudic.jsuite.third.service.ThirdBindInfoService;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
+import com.scloudic.rabbitframework.jbatis.service.IServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.scloudic.rabbitframework.jbatis.service.IServiceImpl;
 
 @Service
 public class ThirdBindInfoServiceImpl extends IServiceImpl<ThirdBindInfoMapper, ThirdBindInfo> implements ThirdBindInfoService {

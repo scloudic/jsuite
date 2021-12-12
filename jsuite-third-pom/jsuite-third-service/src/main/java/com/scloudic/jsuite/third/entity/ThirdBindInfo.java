@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.common.entity;
+package com.scloudic.jsuite.third.entity;
 import java.util.Date;
 import java.beans.Transient;
 import com.scloudic.rabbitframework.jbatis.annontations.*;

@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.scloudic</groupId>
-        <artifactId>jsuite-weixin-pom</artifactId>
+        <artifactId>jsuite-third-pom</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>jsuite-weixin-mgr-web</artifactId>
+    <artifactId>jsuite-third-service</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -14,28 +14,16 @@
             <artifactId>rabbit-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.scloudic</groupId>
-            <artifactId>rabbit-web</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <artifactId>rabbit-jbatis</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-common-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-weixin-mp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-third-service</artifactId>
+            <artifactId>jsuite-core</artifactId>
         </dependency>
     </dependencies>
 </project>

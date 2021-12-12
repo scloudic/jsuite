@@ -1,6 +1,6 @@
-package com.scloudic.jsuite.common.service;
+package com.scloudic.jsuite.third.service;
 
-import com.scloudic.jsuite.common.entity.ThirdBindInfo;
+import com.scloudic.jsuite.third.entity.ThirdBindInfo;
 import com.scloudic.rabbitframework.jbatis.service.IService;
 
 public interface ThirdBindInfoService extends IService<ThirdBindInfo> {
