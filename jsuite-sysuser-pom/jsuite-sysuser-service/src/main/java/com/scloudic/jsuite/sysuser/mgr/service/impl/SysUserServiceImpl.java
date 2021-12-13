@@ -124,7 +124,7 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
         if (!CollectionUtils.isEmpty(roleIds)) {
             Where paramType = new Where();
             Criteria criteria = paramType.createCriteria();
-            criteria.andEqual(SysRole::getSysRoleId, roleIds);
+            criteria.andIn(SysRole::getSysRoleId, roleIds);
             List<SysRole> sysRoles = sysRoleMapper.selectByParams(paramType);
             List<SysUserRole> userRoles = new ArrayList<>();
             for (SysRole sysRole : sysRoles) {
