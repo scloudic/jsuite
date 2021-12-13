@@ -1,0 +1,36 @@
+<script>
+    tinymce.init({
+        selector: "#articleContent",
+        height: 400,
+        menubar: false,
+        language: 'zh_CN',
+        setup: function (editor) {
+            editor.ui.registry.addButton('myImage', {
+                icon: "image",
+                onAction: function (_) {
+                    $.modal.dialogIframe('图片选择',
+                        '${basePath}/admin/dialog/fileDialog?fileType=img', '600', '',
+                        function (index, layero) {
+                            var body = layer.getChildFrame('body', index).contents();
+                            var content = body.find("#selectCurrFile");
+                            var url = content.val();
+                            console.info(1111);
+                            console.info(url);
+                            if (url != '') {
+                                var a = '<img src="' + url + '"/>';
+                                editor.insertContent(a);
+                            }
+                            return true;
+                        });
+                }
+            });
+        },
+        plugins: [
+            "advlist autolink lists link image imagetools charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars code fullscreen",
+            "insertdatetime media nonbreaking save table contextmenu directionality",
+            "emoticons template paste textcolor"
+        ],
+        toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link myImage",
+    });
+</script>

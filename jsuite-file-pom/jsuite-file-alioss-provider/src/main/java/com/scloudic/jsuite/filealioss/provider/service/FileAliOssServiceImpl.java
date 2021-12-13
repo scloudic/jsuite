@@ -53,7 +53,7 @@ public class FileAliOssServiceImpl implements FileService {
         String saveFileName = UUIDUtils.getRandomUUID32() + "." + extName;
         String fileFullPath = jsuiteProperties.getLocalFileStore();
         if (StringUtils.isNotBlank(fileCategoryName)) {
-            fileFullPath = fileFullPath + File.separator + fileCategoryName;
+            fileFullPath = fileFullPath + "/" + fileCategoryName;
         }
         File file = new File(fileFullPath);
         if (!file.exists()) {
@@ -61,9 +61,9 @@ public class FileAliOssServiceImpl implements FileService {
         }
         String fileUrl = jsuiteProperties.getFileUrl();
         if (StringUtils.isNotBlank(fileCategoryName)) {
-            fileUrl = fileUrl + File.separator + fileCategoryName;
+            fileUrl = fileUrl + "/" + fileCategoryName;
         }
-        fileUrl = fileUrl + File.separator + saveFileName;
+        fileUrl = fileUrl + "/" + saveFileName;
         uploadAliOss(fileCategoryName, saveFileName, inputStream);
         if (FileUtils.imageFileType.contains(extName.toLowerCase())
                 && fileMediaType.contains(FileUtils.PREFIX_IMAGE)) {
@@ -100,13 +100,13 @@ public class FileAliOssServiceImpl implements FileService {
         try {
             String fileFullPath = jsuiteProperties.getLocalFileStore();
             if (StringUtils.isNotBlank(fileCategoryName)) {
-                fileFullPath = fileFullPath + File.separator + fileCategoryName;
+                fileFullPath = fileFullPath + "/" + fileCategoryName;
             }
             File file = new File(fileFullPath);
             if (!file.exists()) {
                 file.mkdirs();
             }
-            localFile = new File(fileFullPath + File.separator + saveFileName);
+            localFile = new File(fileFullPath + "/" + saveFileName);
             FileUtils.copyInputStreamToFile(in, localFile);
             BufferedImage bufferedImage = ImageIO.read(localFile);
             int width = bufferedImage.getWidth();
@@ -173,10 +173,10 @@ public class FileAliOssServiceImpl implements FileService {
                 if (StringUtils.isBlank(objectKey)) {
                     objectKey = filePath;
                 } else {
-                    objectKey = objectKey + File.separator + filePath;
+                    objectKey = objectKey + "/" + filePath;
                 }
             }
-            objectKey = objectKey + File.separator + fileName;
+            objectKey = objectKey + "/" + fileName;
 
             ossClient.putObject(bucket, objectKey, inputStream);
             ossClient.setObjectAcl(bucket, objectKey, CannedAccessControlList.PublicRead);

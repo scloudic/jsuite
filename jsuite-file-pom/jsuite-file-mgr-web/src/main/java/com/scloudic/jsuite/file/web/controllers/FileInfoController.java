@@ -141,7 +141,7 @@ public class FileInfoController extends AbstractContextResource {
             FormDataContentDisposition formDataContentDisposition = bodyPart.getFormDataContentDisposition();
             String srcFileName = formDataContentDisposition.getFileName(); // 文件名
             MediaType mediaType = bodyPart.getMediaType();
-            String fileMediaType = mediaType.getType() + File.separator + mediaType.getSubtype();
+            String fileMediaType = mediaType.getType() + "/" + mediaType.getSubtype();
             FileBaseInfo fileBaseInfo = fileService.fileUpload(fileCategoryName, srcFileName, is, fileMediaType);
             if (StringUtils.isBlank(fileName)) {
                 fileName = fileBaseInfo.getFileName();

@@ -3,93 +3,67 @@
 <#include "../include/layout.html" />
 <@header>
     <style>
-        .left {
-            float: left;
-            padding-right: 5px;
-            width: 70%;
-            height:100%;
-            padding-left: 5px;
-        }
         .right {
             float: left;
-            width: 30%;
-            padding-right:5px;
+            padding-right: 10px;
+            width: 70%;
+            height: 100%;
             padding-left: 5px;
         }
+
+        .left {
+            float: left;
+            width: 30%;
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+
         .title_left {
             width: 10%;
-            padding-right:5px;
-       }
+            padding-right: 5px;
+        }
     </style>
 
 </@header>
 <body class="gray-bg">
 <#include "../include/loading.html" />
-    <div>
-     <form class="form-horizontal" id="formEditSiteInfo" name="formEditSiteInfo">
-        <div class="col-sm-8 left">
-             <div class="ibox float-e-margins">
-                 <div class="ibox-title">
-                     <h5>联系信息</h5>
-                 </div>
-                 <div class="ibox-content">
-                     <div class="form-group">
-                         <label class="col-sm-3 title_left control-label is-required">标题：</label>
-                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="siteName" id="siteName">
-                         </div>
-                     </div>
-                     <div class="form-group">
-                        <textarea name="mytextarea" id="mytextarea"></textarea>
-                     </div>
-                 </div>
-             </div>
-        </div>
-        <div class="col-sm-4 right">
-             <div class="ibox float-e-margins">
-                 <div class="ibox-title">
-                     <h5>更新日志</h5>
-                 </div>
-                 <div class="ibox-content">
+<div>
+    <form class="form-horizontal" id="formEditSiteInfo" name="formEditSiteInfo">
+        <div class="col-sm-4 left">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>分类</h5>
+                </div>
+                <div class="ibox-content">
 
-                 </div>
-             </div>
+                </div>
+            </div>
         </div>
-        </form>
-    </div>
-    <@script>
-        <#include "articleCreateScript.html" />
-        <script src="${basePath}/static/plugins/tinymce/tinymce.min.js?V=1"></script>
-        <script src="${basePath}/static/plugins/tinymce/jquery.tinymce.min.js"></script>
-        <script>
-          　tinymce.init({
-              　　　　selector: "#mytextarea",
-                    height:400,
-                    menubar: false,
-                    automatic_uploads: true,
-                    image_title: false,
-                    image_advtab : false,
-                    images_upload_handler: function(){
-                    },
-                    setup: function(editor) {
-                     editor.ui.registry.addButton('customInsertButton', {
-                              text: '上传图片',
-                              onAction: function (_) {
-                                var a = '<img src="https://imgcps.jd.com/img-cubic/creative_server_cia_jdcloud/v2/2000366/26161465963/FocusFullshop/CkRqZnMvdDEvMTM3MDMyLzExLzIyMDE1LzE4MTUwNi82MTQxYzA4MkVjNmZlOGUyMi9lNmY0MDc2ZDA1NmU0MGYzLnBuZxIJNC10eV8wXzU1MAI47ot6QhgKEui1tuS4iuWlvei0p-ePrei9phAAGAFCEAoM6ZyH5pK85p2l5Li0EAFCEAoM56uL5Y2z5oqi6LStEAJCCgoG56eN6I2JEAdY65ThumE/cr/s/q.jpg"/>';
-                                    editor.insertContent(a);
-                                }
-                        });
-                    },
-              　　　　plugins: [
-                  　　　　"advlist autolink lists link image imagetools charmap print preview hr anchor pagebreak",
-                  　　　　"searchreplace wordcount visualblocks visualchars code fullscreen",
-                  　　　　"insertdatetime media nonbreaking save table contextmenu directionality",
-                  　　　　"emoticons template paste textcolor"
-              　　　　],
-              　　　　toolbar: "customInsertButton | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
-          });
-    </script>
-    </@script>
+        <div class="col-sm-8 right">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>写文章</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-3 title_left control-label is-required">标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="siteName" id="siteName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="articleContent" id="articleContent"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<@script>
+    <@tinymce/>
+    <#include "articleCreateScript.html" />
+</@script>
 </body>
 
 </html>

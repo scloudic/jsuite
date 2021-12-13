@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @Singleton
-@Path("/dialog")
+@Path("/admin/dialog")
 @Produces(MediaType.TEXT_HTML)
 public class DialogController extends AbstractContextResource {
     @Autowired

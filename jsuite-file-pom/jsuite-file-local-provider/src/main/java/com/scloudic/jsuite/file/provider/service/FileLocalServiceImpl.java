@@ -45,18 +45,18 @@ public class FileLocalServiceImpl implements FileService {
         String saveFileName = UUIDUtils.getRandomUUID32() + "." + extName;
         String fileFullPath = jsuiteProperties.getLocalFileStore();
         if (StringUtils.isNotBlank(fileCategoryName)) {
-            fileFullPath = fileFullPath + File.separator + fileCategoryName;
+            fileFullPath = fileFullPath + "/" + fileCategoryName;
         }
         File file = new File(fileFullPath);
         if (!file.exists()) {
             file.mkdirs();
         }
-        File localFile = new File(fileFullPath + File.separator + saveFileName);
+        File localFile = new File(fileFullPath + "/" + saveFileName);
         String fileUrl = jsuiteProperties.getFileUrl();
         if (StringUtils.isNotBlank(fileCategoryName)) {
-            fileUrl = fileUrl + File.separator + fileCategoryName;
+            fileUrl = fileUrl + "/" + fileCategoryName;
         }
-        fileUrl = fileUrl + File.separator + saveFileName;
+        fileUrl = fileUrl + "/" + saveFileName;
         try {
             FileUtils.copyInputStreamToFile(inputStream, localFile);
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class FileLocalServiceImpl implements FileService {
         FileInputStream smallfileInputStream = null;
         String fileFullPath = jsuiteProperties.getLocalFileStore();
         if (StringUtils.isNotBlank(fileCategoryName)) {
-            fileFullPath = fileFullPath + File.separator + fileCategoryName;
+            fileFullPath = fileFullPath + "/" + fileCategoryName;
         }
         File file = new File(fileFullPath);
         if (!file.exists()) {
@@ -103,9 +103,9 @@ public class FileLocalServiceImpl implements FileService {
         }
 
         try {
-            File localFile = new File(fileFullPath + File.separator + saveFileName);
-            File sSmallFile = new File(fileFullPath + File.separator + thumbFileName + "_ssmall" + extName);
-            File smallFile = new File(fileFullPath + File.separator + thumbFileName + "_small" + extName);
+            File localFile = new File(fileFullPath + "/" + saveFileName);
+            File sSmallFile = new File(fileFullPath + "/" + thumbFileName + "_ssmall" + extName);
+            File smallFile = new File(fileFullPath + "/" + thumbFileName + "_small" + extName);
             BufferedImage bufferedImage = ImageIO.read(localFile);
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
