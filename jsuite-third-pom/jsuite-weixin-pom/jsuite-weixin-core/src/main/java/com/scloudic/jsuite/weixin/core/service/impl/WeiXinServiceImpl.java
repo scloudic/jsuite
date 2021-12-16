@@ -6,6 +6,7 @@ import com.scloudic.jsuite.weixin.core.service.WeiXinService;
 import com.scloudic.jsuite.weixin.core.model.AccessToken;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.httpclient.HttpClient;
+import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import org.slf4j.Logger;
@@ -36,8 +37,7 @@ public abstract class WeiXinServiceImpl implements WeiXinService {
                 }
             }
             String requestUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-            HttpClient httpClient = HttpClient.getInstance();
-            ResponseBody r = httpClient.get(String.format(requestUrl, appId, secret));
+            ResponseBody r = HttpClientUtils.get(String.format(requestUrl, appId, secret));
             String str = r.string();
             logger.debug("获取微信accessToken:" + str);
             Map<String, Object> map = JsonUtils.getObject(str, Map.class);

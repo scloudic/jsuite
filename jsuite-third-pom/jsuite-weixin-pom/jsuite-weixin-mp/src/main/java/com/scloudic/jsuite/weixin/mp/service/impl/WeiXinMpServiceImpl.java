@@ -8,6 +8,7 @@ import com.scloudic.jsuite.weixin.mp.crypt.SignUtil;
 import com.scloudic.jsuite.weixin.mp.utils.MessageType;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.httpclient.HttpClient;
+import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.RequestParams;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
@@ -35,7 +36,7 @@ public class WeiXinMpServiceImpl extends WeiXinServiceImpl
         if (StringUtils.isNotBlank(nextOpenid)) {
             requestParams.put("next_openid", nextOpenid);
         }
-        String result = HttpClient.getInstance().get(userUrl, requestParams).string();
+        String result = HttpClientUtils.get(userUrl, requestParams).string();
         Map<String, Object> map = JsonUtils.getObject(result, Map.class);
         Object obj = map.get("errcode");
         if (obj != null) {
@@ -56,7 +57,7 @@ public class WeiXinMpServiceImpl extends WeiXinServiceImpl
         if (StringUtils.isNotBlank(lang)) {
             requestParams.put("lang", lang);
         }
-        String result = HttpClient.getInstance().get(userUrl, requestParams).string();
+        String result = HttpClientUtils.get(userUrl, requestParams).string();
         logger.debug(result);
         Map<String, Object> map = JsonUtils.getObject(result, Map.class);
         Object obj = map.get("errcode");
