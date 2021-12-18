@@ -2,18 +2,19 @@
 <html lang="en">
 <#include "../include/layout.html" />
 <@header>
+<@iCheckLink/>
     <style>
         .right {
             float: left;
             padding-right: 10px;
-            width: 70%;
+            width: 80%;
             height: 100%;
             padding-left: 5px;
         }
 
         .left {
             float: left;
-            width: 30%;
+            width: 20%;
             padding-right: 5px;
             padding-left: 5px;
         }
@@ -23,20 +24,48 @@
             padding-right: 5px;
         }
     </style>
-
 </@header>
 <body class="gray-bg">
 <#include "../include/loading.html" />
 <div>
-    <form class="form-horizontal" id="formEditSiteInfo" name="formEditSiteInfo">
+    <form class="form-horizontal" id="articleForm" name="articleForm">
         <div class="col-sm-4 left">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>分类</h5>
-                </div>
-                <div class="ibox-content">
-
-                </div>
+                    <div class="ibox-title">
+                        <h5>文章分类</h5>
+                    </div>
+                    <div class="ibox-content">
+                         <div class="checkbox i-checks">
+                            <label>
+                                <input type="checkbox" value="资讯"> <i></i>资讯
+                            </label>
+                        </div>
+                        <div class="checkbox i-checks">
+                            <label>
+                                <input type="checkbox" value="内容"> <i></i>内容
+                            </label>
+                        </div>
+                    </div>
+                  <div class="ibox-title">
+                     <h5>封面</h5>
+                  </div>
+                  <div class="ibox-content">
+                      <div class="form-group">
+                         <div class="clo-sm-8">
+                             <input  type="text" id="logoPath" name="logoPath" style="display: none"/>
+                             <img class="m-l-md" id="imgFileUpload" src="${basePath}/static/images/chose-image-btn.png"
+                                  width="155" height="155"/>
+                         </div>
+                     </div>
+                      <div class="form-group">
+                         <div class="col-md-offset-2 col-lg-offset-4col-xl-offset-2">
+                             <a class="btn btn-success" id="addArticle" href="javascript:void(0)"><i
+                                         class="fa fa-plus"></i> 新增</a>
+                             <a class="btn btn-warning" id="closeArticle" href="javascript:void(0)"><i
+                                         class="fa fa-close"></i> 关闭</a>
+                         </div>
+                     </div>
+                  </div>
             </div>
         </div>
         <div class="col-sm-8 right">
@@ -54,7 +83,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 title_left control-label">摘要：</label>
                         <div class="col-sm-10">
-                            <textarea type="text"  class="form-control" name="summary" id="summary">
+                            <textarea class="form-control" rows="4" name="summary" id="summary"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -66,6 +95,7 @@
     </form>
 </div>
 <@script>
+    <@iCheck/>
     <@tinymce/>
     <#include "articleCreateScript.html" />
 </@script>

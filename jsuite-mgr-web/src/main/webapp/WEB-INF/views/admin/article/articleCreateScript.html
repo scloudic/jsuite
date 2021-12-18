@@ -1,15 +1,31 @@
 <script>
  $(function () {
+     $('.i-checks').iCheck({
+         checkboxClass: 'icheckbox_square-blue',
+         radioClass: 'iradio_square-blue',
+     });
+      $("#closeArticle").click(function () {
+        window.parent.$.closeCurrPage();
+      });
+      $("#addArticle").click(function(){
+        var activeEditor = tinymce.activeEditor;
+        console.info(activeEditor.getContent());
+        //var editBody = activeEditor.getBody();
+        //activeEditor.selection.select(editBody);
+        //var text = activeEditor.selection.getContent({'format':'text'});
+      });
+
     tinymce.init({
         selector: "#content",
         height: 400,
         menubar: false,
+        font_formats: "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;楷体-GB2312=楷体-GB2312",
         language: 'zh_CN',
         setup: function (editor) {
             editor.ui.registry.addButton('myImage', {
                 icon: "image",
                 onAction: function (_) {
-                    $.modal.dialogIframe('图片选择',
+                    $.modal.dialogIframe('选择图片',
                         '${basePath}/admin/dialog/fileDialog?fileType=img', '600', '',
                         function (index, layero) {
                             var body = layer.getChildFrame('body', index).contents();
@@ -28,9 +44,10 @@
             "advlist autolink lists link image imagetools charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
             "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor"
+            "emoticons template paste textcolor "
         ],
-        toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link myImage",
+       toolbar1: "styleselect | fontselect | formatselect | fontsizeselect | forecolor | bold italic underline strikethrough charmap ",
+       toolbar2: "myImage media | table | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | code link unlink | undo redo | emoticons preview fullscreen |"
     });
  });
 </script>

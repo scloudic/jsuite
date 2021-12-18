@@ -6,7 +6,7 @@
         <artifactId>jsuite-article-pom</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>jsuite-article-mgr-web</artifactId>
+    <artifactId>jsuite-article-api-web</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

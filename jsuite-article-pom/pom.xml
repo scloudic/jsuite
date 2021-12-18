@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jsuite-article-service</module>
+        <module>jsuite-article-api-web</module>
         <module>jsuite-article-mgr-web</module>
     </modules>
 </project>
