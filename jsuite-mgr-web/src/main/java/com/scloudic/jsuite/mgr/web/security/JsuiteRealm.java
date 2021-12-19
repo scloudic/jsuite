@@ -5,6 +5,7 @@ import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUser;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
+import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.security.LoginFailException;
 import com.scloudic.rabbitframework.security.SecurityUser;
 import com.scloudic.rabbitframework.security.realm.SecurityAuthorizingRealm;
@@ -45,11 +46,13 @@ public class JsuiteRealm extends SecurityAuthorizingRealm {
         logger.debug("executeGetAuthorizationInfo 权限加载开始");
         String userId = securityUser.getUserId();
         List<String> permissions = new ArrayList<String>();
-        List<SysMenu> menus = sysMenuService.findUserRoleMenuByUserId(userId, Enums.BtnFlag.BUTTON.getValue());
+        List<SysMenu> menus = sysMenuService.findUserRoleMenuByUserId(userId, null);
         int menuSize = menus.size();
         for (int i = 0; i < menuSize; i++) {
             String url = menus.get(i).getBackEndUrl();
-            permissions.add(url);
+            if (StringUtils.isNotBlank(url)) {
+                permissions.add(url);
+            }
         }
         logger.debug("用户权限：" + JsonUtils.toJson(permissions));
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();

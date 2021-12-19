@@ -8,11 +8,41 @@
         window.parent.$.closeCurrPage();
       });
       $("#addArticle").click(function(){
-        var activeEditor = tinymce.activeEditor;
-        console.info(activeEditor.getContent());
-        //var editBody = activeEditor.getBody();
-        //activeEditor.selection.select(editBody);
-        //var text = activeEditor.selection.getContent({'format':'text'});
+          var rules = {
+              articleTitle: {
+                  required: true
+              }
+          };
+          if (!$.form.validate("articleForm", rules)) {
+              return false;
+          }
+          var activeEditor = tinymce.activeEditor;
+          var content = activeEditor.getContent();
+          if($.common.isEmpty(content)){
+            toastr.error("内容不能为空！");
+            return false;
+          }
+          var chkValue =[];
+          $('input[name="articleCategoryId"]:checked').each(function(){
+              chkValue.push($(this).val());
+          });
+          if(chkValue.length==0) {
+             toastr.error("请选择文章分类！");
+          }
+          $("#content").val(content);
+          if($.common.isEmpty($("#summary").val())){
+             var editBody = activeEditor.getBody();
+             activeEditor.selection.select(editBody);
+             var text = activeEditor.selection.getContent({'format':'text'});
+             $("#summary").val(text.slice(0,80));
+          }
+
+          var loginData = $.form.getData("articleForm");
+          $.loading();
+          $.postAjax("${basePath}/jsuite/articleMgr/add", loginData,
+            function (status, respData) {
+                $.form.clearForm();
+          });
       });
 
     tinymce.init({

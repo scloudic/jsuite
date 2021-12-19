@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.mgr.web.template;
+package com.scloudic.jsuite.sysuser.mgr.web.template;
 
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.web.annotations.TemplateVariable;

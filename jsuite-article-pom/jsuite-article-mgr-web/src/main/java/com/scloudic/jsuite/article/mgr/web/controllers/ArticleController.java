@@ -2,6 +2,7 @@ package com.scloudic.jsuite.article.mgr.web.controllers;
 
 import com.scloudic.jsuite.article.ArticleEnums;
 import com.scloudic.jsuite.article.entity.Article;
+import com.scloudic.jsuite.article.entity.ArticleCategoryMapping;
 import com.scloudic.jsuite.article.mgr.web.model.ArticleForm;
 import com.scloudic.jsuite.article.service.ArticleService;
 import com.scloudic.jsuite.core.utils.Enums;
@@ -24,7 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Path("/jsuite/articleMgr")
@@ -60,7 +63,16 @@ public class ArticleController extends AbstractContextResource {
         if (StringUtils.isBlank(articleForm.getUserName())) {
             article.setUserName(SecurityUtils.getSecurityUser().getNickName());
         }
-        articleService.insertByEntity(article);
+        List<ArticleCategoryMapping> mappings = new ArrayList<>();
+
+        List<Long> articleCategoryIds = articleForm.getArticleCategoryId();
+        articleCategoryIds.forEach(articleCategoryId -> {
+            ArticleCategoryMapping mapping = new ArticleCategoryMapping();
+            mapping.setArticleId(article.getArticleId());
+            mapping.setArticleCategoryId(articleCategoryId);
+            mappings.add(mapping);
+        });
+        articleService.save(article, mappings);
         return success(article.getArticleId());
     }
 

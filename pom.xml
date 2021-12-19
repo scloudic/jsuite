@@ -154,6 +154,11 @@
             </dependency>
             <dependency>
                 <groupId>com.scloudic</groupId>
+                <artifactId>jsuite-article-api-web</artifactId>
+                <version>${jsuite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-article-mgr-web</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>

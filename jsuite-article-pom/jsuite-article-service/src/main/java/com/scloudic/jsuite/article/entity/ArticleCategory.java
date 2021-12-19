@@ -1,101 +1,86 @@
 package com.scloudic.jsuite.article.entity;
+
 import java.util.Date;
 import java.beans.Transient;
+
 import com.scloudic.rabbitframework.jbatis.annontations.*;
+
 import java.io.Serializable;
 
 @Table
 public class ArticleCategory implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     public static final String FIELDS = " article_category_id,summary,update_time,create_time,user_id,icon_path,category_type,article_category_parent_id,article_category_name,content ";
 
     /**
-    *
-    * 文章分类主键
-    *
-    */
+     * 文章分类主键
+     */
     @ID
     private Long articleCategoryId;
 
     /**
-    *
-    * 摘要
-    *
-    */
+     * 摘要
+     */
     @Column
     private String summary;
 
     /**
-    *
-    * 修改时间
-    *
-    */
+     * 修改时间
+     */
     @Column
     private Date updateTime;
 
     /**
-    *
-    * 创建时间
-    *
-    */
+     * 创建时间
+     */
     @Column
     private Date createTime;
 
     /**
-    *
-    * 创建人
-    *
-    */
+     * 创建人
+     */
     @Column
     private String userId;
 
     /**
-    *
-    * 图标地址
-    *
-    */
+     * 图标地址
+     */
     @Column
     private String iconPath;
 
     /**
-    *
-    * 分类类型(1、资讯、2、专题)
-    *
-    */
+     * 分类类型(1、资讯、2、专题)
+     */
     @Column
     private Integer categoryType;
 
     /**
-    *
-    * 文章分类父主键
-    *
-    */
+     * 文章分类父主键
+     */
     @Column
     private Long articleCategoryParentId;
 
     /**
-    *
-    * 文章分类名称
-    *
-    */
+     * 文章分类名称
+     */
     @Column
     private String articleCategoryName;
 
     /**
-    *
-    * 删除状态(1、正常,2、删除)
-    *
-    */
+     * 删除状态(1、正常,2、删除)
+     */
     @Column
     private Integer delStatus;
 
     /**
-    *
-    * 内容
-    *
-    */
+     * 内容
+     */
     @Column
     private String content;
+    /**
+     * 文章是否有分类（1、是,2、否）
+     */
+    private Integer articleCheckStatus = 2;
 
     public void setArticleCategoryId(Long articleCategoryId) {
         this.articleCategoryId = articleCategoryId;
@@ -180,6 +165,14 @@ public class ArticleCategory implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getArticleCheckStatus() {
+        return articleCheckStatus;
+    }
+
+    public void setArticleCheckStatus(Integer articleCheckStatus) {
+        this.articleCheckStatus = articleCheckStatus;
     }
 
     public String getContent() {

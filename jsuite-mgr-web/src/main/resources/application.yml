@@ -35,7 +35,7 @@ rabbit:
     request-log: true
     freemarker-path: /
     static-content-regex: .*/static/.*
-    template-variable-path: com.scloudic.jsuite.mgr.**.template
+    template-variable-path: com.scloudic.jsuite.**.template
   security:
     cookie:
       name: jsuite

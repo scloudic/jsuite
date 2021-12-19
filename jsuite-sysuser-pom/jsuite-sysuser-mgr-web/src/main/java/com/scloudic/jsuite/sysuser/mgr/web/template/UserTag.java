@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.mgr.web.template;
+package com.scloudic.jsuite.sysuser.mgr.web.template;
 
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUser;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;

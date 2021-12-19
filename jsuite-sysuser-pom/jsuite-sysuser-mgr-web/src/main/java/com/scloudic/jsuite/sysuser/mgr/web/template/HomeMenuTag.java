@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.mgr.web.template;
+package com.scloudic.jsuite.sysuser.mgr.web.template;
 
 import com.scloudic.jsuite.sysuser.mgr.web.component.HomeMenuComponent;
 import com.scloudic.rabbitframework.web.annotations.TemplateVariable;
@@ -6,7 +6,6 @@ import com.scloudic.rabbitframework.web.mvc.freemarker.TemplateDirective;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateModel;
-import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
