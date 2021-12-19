@@ -1,44 +1,45 @@
 <@contextPath> </@contextPath>
 <#macro commlink>
-    <link href="${basePath}/static/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${basePath}/static/plugins/fontawesome/css/font-awesome.min.css" rel="stylesheet"/>
-    <link href="${basePath}/static/css/style.css?v=15" rel="stylesheet"/>
-    <link href="${basePath}/static/css/animate.min.css" rel="stylesheet"/>
-    <link href="${basePath}/static/plugins/toastr/toastr.min.css" rel="stylesheet"/>
+    <link href="${basePath}/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${basePath}/static/plugins/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="${basePath}/static/css/style.css?v=15" rel="stylesheet" />
+    <link href="${basePath}/static/css/animate.min.css" rel="stylesheet" />
+    <link href="${basePath}/static/plugins/toastr/toastr.min.css" rel="stylesheet" />
 </#macro>
 <#macro header>
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="renderer" content="webkit"/>
-        <link rel="shortcut icon" href="${basePath}/static/images/favicon.ico"/>
+        <meta name="renderer" content="webkit" />
+        <link rel="shortcut icon" href="${basePath}/static/images/favicon.ico" />
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <title>JSuite后台管理系统</title>
-        <@commlink/>
-    <link href="${basePath}/static/css/jsuite.css?v=1.3" rel="stylesheet"/>
+        <@commlink />
+        <link href="${basePath}/static/css/jsuite.css?v=1.3" rel="stylesheet" />
         <#nested>
     </head>
 </#macro>
 <#macro treetableLink>
-    <link href="${basePath}/static/plugins/treetable/bootstrap-treetable.css" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/treetable/bootstrap-treetable.css" rel="stylesheet" />
 </#macro>
 <#macro iCheckLink>
-    <link  href="${basePath}/static/plugins/iCheck/skins/all.css" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/iCheck/skins/all.css" rel="stylesheet" />
 </#macro>
 <#macro bootstrapTableLink>
-    <link  href="${basePath}/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
 </#macro>
 <#macro contextMenuLink>
-    <link href="${basePath}/static/plugins/contextMenu/jquery.contextMenu.min.css" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/contextMenu/jquery.contextMenu.min.css" rel="stylesheet" />
 </#macro>
 <#macro ztreeLink>
-    <link href="${basePath}/static/plugins/ztree/css/zTreeStyle.css" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/ztree/css/zTreeStyle.css" rel="stylesheet" />
 </#macro>
 <#macro jquerylayoutLink>
-    <link href="${basePath}/static/plugins/jquery-layout/jquery.layout-latest.css?v=5" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/jquery-layout/jquery.layout-latest.css?v=5" rel="stylesheet" />
 </#macro>
 <#macro fileInputLink>
-    <link href="${basePath}/static/plugins/bootstrap-fileinput/css/fileinput.css?v=5" rel="stylesheet"/>
+    <link href="${basePath}/static/plugins/bootstrap-fileinput/css/fileinput.css?v=5" rel="stylesheet" />
 </#macro>
 <#macro script>
     <!-- 全局js -->
@@ -51,11 +52,11 @@
     <script src="${basePath}/static/plugins/layer/layer.min.js"></script>
     <script src="${basePath}/static/js/jsuite.js?v=2.4"></script>
     <#nested>
-    <script>
-        $(function () {
-            $.unFullLoad();
-        });
-    </script>
+        <script>
+            $(function () {
+                $.unFullLoad();
+            });
+        </script>
 </#macro>
 
 

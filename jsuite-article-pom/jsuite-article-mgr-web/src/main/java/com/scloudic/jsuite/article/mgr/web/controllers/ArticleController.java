@@ -64,7 +64,6 @@ public class ArticleController extends AbstractContextResource {
             article.setUserName(SecurityUtils.getSecurityUser().getNickName());
         }
         List<ArticleCategoryMapping> mappings = new ArrayList<>();
-
         List<Long> articleCategoryIds = articleForm.getArticleCategoryId();
         articleCategoryIds.forEach(articleCategoryId -> {
             ArticleCategoryMapping mapping = new ArticleCategoryMapping();
@@ -90,12 +89,18 @@ public class ArticleController extends AbstractContextResource {
         article.setCreateTime(date);
         article.setUpdateTime(date);
         article.setUserId(SecurityUtils.getUserId());
-        article.setViewCount(0);
-        article.setCommentCount(0);
         if (StringUtils.isBlank(articleForm.getUserName())) {
             article.setUserName(SecurityUtils.getSecurityUser().getNickName());
         }
-        articleService.updateByEntity(article);
+        List<ArticleCategoryMapping> mappings = new ArrayList<>();
+        List<Long> articleCategoryIds = articleForm.getArticleCategoryId();
+        articleCategoryIds.forEach(articleCategoryId -> {
+            ArticleCategoryMapping mapping = new ArticleCategoryMapping();
+            mapping.setArticleId(article.getArticleId());
+            mapping.setArticleCategoryId(articleCategoryId);
+            mappings.add(mapping);
+        });
+        articleService.updateArticle(article, mappings);
         return success(article.getArticleId());
     }
 

@@ -7,9 +7,9 @@
                 <div class="hidden">个人中心</div>
                 <div class="pull-left image">
                     <#if (userInfo.avatarPath)?? && (userInfo.avatarPath)?length gt 0>
-                        <img src="${userInfo.avatarPath}" width="45px" height="45px" class="img-circle"/>
-                    <#else>
-                        <img src="${basePath}/static/images/profile_small.jpg" class="img-circle"/>
+                        <img src="${userInfo.avatarPath}" width="45px" height="45px" class="img-circle" />
+                        <#else>
+                            <img src="${basePath}/static/images/profile_small.jpg" class="img-circle" />
                     </#if>
                 </div>
             </a>
@@ -22,7 +22,7 @@
                     注销</a>
             </div>
         </div>
-        <#include "menu.html"/>
+        <#include "menu.html" />
     </div>
 </nav>
 <!--左侧导航结束-->

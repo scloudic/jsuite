@@ -30,6 +30,10 @@ public class ArticleCategoryForm {
     @FormParam("categoryType")
     private Integer categoryType = 1;
 
+    @FormParam("commentStatus")
+    private Integer commentStatus = 1;
+    @FormParam("sortNum")
+    private Integer sortNum = 0;
     /**
      * 文章分类父主键
      */
@@ -100,6 +104,22 @@ public class ArticleCategoryForm {
 
     public String getContent() {
         return content;
+    }
+
+    public Integer getCommentStatus() {
+        return commentStatus;
+    }
+
+    public void setCommentStatus(Integer commentStatus) {
+        this.commentStatus = commentStatus;
+    }
+
+    public Integer getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(Integer sortNum) {
+        this.sortNum = sortNum;
     }
 
     public void setContent(String content) {

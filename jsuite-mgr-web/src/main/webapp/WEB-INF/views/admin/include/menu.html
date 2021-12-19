@@ -10,18 +10,18 @@
                             <span class="fa arrow"></span>
                         </a>
                         <#if menuInfo.menuLevel+1==2>
-                            <#assign levelName="nav-second-level"/>
-                        <#else>
-                            <#assign levelName="nav-third-level"/>
+                            <#assign levelName="nav-second-level" />
+                            <#else>
+                                <#assign levelName="nav-third-level" />
                         </#if>
                         <ul class="nav ${levelName}">
-                            <@menu menuInfo.menuId/>
+                            <@menu menuInfo.menuId />
                         </ul>
-                    <#else>
-                        <a href="${basePath}/jsuite/homeMenu/funIndex/${menuInfo.menuCode}"
-                           class="J_menuItem nav-link">
-                            <i class="nav-icon fa fa-file"></i>${menuInfo.name}
-                        </a>
+                        <#else>
+                            <a href="${basePath}/jsuite/homeMenu/funIndex/${menuInfo.menuCode}"
+                                class="J_menuItem nav-link">
+                                <i class="nav-icon fa fa-file"></i>${menuInfo.name}
+                            </a>
                     </#if>
                 </li>
             </#list>
@@ -29,5 +29,5 @@
     </@homeMenu>
 </#macro>
 <ul class="nav">
-    <@menu "1"/>
+    <@menu "1" />
 </ul>

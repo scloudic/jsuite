@@ -79,6 +79,7 @@ public class JsuiteRealm extends SecurityAuthorizingRealm {
         SecurityUser securityUser = new SecurityUser();
         securityUser.setLoginName(userInfo.getLoginName());
         securityUser.setRealName(userInfo.getRealName());
+        securityUser.setNickName(userInfo.getRealName());
         securityUser.setUserId(userInfo.getSysUserId());
         securityLoginToken.setPassword(pwd);
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(securityUser, pwd, getName());

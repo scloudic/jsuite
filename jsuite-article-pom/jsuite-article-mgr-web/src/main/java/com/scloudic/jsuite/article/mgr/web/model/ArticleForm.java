@@ -25,6 +25,12 @@ public class ArticleForm {
     private String articleTitle;
     @FormParam("thumbnailPath")
     private String thumbnailPath;
+    /**
+     * '文章状态(1、已发布,2、草稿)'
+     */
+    @NotNull
+    @FormParam("articleStatus")
+    private Integer articleStatus;
     @FormParam("editMode")
     private String editMode = "html";
     @FormParam("sortNum")
@@ -111,6 +117,14 @@ public class ArticleForm {
 
     public void setArticleCategoryId(List<Long> articleCategoryId) {
         this.articleCategoryId = articleCategoryId;
+    }
+
+    public Integer getArticleStatus() {
+        return articleStatus;
+    }
+
+    public void setArticleStatus(Integer articleStatus) {
+        this.articleStatus = articleStatus;
     }
 
     public Integer getSortNum() {

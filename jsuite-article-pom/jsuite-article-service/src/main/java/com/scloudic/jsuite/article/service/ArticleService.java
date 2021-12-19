@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface ArticleService extends IService<Article> {
     public void save(Article article, List<ArticleCategoryMapping> categoryMappings);
+
+    public void updateArticle(Article article, List<ArticleCategoryMapping> categoryMappings);
 }
 
