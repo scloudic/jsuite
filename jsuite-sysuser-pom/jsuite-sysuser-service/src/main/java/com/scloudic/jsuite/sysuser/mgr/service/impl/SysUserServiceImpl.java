@@ -6,6 +6,7 @@ import com.scloudic.jsuite.sysuser.mgr.mapper.*;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.jbatis.mapping.RowBounds;
+import com.scloudic.rabbitframework.jbatis.mapping.lambda.SFunctionUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.jbatis.service.IServiceImpl;
@@ -78,7 +79,8 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
             criteria.andEqual(SysUser::getUserPhone, userPhone);
         }
         if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
-            criteria.andBetween(SysUser::getCreateTime, startDate, endDate);
+            String createTimeField = SFunctionUtils.getFieldName(SysUser::getCreateTime);
+            criteria.andBetween("DATE_FORMAT(" + createTimeField + ",'%Y-%m-%d')", startDate, endDate);
         }
         Long totalCount = sysUserMapper.selectCountByParams(whereParamType);
         PageBean<SysUser> pageBean = new PageBean<SysUser>(pageNum, pageSize, totalCount);

@@ -1,0 +1,81 @@
+<script>
+    $(function () {
+        laydate.render({
+            elem: '#select-time'
+            , range: ['#startDate', '#endDate']
+        });
+        var options = {
+            id: "articleTable",
+            uniqueId: "articleId",
+            delKey: "articleId",
+            delUrl: "",
+            url: "${basePath}/jsuite/articleMgr/list",
+            columns: [{
+                checkbox: true,
+                visible: false
+            }, {
+                title: '标题名称',
+                align: "center",
+                valign: "middle",
+                field: 'articleTitle',
+                width: '10%',
+            }, {
+                title: '作者',
+                field: 'userName',
+                width: '10%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '摘要',
+                field: 'summary',
+                width: '20%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '是否可评论',
+                field: 'commentStatus',
+                width: '20%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    if (row.commentStatus == 1)
+                        return '是';
+                    return '否';
+                }
+            }, {
+                title: '评论数',
+                field: 'commentCount',
+                width: '5%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '访问量',
+                field: 'viewCount',
+                width: '10%',
+                align: "center",
+                valign: "middle"
+            }, {
+                title: '创建时间',
+                field: 'createTime',
+                width: '20%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                field: 'articleId',
+                width: '50%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    return "-";
+                }
+            }],
+        };
+        $.table.load(options);
+    }
+    );
+</script>

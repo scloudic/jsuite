@@ -1,17 +1,16 @@
 package com.scloudic.jsuite.mgr.web.security;
 
-import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUser;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
+import com.scloudic.rabbitframework.core.utils.JsonUtils;
+import com.scloudic.rabbitframework.core.utils.PasswordUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.security.LoginFailException;
 import com.scloudic.rabbitframework.security.SecurityUser;
 import com.scloudic.rabbitframework.security.realm.SecurityAuthorizingRealm;
 import com.scloudic.rabbitframework.security.realm.SecurityLoginToken;
-import com.scloudic.rabbitframework.core.utils.JsonUtils;
-import com.scloudic.rabbitframework.core.utils.PasswordUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;

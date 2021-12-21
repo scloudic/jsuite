@@ -10,6 +10,7 @@ import com.scloudic.rabbitframework.core.utils.BeanUtils;
 import com.scloudic.rabbitframework.core.utils.PageBean;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.core.utils.UUIDUtils;
+import com.scloudic.rabbitframework.jbatis.mapping.lambda.SFunctionUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.SecurityUtils;
@@ -140,11 +141,17 @@ public class ArticleController extends AbstractContextResource {
     @UriPermissions
     public Result<PageBean<Article>> list(@Context HttpServletRequest request,
                                           @QueryParam("articleTitle") String articleTitle,
+                                          @QueryParam("startDate") String startDate,
+                                          @QueryParam("endDate") String endDate,
                                           @QueryParam("pageNum") Long pageNum,
                                           @QueryParam("pageSize") Long pageSize) {
         Where where = new Where(Article.NO_CONTENT_FIELDS);
         Criteria criteria = where.createCriteria();
         criteria.andLike(StringUtils.isNotBlank(articleTitle), Article::getArticleTitle, "%" + articleTitle + "%");
+        if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
+            String createTimeField = SFunctionUtils.getFieldName(Article::getCreateTime);
+            criteria.andBetween("DATE_FORMAT(" + createTimeField + ",'%Y-%m-%d')", startDate, endDate);
+        }
         PageBean<Article> articles = articleService.selectPageBeanByParams(where, pageNum, pageSize);
         return success(articles);
     }
