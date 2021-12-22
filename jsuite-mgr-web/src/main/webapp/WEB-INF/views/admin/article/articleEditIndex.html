@@ -37,13 +37,15 @@
                     <h5>文章分类</h5>
                 </div>
                 <div class="ibox-content">
-                    <@articleCategory articleId="">
+                    <@articleCategory articleId="${articleId}">
                         <#if articleCategories?size gt 0>
                             <#list articleCategories as ac>
                                 <div class="checkbox i-checks">
                                     <label>
                                         <input type="checkbox" name="articleCategoryId"
-                                               value="${ac.articleCategoryId}"> <i></i>${ac.articleCategoryName}
+                                               value="${ac.articleCategoryId}"
+                                        <#if articleCheckStatus == 1>check</#if>
+                                        > <i></i>${ac.articleCategoryName}
                                     </label>
                                 </div>
                             </#list>
@@ -86,6 +88,9 @@
                                 <i class="fa fa-paper-plane"></i> 发布</a>
                             <a class="btn btn-success" id="saveArticle" href="javascript:void(0)">
                                 <i class="fa fa-save"></i> 保存</a>
+                                <a class="btn btn-warning" id="closeArticle" href="javascript:void(0)">
+                                    <i class="fa fa-close"></i> 关闭
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -126,7 +131,7 @@
 <@script>
     <@iCheck />
     <@tinymce />
-    <#include "articleCreateScript.html" />
+    <#include "articleEditScript.html" />
 </@script>
 </body>
 

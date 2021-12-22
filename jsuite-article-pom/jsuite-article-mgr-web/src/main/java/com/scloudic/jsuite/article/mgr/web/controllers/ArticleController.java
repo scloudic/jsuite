@@ -123,6 +123,7 @@ public class ArticleController extends AbstractContextResource {
         return success(articleId);
     }
 
+
     @GET
     @Path("getArticleDetail")
     @UriPermissions
@@ -152,7 +153,23 @@ public class ArticleController extends AbstractContextResource {
             String createTimeField = SFunctionUtils.getFieldName(Article::getCreateTime);
             criteria.andBetween("DATE_FORMAT(" + createTimeField + ",'%Y-%m-%d')", startDate, endDate);
         }
+        criteria.andEqual(Article::getDelStatus, Enums.DelStatus.NORMAL.getValue());
         PageBean<Article> articles = articleService.selectPageBeanByParams(where, pageNum, pageSize);
         return success(articles);
+    }
+
+
+    @GET
+    @Path("articleDel")
+    @UriPermissions
+    @FormValid
+    public Result<String> articleDel(@Context HttpServletRequest request,
+                                     @NotBlank @QueryParam("articleId") String articleId) {
+        Article update = new Article();
+        update.setArticleId(articleId);
+        update.setUpdateTime(new Date());
+        update.setDelStatus(Enums.DelStatus.NORMAL.getValue());
+        articleService.updateByEntity(update);
+        return success(articleId);
     }
 }

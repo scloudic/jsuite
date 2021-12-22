@@ -61,6 +61,11 @@
             $("#articleStatus").val("1");
             submitArticle();
         });
+        <#if newFlag?length gt 0>
+        $("#closeArticle").click(function () {
+            history.back(-1);
+        });
+        </#if>
         tinymce.init({
             selector: "#content",
             height: 400,
