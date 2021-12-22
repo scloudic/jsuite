@@ -54,7 +54,6 @@ public class ArticleController extends AbstractContextResource {
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
         article.setDelStatus(Enums.DelStatus.NORMAL.getValue());
-        article.setArticleStatus(ArticleEnums.ArticleStatus.DRAFT.getValue());
         article.setCreateTime(date);
         article.setUpdateTime(date);
         article.setArticleId(UUIDUtils.getTimeUUID32());
@@ -86,7 +85,6 @@ public class ArticleController extends AbstractContextResource {
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
         article.setDelStatus(Enums.DelStatus.NORMAL.getValue());
-        article.setArticleStatus(ArticleEnums.ArticleStatus.DRAFT.getValue());
         article.setCreateTime(date);
         article.setUpdateTime(date);
         article.setUserId(SecurityUtils.getUserId());
