@@ -15,7 +15,7 @@
                     return true;
                 });
         });
-        
+
         submitArticle = function () {
             var rules = {
                 articleTitle: {
@@ -42,7 +42,7 @@
             if ($.common.isEmpty($("#summary").val())) {
                 var editBody = activeEditor.getBody();
                 activeEditor.selection.select(editBody);
-                var text = activeEditor.selection.getContent({ 'format': 'text' });
+                var text = activeEditor.selection.getContent({'format': 'text'});
                 $("#summary").val(text.slice(0, 80));
             }
 
@@ -61,7 +61,11 @@
             $("#articleStatus").val("1");
             submitArticle();
         });
-
+        <#if newFlag?length gt 0>
+        $("#closeArticle").click(function () {
+            history.back(-1);
+        });
+        </#if>
         tinymce.init({
             selector: "#content",
             height: 400,

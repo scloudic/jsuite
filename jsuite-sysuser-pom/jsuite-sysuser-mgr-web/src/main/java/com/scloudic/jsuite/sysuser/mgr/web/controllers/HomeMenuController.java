@@ -80,7 +80,7 @@ public class HomeMenuController extends AbstractContextResource {
     @Produces(MediaType.TEXT_HTML)
     public Object funIndex(@Context HttpServletRequest request,
                            @NotBlank @PathParam("menuCode") String menuCode,
-                           @QueryParam("params") String params) {
+                           @DefaultValue("") @QueryParam("params") String params) {
         if (StringUtils.isBlank(menuCode)) {
             throw new BizException("菜单标识不能为空!");
         }
@@ -91,8 +91,7 @@ public class HomeMenuController extends AbstractContextResource {
             throw new BizException("menu.null");
         }
         Map<String, String> paramsMap = null;
-        if (StringUtils.isNotBlank(sysMenu.getFrontEndParamName())
-                && StringUtils.isNotBlank(params)) {
+        if (StringUtils.isNotBlank(sysMenu.getFrontEndParamName())) {
             paramsMap = new HashMap<>();
             paramsMap.put(sysMenu.getFrontEndParamName(), params);
         }
