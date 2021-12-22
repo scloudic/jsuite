@@ -8,7 +8,7 @@
             id: "articleTable",
             uniqueId: "articleId",
             delKey: "articleId",
-            delUrl: "",
+            delUrl: "${delArticle}",
             url: "${basePath}/jsuite/articleMgr/list",
             columns: [{
                 checkbox: true,
@@ -43,6 +43,17 @@
                     return '否';
                 }
             }, {
+                 title: '发布状态',
+                 field: 'articleStatus',
+                 width: '20%',
+                 align: "center",
+                 valign: "middle",
+                 formatter: function (value, row, index) {
+                     if (row.articleStatus == 1)
+                         return '已发布';
+                     return '未发布';
+                 }
+             }, {
                 title: '评论数',
                 field: 'commentCount',
                 width: '5%',
@@ -71,12 +82,21 @@
                 valign: "middle",
                 formatter: function (value, row, index) {
                     var actions = [];
-                    
-                    return "-";
+                    <#if updateArticle?length gt 0 >
+                        actions.push('<a class="btn btn-success btn-xs" href="${updateArticle}?params=' + row.articleId + '"><i class="fa fa-edit"></i> 编辑</a> ');
+                    </#if >
+                    <#if delArticle?length gt 0 >
+                         actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.table.del(\'' + row.articleId + '\')"><i class="fa fa-remove"></i> 删除</a> ');
+                    </#if >
+                   if (actions.length > 0) {
+                       return actions.join('');
+                   } else {
+                       return "-";
+                   }
                 }
             }],
         };
-        $.table.load(options);
+    $.table.load(options);
     }
     );
 </script>

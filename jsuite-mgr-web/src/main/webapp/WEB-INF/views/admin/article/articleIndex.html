@@ -4,49 +4,57 @@
 <@header>
     <@bootstrapTableLink />
 </@header>
+
 <body class="gray-bg">
-<#include "../include/loading.html" />
-<@permission url="/jsuite/articleMgr/update">
-    <#if isPermission==true>
-        <#assign updateArticle="/jsuite/articleMgr/update"/>
-    <#else>
-        <#assign updateArticle=""/>
-    </#if>
-</@permission>
-<div class="jsuite-wrapper">
-    <div class="row">
-        <div class="col-sm-12 search-collapse">
-            <form id="articleForm" name="articleForm">
-                <div class="form-group-sm">
-                    <label for="name" class="col-label">文章标题：</label>
-                    <input type="text" name="articleTitle" id="articleTitle" class="col-form width-sm"/>
-                    <span id="select-time">
+    <#include "../include/loading.html" />
+    <@permission url="/jsuite/articleMgr/update">
+        <#if isPermission==true>
+            <#assign updateArticle="${basePath}/jsuite/homeMenu/funIndex/articleEditIndex" />
+            <#else>
+                <#assign updateArticle="" />
+        </#if>
+    </@permission>
+    <@permission url="/jsuite/articleMgr/articleDel">
+            <#if isPermission==true>
+                <#assign delArticle="${basePath}/jsuite/articleMgr/articleDel" />
+                <#else>
+                    <#assign delArticle="" />
+            </#if>
+        </@permission>
+    <div class="jsuite-wrapper">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="articleForm" name="articleForm">
+                    <div class="form-group-sm">
+                        <label for="name" class="col-label">文章标题：</label>
+                        <input type="text" name="articleTitle" id="articleTitle" class="col-form width-sm" />
+                        <span id="select-time">
                             <label for="startDate" class="col-label">创建时间：</label>
                             <input readonly type="text" name="startDate" id="startDate" placeholder="开始时间"
-                                   class="col-form width-150"/>
+                                class="col-form width-150" />
                             <label for="endDate" class="col-label">-</label>
                             <input readonly type="text" name="endDate" id="endDate" placeholder="结束时间"
-                                   class="col-form width-150"/>
+                                class="col-form width-150" />
                         </span>
-                    <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
-                       onclick="$.table.search('articleForm')">
-                        <i class="fa fa-search"></i> 搜索</a>
-                    <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
-                        <i class="fa fa-refresh"></i> 重置</a>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-12 select-table table-striped">
-            <table id="articleTable"></table>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                            onclick="$.table.search('articleForm')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="articleTable"></table>
+            </div>
         </div>
     </div>
-</div>
-<@script>
-    <@bootstraptable />
-    <@laydate />
-    <@moment />
-    <#include "articleScript.html" />
-</@script>
+    <@script>
+        <@bootstraptable />
+        <@laydate />
+        <@moment />
+        <#include "articleScript.html" />
+    </@script>
 </body>
 
 </html>

@@ -43,9 +43,7 @@
                                 <div class="checkbox i-checks">
                                     <label>
                                         <input type="checkbox" name="articleCategoryId"
-                                               value="${ac.articleCategoryId}"
-                                        <#if articleCheckStatus == 1>check</#if>
-                                        > <i></i>${ac.articleCategoryName}
+                                               value="${ac.articleCategoryId}" <#if ac.articleCheckStatus==1>checked</#if>> <i></i>${ac.articleCategoryName}
                                     </label>
                                 </div>
                             </#list>
@@ -105,6 +103,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 title_left control-label is-required">标题：</label>
                         <div class="col-sm-10">
+                            <input type="hidden" class="form-control" name="articleId" value="${articleId}" id="articleId">
                             <input type="text" class="form-control" name="articleTitle" id="articleTitle">
                         </div>
                     </div>
@@ -121,7 +120,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea name="content" id="content"></textarea>
+                        <textarea name="articleContent" id="articleContent"></textarea>
                     </div>
                 </div>
             </div>

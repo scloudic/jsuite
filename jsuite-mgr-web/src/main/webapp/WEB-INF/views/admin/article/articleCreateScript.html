@@ -38,7 +38,7 @@
             if (chkValue.length == 0) {
                 toastr.error("请选择文章分类！");
             }
-            $("#content").val(content);
+            $("#articleContent").val(content);
             if ($.common.isEmpty($("#summary").val())) {
                 var editBody = activeEditor.getBody();
                 activeEditor.selection.select(editBody);
@@ -62,7 +62,7 @@
             submitArticle();
         });
         tinymce.init({
-            selector: "#content",
+            selector: "#articleContent",
             height: 400,
             menubar: false,
             font_formats: "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;楷体-GB2312=楷体-GB2312",

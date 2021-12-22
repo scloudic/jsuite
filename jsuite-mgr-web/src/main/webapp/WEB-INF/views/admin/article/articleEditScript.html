@@ -1,5 +1,19 @@
 <script>
     $(function () {
+        $.getAjax("${basePath}/jsuite/articleMgr/getArticleDetail?articleId=${articleId}",
+             function (status, data, message) {
+                $("#articleStatus").val(data.articleStatus);
+                if(data.thumbnailPath!="") {
+                    $("#thumbnailPath").val(data.thumbnailPath);
+                    $("#imgFileUpload").attr("src", data.thumbnailPath);
+                }
+                $('input[name="commentStatus"][value='+data.commentStatus+']').attr("checked",true);
+                $("#sortNum").val(data.sortNum);
+                $("#articleTitle").val(data.articleTitle);
+                $("#userName").val(data.userName);
+                $("#summary").val(data.summary);
+                $("#articleContent").val(data.articleContent);
+        });
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
@@ -38,7 +52,7 @@
             if (chkValue.length == 0) {
                 toastr.error("请选择文章分类！");
             }
-            $("#content").val(content);
+            $("#articleContent").val(content);
             if ($.common.isEmpty($("#summary").val())) {
                 var editBody = activeEditor.getBody();
                 activeEditor.selection.select(editBody);
@@ -48,9 +62,9 @@
 
             var loginData = $.form.getData("articleForm");
             $.loading();
-            $.postAjax("${basePath}/jsuite/articleMgr/add", loginData,
+            $.postAjax("${basePath}/jsuite/articleMgr/update", loginData,
                 function (status, respData) {
-                    $.form.clearForm();
+                    history.back(-1);
                 });
         };
         $("#saveArticle").click(function () {
@@ -61,13 +75,12 @@
             $("#articleStatus").val("1");
             submitArticle();
         });
-        <#if newFlag?length gt 0>
         $("#closeArticle").click(function () {
             history.back(-1);
         });
-        </#if>
+
         tinymce.init({
-            selector: "#content",
+            selector: "#articleContent",
             height: 400,
             menubar: false,
             font_formats: "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;楷体-GB2312=楷体-GB2312",

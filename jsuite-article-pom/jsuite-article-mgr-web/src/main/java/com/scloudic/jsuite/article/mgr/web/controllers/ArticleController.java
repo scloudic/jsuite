@@ -106,25 +106,6 @@ public class ArticleController extends AbstractContextResource {
     }
 
     @GET
-    @Path("articlePublish")
-    @UriPermissions
-    @FormValid
-    public Result<String> articlePublish(@Context HttpServletRequest request,
-                                         @NotBlank @QueryParam("articleId") String articleId) {
-        Article article = articleService.selectById(articleId);
-        if (article == null || article.getDelStatus().intValue() == Enums.DelStatus.DEL.getValue()) {
-            return failure("文章不存在!");
-        }
-        Article update = new Article();
-        update.setArticleId(articleId);
-        update.setUpdateTime(new Date());
-        update.setArticleStatus(ArticleEnums.ArticleStatus.PUBLISH.getValue());
-        articleService.updateByEntity(update);
-        return success(articleId);
-    }
-
-
-    @GET
     @Path("getArticleDetail")
     @UriPermissions
     @FormValid
@@ -159,16 +140,16 @@ public class ArticleController extends AbstractContextResource {
     }
 
 
-    @GET
+    @POST
     @Path("articleDel")
     @UriPermissions
     @FormValid
     public Result<String> articleDel(@Context HttpServletRequest request,
-                                     @NotBlank @QueryParam("articleId") String articleId) {
+                                     @NotBlank @FormParam("articleId") String articleId) {
         Article update = new Article();
         update.setArticleId(articleId);
         update.setUpdateTime(new Date());
-        update.setDelStatus(Enums.DelStatus.NORMAL.getValue());
+        update.setDelStatus(Enums.DelStatus.DEL.getValue());
         articleService.updateByEntity(update);
         return success(articleId);
     }
