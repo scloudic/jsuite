@@ -5,15 +5,12 @@ import com.scloudic.jsuite.sysuser.mgr.entity.*;
 import com.scloudic.jsuite.sysuser.mgr.mapper.*;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
+import com.scloudic.rabbitframework.core.utils.*;
 import com.scloudic.rabbitframework.jbatis.mapping.RowBounds;
 import com.scloudic.rabbitframework.jbatis.mapping.lambda.SFunctionUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.jbatis.service.IServiceImpl;
-import com.scloudic.rabbitframework.core.utils.CollectionUtils;
-import com.scloudic.rabbitframework.core.utils.PageBean;
-import com.scloudic.rabbitframework.core.utils.StringUtils;
-import com.scloudic.rabbitframework.core.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,8 +76,10 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
             criteria.andEqual(SysUser::getUserPhone, userPhone);
         }
         if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
-            String createTimeField = SFunctionUtils.getFieldName(SysUser::getCreateTime);
-            criteria.andBetween("DATE_FORMAT(" + createTimeField + ",'%Y-%m-%d')", startDate, endDate);
+            criteria.andGreaterThanEqual(SysUser::getCreateTime,
+                    DateFormatUtil.getDate(startDate + " 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+            criteria.andLessThanEqual(SysUser::getCreateTime,
+                    DateFormatUtil.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss"));
         }
         Long totalCount = sysUserMapper.selectCountByParams(whereParamType);
         PageBean<SysUser> pageBean = new PageBean<SysUser>(pageNum, pageSize, totalCount);
