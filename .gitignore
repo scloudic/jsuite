@@ -35,6 +35,3 @@ bin/
 Thumbs.db
 .vscode
 gen/
-/pom-deploy.xml
-/install.bat
-/install.sh
