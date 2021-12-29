@@ -1,5 +1,5 @@
 @echo off
-echo [INFO] Install  pom-deploy.xml to local repository.
+echo [INFO] Install  pom.xml to local repository.
 
 cd %~dp0
 call mvn clean install -DskipTests=true
