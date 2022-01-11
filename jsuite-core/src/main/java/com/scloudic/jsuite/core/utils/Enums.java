@@ -97,27 +97,7 @@ public class Enums {
             return message;
         }
     }
-
-    public enum UserSource {
-        SYS(1, "系统创建"), WXMIN(2, "小程序"),
-        PC(3, "PC端"), APP(4, "APP");
-        private int value;
-        private String message;
-
-        UserSource(int value, String message) {
-            this.message = message;
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
-
+    
     public enum Status {
         YES(1, "是"), NO(2, "否");
         private int value;

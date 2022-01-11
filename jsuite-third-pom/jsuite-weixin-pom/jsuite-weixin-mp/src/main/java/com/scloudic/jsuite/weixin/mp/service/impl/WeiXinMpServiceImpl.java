@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 服务公众号服务接口
  */
-@Service("officialAccountService")
+@Service("weiXinMpService")
 public class WeiXinMpServiceImpl extends WeiXinServiceImpl
         implements WeiXinMpService {
     private static final Logger logger = LoggerFactory.getLogger(WeiXinMpServiceImpl.class);

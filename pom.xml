@@ -22,8 +22,6 @@
         <module>jsuite-sysuser-pom</module>
         <module>jsuite-third-pom</module>
         <module>jsuite-article-pom</module>
-        <module>jsuite-generator</module>
-        <module>jsuite-mgr-web</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -202,6 +200,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
