@@ -1,8 +1,12 @@
 package com.scloudic.jsuite.file.entity;
+
+import com.scloudic.rabbitframework.jbatis.annontations.Column;
+import com.scloudic.rabbitframework.jbatis.annontations.ID;
+import com.scloudic.rabbitframework.jbatis.annontations.Table;
 import com.scloudic.rabbitframework.jbatis.mapping.GenerationType;
-import java.util.Date;
-import com.scloudic.rabbitframework.jbatis.annontations.*;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
 * This class corresponds to the database table file_category

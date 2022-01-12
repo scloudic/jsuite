@@ -8,7 +8,10 @@
     3、jsuite-log:日志模块，提供内部操作日志相关的拦截
     4、jsuite-user：用户模块，主要是系统后台管理模块,提供首页菜单、用户管理、菜单管理、角色管理
     5、jsuite-mgr-web：jsuite平台web管理系统
-    6、jsuite-third-pom: 微信等第三方接口
+    6、jsuite-file-pom：文件上传管理
+       A、本地上传模块
+       B、阿里云上传模块
+    7、jsuite-third-pom: 微信等第三方接口
      A、微信公众号：
         a.获取微信access_token
         b.验证消息真实性

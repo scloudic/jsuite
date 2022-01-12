@@ -1,14 +1,13 @@
 package com.scloudic.jsuite.sysuser.mgr.entity;
 
-import java.util.Date;
-
+import com.scloudic.rabbitframework.jbatis.annontations.Column;
+import com.scloudic.rabbitframework.jbatis.annontations.ID;
+import com.scloudic.rabbitframework.jbatis.annontations.Table;
 import com.scloudic.rabbitframework.jbatis.mapping.GenerationType;
 
 import java.beans.Transient;
-
-import com.scloudic.rabbitframework.jbatis.annontations.*;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**

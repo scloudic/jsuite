@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.scloudic</groupId>
         <artifactId>jsuite-weixin-pom</artifactId>
-        <version>1.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>jsuite-weixin-service</artifactId>
     <packaging>jar</packaging>

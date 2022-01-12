@@ -2,7 +2,6 @@ package com.scloudic.jsuite.sysuser.mgr.mapper;
 
 import com.scloudic.jsuite.sysuser.mgr.entity.SysRole;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUserRole;
-import com.scloudic.rabbitframework.jbatis.annontations.Insert;
 import com.scloudic.rabbitframework.jbatis.annontations.Mapper;
 import com.scloudic.rabbitframework.jbatis.annontations.Param;
 import com.scloudic.rabbitframework.jbatis.annontations.Select;

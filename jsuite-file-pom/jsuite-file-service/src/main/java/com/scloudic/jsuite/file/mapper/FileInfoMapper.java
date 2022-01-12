@@ -1,7 +1,6 @@
 package com.scloudic.jsuite.file.mapper;
 
 import com.scloudic.jsuite.file.entity.FileInfo;
-import com.scloudic.rabbitframework.jbatis.annontations.Insert;
 import com.scloudic.rabbitframework.jbatis.annontations.Mapper;
 import com.scloudic.rabbitframework.jbatis.annontations.Select;
 import com.scloudic.rabbitframework.jbatis.mapping.BaseMapper;
