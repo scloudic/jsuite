@@ -4,9 +4,7 @@ import com.scloudic.jsuite.weixin.core.model.AccessToken;
 
 public interface WeiXinService {
     /**
-     * 获取全局唯一后台接口调用凭据;
-     *
-     * https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+     * 获取全局唯一后台接口调用凭据
      * @param appId  微信APPID
      * @param secret 微信密钥
      * @param cache  缓存接口
