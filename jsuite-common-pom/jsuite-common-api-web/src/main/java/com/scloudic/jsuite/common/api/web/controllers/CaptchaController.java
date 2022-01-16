@@ -2,6 +2,9 @@ package com.scloudic.jsuite.common.api.web.controllers;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.scloudic.jsuite.common.api.web.component.CaptchaProperties;
+import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
+import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
 import com.scloudic.rabbitframework.web.AbstractContextResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -25,33 +29,33 @@ import java.io.IOException;
 public class CaptchaController extends AbstractContextResource {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
+    @Autowired(required = false)
+    private RedisCache redisCache;
+    @Autowired
+    private CaptchaProperties captchaProperties;
+    @Autowired
+    private CaptchaVerify captchaVerify;
 
     /**
      * 验证码生成
      */
     @GET
-    @Path(value = "/captchaImage")
-    public Object getKaptchaImage(@Context HttpServletRequest request,
-                                  @Context HttpServletResponse response) {
+    @Path("captchaImage/{uuid}")
+    public void getKaptchaImage(@PathParam("uuid") String uuid,
+                                @Context HttpServletRequest request,
+                                @Context HttpServletResponse response) {
         ServletOutputStream out = null;
         try {
-            HttpSession session = null;
-            if (request instanceof SecurityHttpServletRequest) {
-                session = ((SecurityHttpServletRequest) request).getHttpSession();
-            } else {
-                session = request.getSession();
-            }
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
             response.addHeader("Cache-Control", "post-check=0, pre-check=0");
             response.setHeader("Pragma", "no-cache");
             response.setContentType("image/jpeg");
             String capStr = null;
-            String code = null;
             BufferedImage bi = null;
-            capStr = code = defaultKaptcha.createText();
+            capStr = defaultKaptcha.createText();
             bi = defaultKaptcha.createImage(capStr);
-            session.setAttribute(Constants.KAPTCHA_SESSION_KEY, code);
+            captchaVerify.setCaptcha(request, uuid, capStr);
             out = response.getOutputStream();
             ImageIO.write(bi, "jpg", out);
             out.flush();
@@ -66,6 +70,5 @@ public class CaptchaController extends AbstractContextResource {
 
             }
         }
-        return null;
     }
 }

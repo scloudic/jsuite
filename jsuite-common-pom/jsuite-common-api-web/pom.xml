@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.scloudic</groupId>
         <artifactId>jsuite-common-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jsuite-common-api-web</artifactId>
     <packaging>jar</packaging>
@@ -24,6 +24,10 @@
         <dependency>
             <groupId>com.scloudic</groupId>
             <artifactId>jsuite-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.scloudic</groupId>
+            <artifactId>rabbit-redisson</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

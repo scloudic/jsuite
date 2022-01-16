@@ -11,6 +11,7 @@
         <meta name="description" content="JSuite后台管理系统">
         <@commlink/>
         <link href="${basePath}/static/css/jsuite.css?v=0.8" rel="stylesheet">
+
         <link href="${basePath}/static/css/login.css?v=0.9" rel="stylesheet">
         <script>
             if (window.top !== window.self) {
@@ -33,6 +34,7 @@
                 </div>
                 <div class="col-sm-5">
                     <form id="loginForm" name="loginForm" method="post">
+                    <input type="hidden" id="verifyKey" name="verifyKey">
                         <h4 class="no-margins">JSuite后台管理系统</h4>
                         <div class="m-t-md"></div>
                         <div class="form-group">
@@ -63,8 +65,7 @@
                                        class="text-dark form-control" placeholder="验证码">
                                 <div class="col-xs-6">
                                     <a href="javascript:void(0);" title="更换验证码">
-                                        <img src="${basePath}/jsuite/captcha/captchaImage" class="captchaImage"
-                                             width="100%"/>
+                                        <img  class="captchaImage" width="100%"/>
                                     </a>
                                 </div>
                             </div>
@@ -82,7 +83,9 @@
                 </div>
             </div>
         </div>
-        <@script/>
+        <@script>
+              <@mathUuid/>
+        </@script>
         <script>
             $(function () {
                 $.validator.setDefaults({
@@ -123,8 +126,11 @@
                         $(element).removeClass('has-error');
                     }
                 });
+                var uuid = Math.uuidFast();
+                $("#verifyKey").val(uuid);
+                var url = "${basePath}/jsuite/captcha/captchaImage/"+uuid;
+                $('.captchaImage').attr("src", url);
                 $('.captchaImage').click(function () {
-                    var url = "${basePath}/jsuite/captcha/captchaImage?s=" + Math.random();
                     $('.captchaImage').attr("src", url);
                 });
             });

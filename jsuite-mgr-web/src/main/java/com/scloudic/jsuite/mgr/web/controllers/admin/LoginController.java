@@ -1,6 +1,7 @@
 package com.scloudic.jsuite.mgr.web.controllers.admin;
 
 import com.google.code.kaptcha.Constants;
+import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.jsuite.log.model.LogBean;
 import com.scloudic.jsuite.log.notification.OperateLogEvent;
@@ -49,25 +50,18 @@ public class LoginController extends AbstractContextResource {
     private SysMenuService sysMenuService;
     @Autowired
     private NotificationServerManager notificationServerManager;
+    @Autowired
+    private CaptchaVerify captchaVerify;
 
     @Path("userLogin")
     @POST
     @FormValid
     public Result<Map<String, Object>> userLogin(@Context HttpServletRequest request,
+                                                 @NotBlank @FormParam("verifyKey") String verifyKey,
                                                  @NotBlank @FormParam("validateCode") String validateCode,
                                                  @NotBlank @FormParam("userName") String userName,
                                                  @NotBlank @FormParam("password") String password) {
-        HttpSession session = null;
-        if (request instanceof SecurityHttpServletRequest) {
-            session = ((SecurityHttpServletRequest) request).getHttpSession();
-        } else {
-            session = request.getSession();
-        }
-        Object obj = session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        String code = String.valueOf(obj != null ? obj : "");
-        // 验证码清除，防止多次使用。
-        session.removeAttribute(Constants.KAPTCHA_SESSION_KEY);
-        if (StringUtils.isEmpty(validateCode) || !validateCode.equalsIgnoreCase(code)) {
+        if (!captchaVerify.verify(request, verifyKey, validateCode)) {
             return Result.failure("验证码不匹配,请重新输入");
         }
         boolean isLogin = SecurityUtils.userLogin(userName, password);

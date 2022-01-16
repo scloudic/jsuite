@@ -1,7 +1,8 @@
-package com.scloudic.jsuite.common.api.web.config;
+package com.scloudic.jsuite.common.api.web.component;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,28 +15,27 @@ import static com.google.code.kaptcha.Constants.*;
  */
 @Configuration
 public class CaptchaConfig {
+    @Autowired
+    private CaptchaProperties captchaProperties;
+
     @Bean(name = "defaultKaptcha")
     public DefaultKaptcha getKaptchaBean() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
         // 是否有边框 默认为true 我们可以自己设置yes，no
-        properties.setProperty(KAPTCHA_BORDER, "yes");
+        properties.setProperty(KAPTCHA_BORDER, captchaProperties.getKaptchaBorder());
         // 验证码文本字符颜色 默认为Color.BLACK
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "black");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, captchaProperties.getKaptchaFontColor());
         // 验证码图片宽度 默认为200
-        properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
+        properties.setProperty(KAPTCHA_IMAGE_WIDTH, captchaProperties.getKaptchaImageWidth());
         // 验证码图片高度 默认为50
-        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, "60");
-        // 验证码文本字符大小 默认为40
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "40");
-        // KAPTCHA_SESSION_KEY
-        properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCode");
+        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, captchaProperties.getKaptchaImageHeight());
         // 验证码文本字符长度 默认为5
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "5");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, captchaProperties.getKaptchaCharLength());
         // 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier,宋体,楷体,微软雅黑");
         // 图片样式 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy
-        properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, "com.google.code.kaptcha.impl.ShadowGimpy");
+        // properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, "com.google.code.kaptcha.impl.ShadowGimpy");
         Config config = new Config(properties);
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
