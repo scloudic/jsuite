@@ -129,6 +129,11 @@
                 <artifactId>jsuite-weixin-mp</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.scloudic</groupId>
+                <artifactId>jsuite-weixin-mini</artifactId>
+                <version>${jsuite.version}</version>
+            </dependency>
             <!--文章-->
             <dependency>
                 <groupId>com.scloudic</groupId>
