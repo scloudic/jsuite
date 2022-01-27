@@ -83,7 +83,7 @@ public class WeiXinMpServiceImpl extends WeiXinServiceImpl
         String content = msg;
         String appId = "";
         if (encrypt != null) {
-            String[] str = SignUtil.aesDecrypt(officialAccountProperties.getEncodingAESKey(), msg);
+            String[] str = SignUtil.receiveMsgAec(officialAccountProperties.getEncodingAESKey(), msg);
             appId = str[0];
             content = str[1];
         }

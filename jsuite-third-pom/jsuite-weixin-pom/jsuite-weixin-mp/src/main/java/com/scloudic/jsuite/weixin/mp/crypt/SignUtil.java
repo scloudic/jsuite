@@ -54,7 +54,7 @@ public class SignUtil {
      * @param encodingAESKey
      * @param content
      */
-    public static String[] aesDecrypt(String encodingAESKey, String content) {
+    public static String[] receiveMsgAec(String encodingAESKey, String content) {
         try {
             // 设置解密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
