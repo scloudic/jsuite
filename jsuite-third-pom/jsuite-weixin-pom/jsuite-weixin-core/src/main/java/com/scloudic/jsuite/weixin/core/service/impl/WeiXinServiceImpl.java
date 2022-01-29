@@ -19,19 +19,21 @@ public abstract class WeiXinServiceImpl implements WeiXinService {
 
     @Override
     public AccessToken getAccessToken(String appId, String secret, WeiXinAccessTokenCache cache) {
+        String lockKey = "wxaccessTokenLock:" + appId + ":secret:" + secret;
+        String cacheKey = "wxaccessToken:" + appId + ":secret:" + secret;
         if (cache != null) {
-            AccessToken accessToken = cache.getAccessToken();
+            AccessToken accessToken = cache.getAccessToken(cacheKey);
             if (accessToken != null) {
                 return accessToken;
             }
         }
         try {
             if (cache != null) {
-                boolean lockStatus = cache.lock(appId);
+                boolean lockStatus = cache.lock(lockKey);
                 if (!lockStatus) {
                     throw new WeiXinException("获取accessToken锁失败,请重新获取");
                 }
-                AccessToken accessToken = cache.getAccessToken();
+                AccessToken accessToken = cache.getAccessToken(cacheKey);
                 if (accessToken != null) {
                     return accessToken;
                 }
@@ -49,11 +51,11 @@ public abstract class WeiXinServiceImpl implements WeiXinService {
             }
             AccessToken accessToken = JsonUtils.getObject(str, AccessToken.class);
             if (cache != null) {
-                cache.setAccessToken(accessToken);
+                cache.setAccessToken(cacheKey, accessToken);
             }
             return accessToken;
         } finally {
-            cache.unLock(appId);
+            cache.unLock(lockKey);
         }
     }
 }

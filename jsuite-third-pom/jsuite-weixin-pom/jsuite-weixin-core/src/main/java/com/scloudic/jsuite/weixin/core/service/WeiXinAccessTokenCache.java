@@ -11,14 +11,14 @@ public interface WeiXinAccessTokenCache {
      *
      * @return AccessToken
      */
-    public AccessToken getAccessToken();
+    public AccessToken getAccessToken(String key);
 
     /**
      * 设置token缓存
      *
      * @param accessToken AccessToken
      */
-    public void setAccessToken(AccessToken accessToken);
+    public void setAccessToken(String key, AccessToken accessToken);
 
     public boolean lock(String appId);
 
