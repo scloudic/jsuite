@@ -20,8 +20,8 @@ public interface WeiXinAccessTokenCache {
      */
     public void setAccessToken(String key, AccessToken accessToken);
 
-    public boolean lock(String appId);
+    public boolean lock(String key);
 
-    public void unLock(String appId);
+    public void unLock(String key);
 
 }

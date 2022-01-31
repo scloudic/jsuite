@@ -14,4 +14,14 @@
         <module>jsuite-weixin-mini</module>
         <module>jsuite-weixin-service</module>
     </modules>
+    <properties>
+        <bouncycastle.version>1.60</bouncycastle.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+    </dependencies>
 </project>
