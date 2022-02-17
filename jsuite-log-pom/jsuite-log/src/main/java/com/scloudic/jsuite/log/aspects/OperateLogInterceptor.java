@@ -196,7 +196,7 @@ public class OperateLogInterceptor {
     }
 
     private String getOperatorSource(HttpServletRequest request) {
-        String operateSource = request.getHeader("operate-source");
+        String operateSource = request.getHeader("ClientSource");
         if (StringUtils.isBlank(operateSource)) {
             operateSource = "";
         }
