@@ -34,4 +34,19 @@ public class SettingInfoApiController extends AbstractContextResource {
         SettingInfo settingInfo = settingInfoService.selectOneByParams(where);
         return Result.success(settingInfo);
     }
+
+    @GET
+    @Path("getValueByCode")
+    @FormValid
+    public Result<String> getValueByCode(@NotBlank
+                                         @QueryParam("settingCode") String settingCode) {
+        Where where = new Where();
+        Criteria criteria = where.createCriteria();
+        criteria.andEqual(SettingInfo::getSettingCode, settingCode);
+        SettingInfo settingInfo = settingInfoService.selectOneByParams(where);
+        if (settingInfo == null) {
+            return Result.failure("访问内容不存在!");
+        }
+        return Result.success(settingInfo.getSettingValue());
+    }
 }
