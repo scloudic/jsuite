@@ -59,6 +59,8 @@ public class LogBean implements Serializable {
      */
     private String operateSource;
 
+    private String clientVersion;
+
     public String getIpAddress() {
         return ipAddress;
     }
@@ -157,4 +159,11 @@ public class LogBean implements Serializable {
         this.operateType = operateType;
     }
 
+    public String getClientVersion() {
+        return clientVersion;
+    }
+
+    public void setClientVersion(String clientVersion) {
+        this.clientVersion = clientVersion;
+    }
 }

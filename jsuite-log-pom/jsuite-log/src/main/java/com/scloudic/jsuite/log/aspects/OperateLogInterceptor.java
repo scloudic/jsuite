@@ -64,12 +64,14 @@ public class OperateLogInterceptor {
             }
             String ip = "";
             String operateSource = "";
+            String clientVersion = "";
             for (int i = 0; i < parameterLength; i++) {
                 Parameter parameter = parameters[i];
                 if (HttpServletRequest.class == parameter.getType()) {
                     HttpServletRequest request = (HttpServletRequest) args[i];
                     ip = getRemoteAddr(request);
                     operateSource = getOperatorSource(request);
+                    clientVersion = getClientVersion(request);
                 }
                 Annotation[] annotations = parameter.getAnnotations();
                 LogParamExclude logParamExclude = parameter.getAnnotation(LogParamExclude.class);
@@ -100,6 +102,7 @@ public class OperateLogInterceptor {
             operateLog.setUserId(userId);
             operateLog.setLoginName(loginName);
             operateLog.setUserName(userName);
+            operateLog.setClientVersion(clientVersion);
             operateLog.setLogRemark(operationLog.remark());
             operateLog.setOperateType(operationLog.operatorType().value);
             operateLog.setCreateTime(new Date());
@@ -197,6 +200,14 @@ public class OperateLogInterceptor {
 
     private String getOperatorSource(HttpServletRequest request) {
         String operateSource = request.getHeader("ClientSource");
+        if (StringUtils.isBlank(operateSource)) {
+            operateSource = "";
+        }
+        return operateSource;
+    }
+
+    private String getClientVersion(HttpServletRequest request) {
+        String operateSource = request.getHeader("ClientVersion");
         if (StringUtils.isBlank(operateSource)) {
             operateSource = "";
         }

@@ -111,6 +111,8 @@ public class OperateLog implements Serializable {
      */
     @Column
     private String operateSource;
+    @Column
+    private String clientVersion;
 
     public String getIpAddress() {
         return ipAddress;
@@ -214,5 +216,13 @@ public class OperateLog implements Serializable {
 
     public void setOperateType(String operateType) {
         this.operateType = operateType;
+    }
+
+    public String getClientVersion() {
+        return clientVersion;
+    }
+
+    public void setClientVersion(String clientVersion) {
+        this.clientVersion = clientVersion;
     }
 }

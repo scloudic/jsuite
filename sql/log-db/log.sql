@@ -12,6 +12,7 @@ create table operate_log
     user_name        varchar(256) comment '操作人名称',
     method_name      varchar(512) comment '方法名称',
     return_result    longtext comment '返回结果',
+    client_version    varchar(32) comment '客户端版本号',
     operate_source   varchar(128) DEFAULT NULL COMMENT '操作来源(如微信小程序)',
     primary key (operate_log_id)
 );
