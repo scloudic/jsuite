@@ -12,6 +12,7 @@
         <module>jsuite-weixin-core</module>
         <module>jsuite-weixin-mp</module>
         <module>jsuite-weixin-mini</module>
+        <module>jsuite-weixin-pay</module>
         <module>jsuite-weixin-service</module>
     </modules>
     <properties>
