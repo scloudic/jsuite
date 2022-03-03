@@ -4,7 +4,7 @@ import com.scloudic.rabbitframework.core.exceptions.RabbitFrameworkException;
 import com.scloudic.rabbitframework.core.utils.StatusCode;
 
 public class WeiXinException extends RabbitFrameworkException {
-    private StatusCode status = StatusCode.SC_CACHE_ERROR;
+    private StatusCode status = StatusCode.FAIL;
 
     public WeiXinException() {
         super();
