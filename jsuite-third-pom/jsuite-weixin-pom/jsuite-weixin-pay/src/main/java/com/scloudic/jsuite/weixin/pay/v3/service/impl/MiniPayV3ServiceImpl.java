@@ -1,5 +1,6 @@
 package com.scloudic.jsuite.weixin.pay.v3.service.impl;
 
+import com.scloudic.jsuite.weixin.pay.utils.PayUtils;
 import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
 import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
@@ -8,12 +9,14 @@ import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayV3Service;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
+import com.scloudic.rabbitframework.core.utils.UUIDUtils;
 import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,17 +24,48 @@ import java.util.Map;
 @Service
 public class MiniPayV3ServiceImpl implements MiniPayV3Service {
     private static final Logger logger = LoggerFactory.getLogger(MiniPayV3ServiceImpl.class);
-    @Autowired
+    @Autowired(required = false)
     private WeiXinCertificate weiXinCertificate;
 
     @Override
-    public V3PayResponse<Jsapi> jsapi(PayerParams payerParams, JsapiRequest jsapiRequest) {
+    public V3PayResponse<V3Pay> pay(PayerParams payerParams, JsapiRequest jsapiRequest) {
+        V3PayResponse<V3Pay> v3PayResponse = new V3PayResponse<>();
+        V3PayResponse<Jsapi> jsapi = jsapi(payerParams, jsapiRequest);
+        v3PayResponse.setPayStatus(jsapi.getPayStatus());
+        v3PayResponse.setMsg(jsapi.getMsg());
+        v3PayResponse.setRequestBody(jsapi.getRequestBody());
+        v3PayResponse.setCode(jsapi.getCode());
+        v3PayResponse.setRequestUrl(jsapi.getRequestUrl());
+        if (jsapi.getPayStatus() != WeiXinEnums.WeiXinPayStatus.SUCCESS) {
+            return v3PayResponse;
+        }
+        String timestamp = PayUtils.generateTimestamp() + "";
+        String nonceStr = UUIDUtils.getTimeUUID32();
+        String prepayId = "prepay_id=" + jsapi.getData().getPrepay_id();
+        String signInfo =
+                payerParams.getAppId() + "\n"
+                        + timestamp + "\n"
+                        + nonceStr + "\n"
+                        + prepayId + "\n";
+        String paySign = V3RequestUtils.sign(signInfo.getBytes(StandardCharsets.UTF_8), payerParams);
+        V3Pay v3Pay = new V3Pay();
+        v3Pay.setPaySign(paySign);
+        v3Pay.setAppId(payerParams.getAppId());
+        v3Pay.setNonceStr(nonceStr);
+        v3Pay.setTimeStamp(timestamp);
+        v3Pay.setPrepayIdPackage(prepayId);
+        v3Pay.setSignType("RSA");
+        v3PayResponse.setData(v3Pay);
+        return v3PayResponse;
+    }
+
+    private V3PayResponse<Jsapi> jsapi(PayerParams payerParams, JsapiRequest jsapiRequest) {
         V3PayResponse<Jsapi> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
         v3PayResponse.setRequestUrl(url);
         String resultBody = "";
         try {
-            logger.debug("微信JSAPI下单");
+            logger.debug("微信小程序JSAPI下单");
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("mchid", payerParams.getMerchantId());
             rootMap.put("out_trade_no", jsapiRequest.getOutTradeNo());

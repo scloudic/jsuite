@@ -45,8 +45,8 @@ public abstract class WeiXinCertificate {
         String data = jsonObject.getString("data");
         logger.debug("请求地址：" + url + ",token:" + token);
         List<DownloadCertificatesResponse> responseList = JsonUtils.getListObject(data, DownloadCertificatesResponse.class);
-        Map<String, X509Certificate> certificateMap = new HashMap<String, X509Certificate>();
         Map<String, String> certificateStrMap = new HashMap<>();
+        X509Certificate x509Cert = null;
         for (DownloadCertificatesResponse response : responseList) {
             EncryptCertificate encryptCertificate = response.getEncrypt_certificate();
             String result = AesUtils.v3DecryptToStr(
@@ -56,17 +56,21 @@ public abstract class WeiXinCertificate {
                     encryptCertificate.getCiphertext());
             logger.info("商户标识:" + payerParams.getMerchantId() + ",平台证书：" + response.getSerial_no());
             certificateStrMap.put(response.getSerial_no(), result);
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
-            X509Certificate x509Cert = CertificateUtils.loadCertificate(byteArrayInputStream);
-            try {
-                byteArrayInputStream.close();
-            } catch (IOException e) {
+            if (v3Response.equals(response.getSerial_no())) {
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
+                x509Cert = CertificateUtils.loadCertificate(byteArrayInputStream);
+                try {
+                    byteArrayInputStream.close();
+                } catch (IOException e) {
 
+                }
             }
-            certificateMap.put(response.getSerial_no(), x509Cert);
         }
         // BigInteger val = new BigInteger(v3Response.getSerial(), 16);
-        X509Certificate x509Cert = certificateMap.get(v3Response.getSerial());
+        if (x509Cert == null) {
+            logger.error("证书下载生成失败");
+            return new HashMap<>();
+        }
         boolean verify = v3Response.verify(x509Cert);
         if (!verify) {
             logger.error("平台证书下载验证错误");

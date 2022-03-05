@@ -61,7 +61,7 @@ public class V3RequestUtils {
                 + body + "\n";
     }
 
-    private static String sign(byte[] message, PayerParams payerParams) {
+    public static String sign(byte[] message, PayerParams payerParams) {
         Signature sign = null;
         try {
             sign = Signature.getInstance("SHA256withRSA");
