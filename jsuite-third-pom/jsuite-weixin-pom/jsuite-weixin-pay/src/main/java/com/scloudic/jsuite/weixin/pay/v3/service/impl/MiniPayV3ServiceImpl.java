@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -59,6 +58,66 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
         return v3PayResponse;
     }
 
+    @Override
+    public V3PayResponse<SearchPayResult> searchPayByTransactionId(PayerParams payerParams, String transactionId) {
+        String url = " https://api.mch.weixin.qq.com/v3/pay/transactions/id/" + transactionId + "?mchid=" + payerParams.getMerchantId();
+        return getSearchPayResult(payerParams, url);
+    }
+
+    @Override
+    public V3PayResponse<SearchPayResult> searchPayByOutTradeNo(PayerParams payerParams, String outTradeNo) {
+        String url = "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/" + outTradeNo + "?mchid=" + payerParams.getMerchantId();
+        return getSearchPayResult(payerParams, url);
+    }
+
+    private V3PayResponse<SearchPayResult> getSearchPayResult(PayerParams payerParams, String url) {
+        V3PayResponse<SearchPayResult> v3PayResponse = new V3PayResponse<>();
+        v3PayResponse.setRequestUrl(url);
+        String resultBody = "";
+        try {
+            logger.debug("微信支付订单号查询");
+            String token = V3RequestUtils.getToken(payerParams, "GET", HttpUrl.parse(url));
+            logger.info("请求地址：" + url + ",token:" + token);
+            ResponseBody responseBody = HttpClientUtils.get(url, null, V3RequestUtils.getHeaders(token));
+            int code = responseBody.code();
+            v3PayResponse.setCode(code);
+            if (!responseBody.isSuccessful()) {
+                String msg = responseBody.string();
+                logger.error("错误消息：" + msg + ",错误状态：" + code);
+                v3PayResponse.setMsg(msg);
+                v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.FAIL);
+                return v3PayResponse;
+            }
+            v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
+            String serial = v3Response.getSerial();
+            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            if (x509Cert == null) {
+                v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
+                v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
+                return v3PayResponse;
+            }
+            boolean verify = v3Response.verify(x509Cert);
+            if (!verify) {
+                v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR);
+                v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR.getMessage());
+                return v3PayResponse;
+            }
+            resultBody = v3Response.getBody();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.ERROR);
+            v3PayResponse.setMsg(e.getMessage());
+            return v3PayResponse;
+        }
+
+        SearchPayResult searchPayResult = JsonUtils.getObject(resultBody, SearchPayResult.class);
+        v3PayResponse.setResponseBody(resultBody);
+        v3PayResponse.setData(searchPayResult);
+        return v3PayResponse;
+    }
+
+
     private V3PayResponse<Jsapi> jsapi(PayerParams payerParams, JsapiRequest jsapiRequest) {
         V3PayResponse<Jsapi> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
@@ -97,7 +156,7 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
                 return v3PayResponse;
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
-            V3Response v3Response = new V3Response(responseBody);
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
             String serial = v3Response.getSerial();
             X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
@@ -119,6 +178,7 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
             return v3PayResponse;
         }
         Jsapi jsapi = JsonUtils.getObject(resultBody, Jsapi.class);
+        v3PayResponse.setResponseBody(resultBody);
         v3PayResponse.setData(jsapi);
         return v3PayResponse;
     }

@@ -1,14 +1,13 @@
 package com.scloudic.jsuite.weixin.pay.v3;
 
 import com.alibaba.fastjson.JSONObject;
-import com.scloudic.jsuite.weixin.core.exception.WeiXinException;
 import com.scloudic.jsuite.weixin.pay.utils.AesUtils;
 import com.scloudic.jsuite.weixin.pay.utils.CertificateUtils;
 import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.v3.model.DownloadCertificatesResponse;
 import com.scloudic.jsuite.weixin.pay.v3.model.EncryptCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.PayerParams;
-import com.scloudic.jsuite.weixin.pay.v3.model.V3Response;
+import com.scloudic.jsuite.weixin.pay.v3.model.V3ResponseBody;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
@@ -40,7 +39,7 @@ public abstract class WeiXinCertificate {
         String url = "https://api.mch.weixin.qq.com/v3/certificates";
         String token = V3RequestUtils.getToken(payerParams, "GET", HttpUrl.parse(url));
         ResponseBody responseBody = HttpClientUtils.get(url, null, V3RequestUtils.getHeaders(token));
-        V3Response v3Response = new V3Response(responseBody);
+        V3ResponseBody v3Response = new V3ResponseBody(responseBody);
         JSONObject jsonObject = JSONObject.parseObject(v3Response.getBody());
         String data = jsonObject.getString("data");
         logger.debug("请求地址：" + url + ",token:" + token);
@@ -56,7 +55,7 @@ public abstract class WeiXinCertificate {
                     encryptCertificate.getCiphertext());
             logger.info("商户标识:" + payerParams.getMerchantId() + ",平台证书：" + response.getSerial_no());
             certificateStrMap.put(response.getSerial_no(), result);
-            if (v3Response.equals(response.getSerial_no())) {
+            if (v3Response.getSerial().equals(response.getSerial_no())) {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
                 x509Cert = CertificateUtils.loadCertificate(byteArrayInputStream);
                 try {

@@ -2,7 +2,6 @@ package com.scloudic.jsuite.weixin.pay.v3.model;
 
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +10,7 @@ import java.security.SignatureException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 
-public class V3Response {
+public class V3ResponseBody {
     public static final String REQUEST_ID = "Request-ID";
     public static final String WECHAT_PAY_SERIAL = "Wechatpay-Serial";
     public static final String WECHAT_PAY_SIGNATURE = "Wechatpay-Signature";
@@ -24,13 +23,13 @@ public class V3Response {
     private String timestamp;
     private String nonce;
 
-    public V3Response(ResponseBody responseBody) {
+    public V3ResponseBody(ResponseBody responseBody) {
         body = responseBody.string();
-        serial = responseBody.header(V3Response.WECHAT_PAY_SERIAL);
-        requestId = responseBody.header(V3Response.REQUEST_ID);
-        signature = responseBody.header(V3Response.WECHAT_PAY_SIGNATURE);
-        timestamp = responseBody.header(V3Response.WECHAT_PAY_TIMESTAMP);
-        nonce = responseBody.header(V3Response.WECHAT_PAY_NONCE);
+        serial = responseBody.header(V3ResponseBody.WECHAT_PAY_SERIAL);
+        requestId = responseBody.header(V3ResponseBody.REQUEST_ID);
+        signature = responseBody.header(V3ResponseBody.WECHAT_PAY_SIGNATURE);
+        timestamp = responseBody.header(V3ResponseBody.WECHAT_PAY_TIMESTAMP);
+        nonce = responseBody.header(V3ResponseBody.WECHAT_PAY_NONCE);
     }
 
     public boolean verify(X509Certificate certificate) {

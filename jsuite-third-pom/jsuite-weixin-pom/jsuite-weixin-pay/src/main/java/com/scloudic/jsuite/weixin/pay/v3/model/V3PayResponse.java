@@ -9,6 +9,7 @@ public class V3PayResponse<T> {
     private WeiXinEnums.WeiXinPayStatus payStatus;
     private T data;
     private String requestBody;
+    private String responseBody;
 
     public String getRequestBody() {
         return requestBody;
@@ -40,6 +41,14 @@ public class V3PayResponse<T> {
 
     public void setRequestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
+    }
+
+    public String getResponseBody() {
+        return responseBody;
+    }
+
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
     }
 
     public WeiXinEnums.WeiXinPayStatus getPayStatus() {
