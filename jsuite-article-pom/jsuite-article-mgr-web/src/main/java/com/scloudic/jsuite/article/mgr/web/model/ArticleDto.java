@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class ArticleForm {
+public class ArticleDto {
     @NotBlank
     private String articleId;
     private String summary;

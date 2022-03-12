@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.sysuser.mgr.web.vo;
+package com.scloudic.jsuite.sysuser.mgr.web.model;
 
 import java.util.Date;
 import java.util.List;

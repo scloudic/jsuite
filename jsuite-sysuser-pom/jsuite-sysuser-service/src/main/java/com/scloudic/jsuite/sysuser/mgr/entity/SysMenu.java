@@ -5,6 +5,7 @@ import com.scloudic.rabbitframework.jbatis.annontations.ID;
 import com.scloudic.rabbitframework.jbatis.annontations.Table;
 import com.scloudic.rabbitframework.jbatis.mapping.GenerationType;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class SysMenu implements Serializable {
      * description:菜单主键
      */
     @ID(keyType = GenerationType.MANUAL)
+    @NotBlank
     private String sysMenuId;
 
     /**
@@ -69,6 +71,7 @@ public class SysMenu implements Serializable {
      * description:父菜单ID
      */
     @Column
+    @NotBlank
     private String parentMenuId;
 
     /**
@@ -101,6 +104,7 @@ public class SysMenu implements Serializable {
      * description:菜单名称
      */
     @Column
+    @NotBlank
     private String menuName;
 
     /**
@@ -253,7 +257,7 @@ public class SysMenu implements Serializable {
     public Integer getSortNum() {
         return sortNum;
     }
-    
+
     public Integer getMenuLevel() {
         return menuLevel;
     }

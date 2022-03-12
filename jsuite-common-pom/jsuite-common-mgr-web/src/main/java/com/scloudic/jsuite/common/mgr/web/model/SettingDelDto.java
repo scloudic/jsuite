@@ -2,7 +2,7 @@ package com.scloudic.jsuite.common.mgr.web.model;
 
 import javax.validation.constraints.NotNull;
 
-public class SettingDelForm {
+public class SettingDelDto {
     @NotNull
     private Integer settingId;
 

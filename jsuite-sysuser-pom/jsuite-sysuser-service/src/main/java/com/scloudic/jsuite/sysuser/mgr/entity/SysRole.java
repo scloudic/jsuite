@@ -4,6 +4,8 @@ import com.scloudic.rabbitframework.jbatis.annontations.Column;
 import com.scloudic.rabbitframework.jbatis.annontations.ID;
 import com.scloudic.rabbitframework.jbatis.annontations.Table;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class SysRole implements Serializable {
      * description:角色主键
      */
     @ID
+    @NotNull
     private Long sysRoleId;
 
     /**
@@ -27,6 +30,7 @@ public class SysRole implements Serializable {
      * description:角色名称
      */
     @Column
+    @NotBlank
     private String roleName;
 
     /**
@@ -51,6 +55,7 @@ public class SysRole implements Serializable {
      * description:角色编码
      */
     @Column
+    @NotBlank
     private String roleCode;
 
     /**

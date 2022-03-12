@@ -2,7 +2,7 @@ package com.scloudic.jsuite.common.mgr.web.model;
 
 import javax.validation.constraints.NotNull;
 
-public class AreaDelForm {
+public class AreaDelDto {
     @NotNull
     private Integer areaId;
 

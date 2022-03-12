@@ -2,7 +2,7 @@ package com.scloudic.jsuite.article.mgr.web.model;
 
 import javax.validation.constraints.NotBlank;
 
-public class ArticleDelForm {
+public class ArticleDelDto {
     @NotBlank
     private String articleId;
 

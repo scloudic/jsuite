@@ -2,8 +2,8 @@ package com.scloudic.jsuite.article.mgr.web.controllers;
 
 import com.scloudic.jsuite.article.entity.Article;
 import com.scloudic.jsuite.article.entity.ArticleCategoryMapping;
-import com.scloudic.jsuite.article.mgr.web.model.ArticleDelForm;
-import com.scloudic.jsuite.article.mgr.web.model.ArticleForm;
+import com.scloudic.jsuite.article.mgr.web.model.ArticleDelDto;
+import com.scloudic.jsuite.article.mgr.web.model.ArticleDto;
 import com.scloudic.jsuite.article.service.ArticleService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.rabbitframework.core.utils.BeanUtils;
@@ -41,7 +41,7 @@ public class ArticleController extends AbstractRabbitController {
     @PostMapping("add")
     @UriPermissions
     @FormValid(fieldFilter = {"articleId"})
-    public Result<String> add(@RequestBody ArticleForm articleForm) {
+    public Result<String> add(@RequestBody ArticleDto articleForm) {
         Article article = new Article();
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
@@ -70,7 +70,7 @@ public class ArticleController extends AbstractRabbitController {
     @PostMapping("update")
     @UriPermissions
     @FormValid
-    public Result<String> update(@RequestBody ArticleForm articleForm) {
+    public Result<String> update(@RequestBody ArticleDto articleForm) {
         Article article = new Article();
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
@@ -127,7 +127,7 @@ public class ArticleController extends AbstractRabbitController {
     @PostMapping("articleDel")
     @UriPermissions
     @FormValid
-    public Result<String> articleDel(@RequestBody ArticleDelForm delForm) {
+    public Result<String> articleDel(@RequestBody ArticleDelDto delForm) {
         Article update = new Article();
         update.setArticleId(delForm.getArticleId());
         update.setUpdateTime(new Date());

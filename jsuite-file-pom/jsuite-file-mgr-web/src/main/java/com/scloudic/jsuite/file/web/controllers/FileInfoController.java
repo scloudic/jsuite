@@ -8,7 +8,7 @@ import com.scloudic.jsuite.file.entity.FileCategory;
 import com.scloudic.jsuite.file.entity.FileInfo;
 import com.scloudic.jsuite.file.service.FileCategoryService;
 import com.scloudic.jsuite.file.service.FileInfoService;
-import com.scloudic.jsuite.file.web.model.FileInfoForm;
+import com.scloudic.jsuite.file.web.model.FileInfoDto;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.DateFormatUtil;
@@ -72,7 +72,7 @@ public class FileInfoController extends AbstractRabbitController {
     @UriPermissions
     @FormValid
     @Log(operatorType = Log.OperateType.UPDATE, remark = "文件修改")
-    public Result<String> update(@RequestBody FileInfoForm form) {
+    public Result<String> update(@RequestBody FileInfoDto form) {
         FileInfo fileInfo = new FileInfo();
         fileInfo.setFileId(form.getFileId());
         fileInfo.setFileName(form.getFileName());
@@ -85,7 +85,7 @@ public class FileInfoController extends AbstractRabbitController {
     @UriPermissions
     @FormValid(fieldFilter = {"fileName", "fileCategoryId"})
     @Log(operatorType = Log.OperateType.UPDATE, remark = "文件删除")
-    public Result del(@RequestBody FileInfoForm form) {
+    public Result del(@RequestBody FileInfoDto form) {
         FileInfo fileInfo = new FileInfo();
         fileInfo.setFileId(form.getFileId());
         fileInfo.setDelStatus(Enums.DelStatus.DEL.getValue());

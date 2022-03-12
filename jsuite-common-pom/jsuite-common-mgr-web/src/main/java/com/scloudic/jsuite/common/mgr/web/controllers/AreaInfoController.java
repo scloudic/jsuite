@@ -1,8 +1,8 @@
 package com.scloudic.jsuite.common.mgr.web.controllers;
 
 import com.scloudic.jsuite.common.entity.AreaInfo;
-import com.scloudic.jsuite.common.mgr.web.model.AreaActiveStatusForm;
-import com.scloudic.jsuite.common.mgr.web.model.AreaDelForm;
+import com.scloudic.jsuite.common.mgr.web.model.AreaActiveStatusDto;
+import com.scloudic.jsuite.common.mgr.web.model.AreaDelDto;
 import com.scloudic.jsuite.common.service.AreaInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
@@ -98,7 +98,7 @@ public class AreaInfoController extends AbstractRabbitController {
     @UriPermissions
     @FormValid
     @Log(operatorType = Log.OperateType.DEL, remark = "地区删除")
-    public Result del(@RequestBody AreaDelForm areaDelForm) {
+    public Result del(@RequestBody AreaDelDto areaDelForm) {
         List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaDelForm.getAreaId(), null);
         if (areaInfos.size() > 0) {
             return failure("还有子集不能删除");
@@ -111,7 +111,7 @@ public class AreaInfoController extends AbstractRabbitController {
     @FormValid
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改地区启用状态")
-    public Result<Object> updateActiveStatus(@RequestBody AreaActiveStatusForm statusForm) {
+    public Result<Object> updateActiveStatus(@RequestBody AreaActiveStatusDto statusForm) {
         AreaInfo areaInfo = new AreaInfo();
         areaInfo.setAreaId(statusForm.getAreaId());
         Where where = new Where();

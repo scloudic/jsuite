@@ -2,7 +2,7 @@ package com.scloudic.jsuite.file.web.model;
 
 import javax.validation.constraints.NotBlank;
 
-public class FileCategoryDelForm {
+public class FileCategoryDelDto {
     @NotBlank
     private String fileCategoryId;
 

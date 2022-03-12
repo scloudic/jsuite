@@ -120,16 +120,16 @@ public class SysRoleServiceImpl extends
 
     @Transactional
     @Override
-    public void addRoleMenu(Long roleId, String roleCode, String[] menuIds) {
+    public void addRoleMenu(Long roleId, String roleCode, List<String> menuIds) {
         try {
             Where roleMenuParam = new Where();
             Criteria criteria = roleMenuParam.createCriteria();
             criteria.andEqual(SysRoleMenu::getSysRoleId, roleId);
             sysRoleMenuMapper.deleteByParams(roleMenuParam);
             List<SysRoleMenu> roleMenus = new ArrayList<SysRoleMenu>();
-            int menuIdSize = menuIds.length;
+            int menuIdSize = menuIds.size();
             for (int i = 0; i < menuIdSize; i++) {
-                String menuId = menuIds[i];
+                String menuId = menuIds.get(i);
                 SysRoleMenu sysRoleMenu = new SysRoleMenu();
                 sysRoleMenu.setSysRoleMenuId(UUIDUtils.getTimeUUID32());
                 sysRoleMenu.setSysRoleId(roleId);

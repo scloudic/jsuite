@@ -2,7 +2,7 @@ package com.scloudic.jsuite.common.mgr.web.model;
 
 import javax.validation.constraints.NotNull;
 
-public class AreaActiveStatusForm extends AreaDelForm {
+public class AreaActiveStatusDto extends AreaDelDto {
     @NotNull
     private Integer activeStatus;
 

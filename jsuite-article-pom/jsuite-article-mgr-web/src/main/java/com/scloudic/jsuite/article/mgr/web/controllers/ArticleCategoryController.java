@@ -1,8 +1,8 @@
 package com.scloudic.jsuite.article.mgr.web.controllers;
 
 import com.scloudic.jsuite.article.entity.ArticleCategory;
-import com.scloudic.jsuite.article.mgr.web.model.ArticleCategoryDelForm;
-import com.scloudic.jsuite.article.mgr.web.model.ArticleCategoryForm;
+import com.scloudic.jsuite.article.mgr.web.model.ArticleCategoryDelDto;
+import com.scloudic.jsuite.article.mgr.web.model.ArticleCategoryDto;
 import com.scloudic.jsuite.article.service.ArticleCategoryService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
@@ -12,7 +12,6 @@ import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.SecurityUtils;
-import com.scloudic.rabbitframework.security.authz.annotation.Permissions;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
@@ -20,7 +19,6 @@ import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @RestController
@@ -48,7 +46,7 @@ public class ArticleCategoryController extends AbstractRabbitController {
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "添加文章分类")
     @FormValid(fieldFilter = {"articleCategoryId"})
-    public Result<Long> add(@RequestBody ArticleCategoryForm articleCategoryForm) {
+    public Result<Long> add(@RequestBody ArticleCategoryDto articleCategoryForm) {
         Date currDate = new Date();
         ArticleCategory articleCategory = new ArticleCategory();
         BeanUtils.copyProperties(articleCategory, articleCategoryForm);
@@ -64,10 +62,10 @@ public class ArticleCategoryController extends AbstractRabbitController {
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改文章分类")
     @FormValid
-    public Result<Long> update(@RequestBody ArticleCategoryForm articleCategoryForm) {
+    public Result<Long> update(@RequestBody ArticleCategoryDto articleCategoryDto) {
         Date currDate = new Date();
         ArticleCategory articleCategory = new ArticleCategory();
-        BeanUtils.copyProperties(articleCategory, articleCategoryForm);
+        BeanUtils.copyProperties(articleCategory, articleCategoryDto);
         articleCategory.setUserId(SecurityUtils.getUserId());
         articleCategory.setUpdateTime(currDate);
         articleCategoryService.updateByEntity(articleCategory);
@@ -78,7 +76,7 @@ public class ArticleCategoryController extends AbstractRabbitController {
     @UriPermissions
     @Log(operatorType = Log.OperateType.DEL, remark = "删除文章分类")
     @FormValid
-    public Result<Long> del(@RequestBody ArticleCategoryDelForm delForm) {
+    public Result<Long> del(@RequestBody ArticleCategoryDelDto delForm) {
         Date currDate = new Date();
         ArticleCategory articleCategory = new ArticleCategory();
         articleCategory.setArticleCategoryId(delForm.getArticleCategoryId());

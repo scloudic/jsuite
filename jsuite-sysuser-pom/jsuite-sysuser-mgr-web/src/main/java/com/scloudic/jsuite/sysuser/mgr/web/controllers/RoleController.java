@@ -6,6 +6,7 @@ import com.scloudic.jsuite.sysuser.mgr.entity.SysRole;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUserRole;
 import com.scloudic.jsuite.sysuser.mgr.service.SysRoleService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserRoleService;
+import com.scloudic.jsuite.sysuser.mgr.web.model.RoleMenuDto;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.PageBean;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
@@ -15,28 +16,23 @@ import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
 import com.scloudic.rabbitframework.security.realm.SecurityAuthorizingRealm;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import com.scloudic.rabbitframework.web.utils.ServletContextHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 角色管理
  */
-@Component
-@Path("/jsuite/roleMgr")
-@Singleton
-public class RoleController extends AbstractContextResource {
+
+@RestController
+@RequestMapping("/jsuite/roleMgr")
+public class RoleController extends AbstractRabbitController {
     @Autowired
     private SysRoleService sysRoleService;
     @Autowired
@@ -47,16 +43,13 @@ public class RoleController extends AbstractContextResource {
     /**
      * 获取所有角色信息
      *
-     * @param request  request
      * @param roleName 角色名称
      * @return json
      */
-    @GET
-    @Path("findRoles")
+    @GetMapping("findRoles")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "查询角色列表")
-    public Result<List<SysRole>> findAllRoles(@Context HttpServletRequest request,
-                                              @QueryParam("roleName") String roleName) {
+    public Result<List<SysRole>> findAllRoles(@RequestParam(value = "roleName", required = false) String roleName) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         if (StringUtils.isNotBlank(roleName)) {
@@ -70,20 +63,17 @@ public class RoleController extends AbstractContextResource {
     /**
      * 分页获取角色信息
      *
-     * @param request  request
      * @param pageNum  开始页 默认1
      * @param pageSize 每页显示 默认15
      * @param roleName 角色名称
      * @return json
      */
-    @GET
-    @Path("findRolesPage")
+    @GetMapping("findRolesPage")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "分页查询角色列表")
-    public Result<PageBean<SysRole>> findRolesPage(@Context HttpServletRequest request,
-                                                   @QueryParam("pageNum") Long pageNum,
-                                                   @QueryParam("pageSize") Long pageSize,
-                                                   @QueryParam("roleName") String roleName) {
+    public Result<PageBean<SysRole>> findRolesPage(@RequestParam(value = "pageNum", required = false) Long pageNum,
+                                                   @RequestParam(value = "pageSize", required = false) Long pageSize,
+                                                   @RequestParam(value = "roleName", required = false) String roleName) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         if (StringUtils.isNotBlank(roleName)) {
@@ -99,60 +89,31 @@ public class RoleController extends AbstractContextResource {
         return success(pageBean);
     }
 
-
-    /**
-     * 添加角色
-     *
-     * @param request  request
-     * @param roleName 角色名称
-     * @param roleCode 角色编码
-     * @param roleDesc 角色描述
-     * @return json
-     */
-    @POST
-    @Path("addRole")
-    @FormValid
+    @PostMapping("addRole")
+    @FormValid(fieldFilter = "sysRoleId")
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "添加角色")
-    public Result addRole(@Context HttpServletRequest request,
-                          @NotBlank @FormParam("roleName") String roleName,
-                          @NotBlank @FormParam("roleCode") String roleCode,
-                          @FormParam("roleDesc") String roleDesc) {
-        SysRole role = sysRoleService.getRoleByRoleCode(roleCode);
+    public Result addRole(@RequestBody SysRole sysRole) {
+        SysRole role = sysRoleService.getRoleByRoleCode(sysRole.getRoleCode());
         if (role != null) {
             throw new BizException("roleCode.duplicate");
         }
         Date date = new Date();
-        SysRole saveRole = new SysRole();
-        saveRole.setRoleCode(roleCode);
-        saveRole.setRoleName(roleName);
-        saveRole.setRoleDesc(roleDesc);
-        saveRole.setCreateTime(date);
-        saveRole.setUpdateTime(date);
-        sysRoleService.saveRole(saveRole);
+        sysRole.setCreateTime(date);
+        sysRole.setUpdateTime(date);
+        sysRoleService.saveRole(sysRole);
         return success();
     }
 
-    /**
-     * 修改角色
-     *
-     * @param request   request
-     * @param sysRoleId 角色主键
-     * @param roleName  角色名称
-     * @param roleCode  角色编码
-     * @param roleDesc  角色描述
-     * @return json
-     */
-    @POST
-    @Path("updateRole")
+    @PostMapping("updateRole")
     @FormValid
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改角色")
-    public Result updateRole(@Context HttpServletRequest request,
-                             @NotBlank @FormParam("sysRoleId") Long sysRoleId,
-                             @NotBlank @FormParam("roleName") String roleName,
-                             @NotBlank @FormParam("roleCode") String roleCode,
-                             @FormParam("roleDesc") String roleDesc) {
+    public Result updateRole(@RequestBody SysRole sysRole) {
+        String roleDesc = sysRole.getRoleDesc();
+        String roleCode = sysRole.getRoleCode();
+        Long sysRoleId = sysRole.getSysRoleId();
+        String roleName = sysRole.getRoleName();
         SysRole role = sysRoleService.getRoleByRoleCode(roleCode);
         if (role != null && role.getSysRoleId().longValue() != sysRoleId.longValue()) {
             throw new BizException("roleCode.duplicate");
@@ -167,51 +128,36 @@ public class RoleController extends AbstractContextResource {
         return success();
     }
 
-    /**
-     * 删除角色
-     *
-     * @param request   rqeuest
-     * @param sysRoleId 角色主键
-     * @return json
-     */
-    @POST
-    @Path("delRole")
-    @FormValid
+
+    @PostMapping("delRole")
+    @FormValid(fieldFilter = {"roleName", "roleCode"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.DEL, remark = "修改角色")
-    public Result delRole(@Context HttpServletRequest request,
-                          @NotBlank @FormParam("sysRoleId") Long sysRoleId) {
-        sysRoleService.delRole(sysRoleId);
+    public Result delRole(@RequestBody SysRole sysRole) {
+        sysRoleService.delRole(sysRole.getSysRoleId());
         return success();
     }
 
     /**
      * 添加角色菜单
      *
-     * @param request   request
-     * @param sysRoleId 角色主键
-     * @param roleCode  角色编码
-     * @param menuIds   菜单主键,多个逗号分离
-     * @return json
+     * @param roleMenuDto
+     * @return
      */
-    @POST
-    @Path("addRoleMenu")
+    @PostMapping("addRoleMenu")
     @FormValid
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "添加角色菜单")
-    public Result addRoleMenu(@Context HttpServletRequest request,
-                              @NotBlank @FormParam("sysRoleId") Long sysRoleId,
-                              @NotBlank @FormParam("roleCode") String roleCode,
-                              @NotBlank @FormParam("menuIds") String menuIds) {
-        String[] menuIdsStr = menuIds.split(",");
-        sysRoleService.addRoleMenu(sysRoleId, roleCode, menuIdsStr);
+    public Result addRoleMenu(@RequestBody RoleMenuDto roleMenuDto) {
+        sysRoleService.addRoleMenu(roleMenuDto.getSysRoleId(),
+                roleMenuDto.getRoleCode(), roleMenuDto.getMenuIds());
         //修改角色菜单清除所有用户权限
         new Thread(() -> {
             String realmServiceName = jsuiteProperties.getRealmServiceName();
             if (StringUtils.isNotBlank(realmServiceName)) {
                 SecurityAuthorizingRealm securityAuthorizingRealm = (SecurityAuthorizingRealm) ServletContextHelper.getBean(realmServiceName);
                 Where where = new Where();
-                where.createCriteria().andEqual(SysUserRole::getSysRoleId, sysRoleId);
+                where.createCriteria().andEqual(SysUserRole::getSysRoleId, roleMenuDto.getSysRoleId());
                 List<SysUserRole> sysUserRoles = sysUserRoleService.selectByParams(where);
                 sysUserRoles.forEach(sysUserRole -> {
                     securityAuthorizingRealm.cleanAuthorizationCache(sysUserRole.getSysUserId());

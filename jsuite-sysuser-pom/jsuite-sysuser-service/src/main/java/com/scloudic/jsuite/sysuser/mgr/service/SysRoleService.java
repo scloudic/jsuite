@@ -52,5 +52,5 @@ public interface SysRoleService extends IService<SysRole> {
      * @param roleCode
      * @param menuIds
      */
-    void addRoleMenu(Long roleId, String roleCode, String[] menuIds);
+    void addRoleMenu(Long roleId, String roleCode, List<String> menuIds);
 }

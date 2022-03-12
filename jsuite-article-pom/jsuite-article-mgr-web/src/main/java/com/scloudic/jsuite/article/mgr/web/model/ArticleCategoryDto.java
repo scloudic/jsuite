@@ -3,7 +3,7 @@ package com.scloudic.jsuite.article.mgr.web.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class ArticleCategoryForm {
+public class ArticleCategoryDto {
     /**
      * 文章分类主键
      */

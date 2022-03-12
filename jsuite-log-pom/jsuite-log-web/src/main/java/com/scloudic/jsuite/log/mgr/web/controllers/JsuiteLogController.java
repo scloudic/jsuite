@@ -5,7 +5,7 @@ import com.scloudic.jsuite.log.model.LogBean;
 import com.scloudic.jsuite.log.service.JsuiteLogService;
 import com.scloudic.rabbitframework.core.utils.PageBean;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractRabbitContextController;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/jsuite/logMgr")
-public class JsuiteLogController extends AbstractRabbitContextController {
+public class JsuiteLogController extends AbstractRabbitController {
     @Autowired
     private JsuiteLogService jsuiteLogService;
 

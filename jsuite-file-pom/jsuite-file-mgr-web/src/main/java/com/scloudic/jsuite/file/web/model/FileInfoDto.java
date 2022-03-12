@@ -2,7 +2,7 @@ package com.scloudic.jsuite.file.web.model;
 
 import javax.validation.constraints.NotBlank;
 
-public class FileInfoForm {
+public class FileInfoDto {
     @NotBlank
     private String fileId;
     @NotBlank

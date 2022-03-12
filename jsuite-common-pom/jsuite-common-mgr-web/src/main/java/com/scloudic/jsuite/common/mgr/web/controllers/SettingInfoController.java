@@ -1,7 +1,7 @@
 package com.scloudic.jsuite.common.mgr.web.controllers;
 
 import com.scloudic.jsuite.common.entity.SettingInfo;
-import com.scloudic.jsuite.common.mgr.web.model.SettingDelForm;
+import com.scloudic.jsuite.common.mgr.web.model.SettingDelDto;
 import com.scloudic.jsuite.common.service.SettingInfoService;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.rabbitframework.core.utils.PageBean;
@@ -80,7 +80,7 @@ public class SettingInfoController extends AbstractRabbitController {
     @PostMapping("del")
     @FormValid
     @Log(operatorType = Log.OperateType.ADD, remark = "配置管理删除")
-    public Result del(@RequestBody SettingDelForm delForm) {
+    public Result del(@RequestBody SettingDelDto delForm) {
         settingInfoService.deleteById(delForm.getSettingId());
         return Result.success();
     }

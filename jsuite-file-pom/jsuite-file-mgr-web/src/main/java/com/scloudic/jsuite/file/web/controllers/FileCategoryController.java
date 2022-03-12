@@ -3,7 +3,7 @@ package com.scloudic.jsuite.file.web.controllers;
 import com.scloudic.jsuite.file.entity.FileCategory;
 import com.scloudic.jsuite.file.service.FileCategoryService;
 import com.scloudic.jsuite.file.service.FileInfoService;
-import com.scloudic.jsuite.file.web.model.FileCategoryDelForm;
+import com.scloudic.jsuite.file.web.model.FileCategoryDelDto;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.PageBean;
@@ -84,7 +84,7 @@ public class FileCategoryController extends AbstractRabbitController {
     @UriPermissions
     @FormValid
     @Log(operatorType = Log.OperateType.DEL, remark = "删除文件分类")
-    public Result del(@RequestBody FileCategoryDelForm delForm) {
+    public Result del(@RequestBody FileCategoryDelDto delForm) {
         if ("0".equals(delForm.getFileCategoryId())) {
             throw new BizException("系统定义分类不允许删除");
         }

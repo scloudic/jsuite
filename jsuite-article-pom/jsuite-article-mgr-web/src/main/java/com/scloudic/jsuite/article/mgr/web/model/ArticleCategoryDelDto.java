@@ -2,7 +2,7 @@ package com.scloudic.jsuite.article.mgr.web.model;
 
 import javax.validation.constraints.NotNull;
 
-public class ArticleCategoryDelForm {
+public class ArticleCategoryDelDto {
     @NotNull
     private Long articleCategoryId;
 

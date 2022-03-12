@@ -14,32 +14,23 @@ import com.scloudic.jsuite.sysuser.mgr.service.SysPostService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserRoleService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
 import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
+import com.scloudic.jsuite.sysuser.mgr.web.model.SysUserDto;
+import com.scloudic.jsuite.sysuser.mgr.web.model.UpdatePwdDto;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
-import com.scloudic.rabbitframework.core.utils.DateFormatUtil;
 import com.scloudic.rabbitframework.core.utils.PasswordUtils;
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import java.io.File;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,11 +38,9 @@ import java.util.List;
  *
  * @since 1.8
  */
-@Component
-@Path("/jsuite/user")
-@Singleton
-@Produces(MediaType.APPLICATION_JSON)
-public class UserProfileController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/user")
+public class UserProfileController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(UserProfileController.class);
     @Autowired
     private SysUserService sysUserService;
@@ -66,8 +55,7 @@ public class UserProfileController extends AbstractContextResource {
     @Autowired
     private JsuiteSysUserProperties jsuiteSysUserProperties;
 
-    @GET
-    @Path("profile")
+    @GetMapping("profile")
     @UserAuthentication
     @Log(operatorType = Log.OperateType.SELECT, remark = "获取当前登录用户信息")
     public Result<SysUser> profile() {
@@ -89,36 +77,28 @@ public class UserProfileController extends AbstractContextResource {
         return success(sysUser);
     }
 
-
-    @POST
-    @Path("updatePwd")
+    @PostMapping("updatePwd")
     @UserAuthentication
     @FormValid
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改密码")
-    public Result updatePwd(@NotBlank @FormParam("srcPwd") String srcPwd,
-                            @NotBlank @FormParam("newPwd") String newPwd) {
+    public Result updatePwd(@RequestBody UpdatePwdDto updatePwdDto) {
         SysUser tmpSysUser = sysUserService.selectById(SecurityUtils.getUserId());
         String currLoginPwd = tmpSysUser.getLoginPwd();
-        if (!PasswordUtils.verify(srcPwd, currLoginPwd)) {
+        if (!PasswordUtils.verify(updatePwdDto.getSrcPwd(), currLoginPwd)) {
             throw new BizException("原密码不对,请重新输入");
         }
         SysUser sysUser = new SysUser();
         sysUser.setSysUserId(SecurityUtils.getUserId());
-        sysUser.setLoginPwd(PasswordUtils.generate(newPwd));
+        sysUser.setLoginPwd(PasswordUtils.generate(updatePwdDto.getNewPwd()));
         sysUserService.updateByEntity(sysUser);
         return success();
     }
 
-    @POST
-    @Path("update")
+    @PostMapping("update")
     @FormValid
     @UserAuthentication
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改当前登录用户信息")
-    public Result update(@Context HttpServletRequest request,
-                         @NotBlank @FormParam("realName") String realName,
-                         @NotBlank @FormParam("userPhone") String userPhone,
-                         @FormParam("userMail") String userMail,
-                         @DefaultValue("3") @FormParam("gender") Integer gender) {
+    public Result update(@RequestBody SysUserDto sysUserDto) {
         String userId = SecurityUtils.getUserId();
         SysUser sysUser = sysUserService.getSysUserByUserId(userId);
         if (sysUser == null) {
@@ -126,10 +106,10 @@ public class UserProfileController extends AbstractContextResource {
         }
         SysUser updateUser = new SysUser();
         updateUser.setSysUserId(userId);
-        updateUser.setRealName(realName);
-        updateUser.setUserPhone(userPhone);
-        updateUser.setUserMail(userMail);
-        updateUser.setGender(gender);
+        updateUser.setRealName(sysUserDto.getRealName());
+        updateUser.setUserPhone(sysUserDto.getUserPhone());
+        updateUser.setUserMail(sysUserDto.getUserMail());
+        updateUser.setGender(sysUserDto.getGender());
         sysUserService.updateByEntity(updateUser);
         return success();
     }
@@ -137,34 +117,23 @@ public class UserProfileController extends AbstractContextResource {
     /**
      * 头像上传
      *
-     * @param form form
+     * @param multipartFile
      * @return
      */
-    @POST
-    @Path("avatar")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @FormValid
+    @PostMapping("avatar")
     @UserAuthentication
-    public Result<String> upload(FormDataMultiPart form) {
+    public Result<String> upload(@RequestPart("file") MultipartFile multipartFile) {
         InputStream is = null;
         try {
             String fileCategoryName = jsuiteSysUserProperties.getAvatarPath();
-            List<FormDataBodyPart> bodyParts = form.getFields("files");
-            if (bodyParts == null || bodyParts.size() <= 0) {
-                return failure("文件为空");
-            }
             String userId = SecurityUtils.getUserId();
             SysUser sysUser = sysUserService.getSysUserByUserId(userId);
             if (sysUser == null) {
                 throw new BizException("用户不存在！");
             }
-            FormDataBodyPart bodyPart = bodyParts.get(0);
-            is = bodyPart.getValueAs(InputStream.class);
-            FormDataContentDisposition formDataContentDisposition = bodyPart.getFormDataContentDisposition();
-            String srcFileName = formDataContentDisposition.getFileName(); // 文件名
-            MediaType mediaType = bodyPart.getMediaType();
-            String fileMediaType = mediaType.getType() + "/" + mediaType.getSubtype();
-            FileBaseInfo fileBaseInfo = fileService.fileUpload(fileCategoryName, srcFileName, is, fileMediaType);
+            is = multipartFile.getInputStream();
+            String srcFileName = multipartFile.getOriginalFilename(); // 文件名
+            FileBaseInfo fileBaseInfo = fileService.fileUpload(fileCategoryName, srcFileName, is);
             SysUser updateUser = new SysUser();
             updateUser.setSysUserId(userId);
             updateUser.setAvatarPath(fileBaseInfo.getHttpUrl());
@@ -174,9 +143,7 @@ public class UserProfileController extends AbstractContextResource {
             logger.error(e.getMessage(), e);
             throw new BizException("upload.file.error");
         } finally {
-            if (is != null) {
-                IOUtils.closeQuietly(is);
-            }
+            IOUtils.closeQuietly(is, null);
         }
     }
 }

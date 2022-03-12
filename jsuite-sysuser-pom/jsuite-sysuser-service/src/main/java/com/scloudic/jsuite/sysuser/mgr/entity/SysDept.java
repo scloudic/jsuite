@@ -4,119 +4,125 @@ import com.scloudic.rabbitframework.jbatis.annontations.Column;
 import com.scloudic.rabbitframework.jbatis.annontations.ID;
 import com.scloudic.rabbitframework.jbatis.annontations.Table;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
-* This class corresponds to the database table sys_dept
-*/
+ * This class corresponds to the database table sys_dept
+ */
 @Table
 public class SysDept implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     public static final String FIELDS = " dept_id,dept_parent_id,create_time,dept_ids,dept_name,dept_phone,remark,update_time,sort_num,dept_mail,dept_lead ";
 
     /**
-    * This field corresponds to the database column sys_dept.dept_id
-    * <p>
-    * description:部门主键
-    */
+     * This field corresponds to the database column sys_dept.dept_id
+     * <p>
+     * description:部门主键
+     */
     @ID
+    @NotNull
     private Integer deptId;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_parent_id
-    * <p>
-    * description:父主键(根为0)
-    */
+     * This field corresponds to the database column sys_dept.dept_parent_id
+     * <p>
+     * description:父主键(根为0)
+     */
     @Column
+    @NotNull
     private Integer deptParentId;
 
     /**
-    * This field corresponds to the database column sys_dept.create_time
-    * <p>
-    * description:创建时间
-    */
+     * This field corresponds to the database column sys_dept.create_time
+     * <p>
+     * description:创建时间
+     */
     @Column
     private Date createTime;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_ids
-    * <p>
-    * description:部门id层次(多个逗号分离)
-    */
+     * This field corresponds to the database column sys_dept.dept_ids
+     * <p>
+     * description:部门id层次(多个逗号分离)
+     */
     @Column
     private String deptIds;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_name
-    * <p>
-    * description:部门名称
-    */
+     * This field corresponds to the database column sys_dept.dept_name
+     * <p>
+     * description:部门名称
+     */
     @Column
+    @NotBlank
     private String deptName;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_phone
-    * <p>
-    * description:负责人联系电话
-    */
+     * This field corresponds to the database column sys_dept.dept_phone
+     * <p>
+     * description:负责人联系电话
+     */
     @Column
     private String deptPhone;
 
     /**
-    * This field corresponds to the database column sys_dept.del_status
-    * <p>
-    * description:删除状态(1、正常,2、删除,)
-    */
+     * This field corresponds to the database column sys_dept.del_status
+     * <p>
+     * description:删除状态(1、正常,2、删除,)
+     */
     @Column
     private Integer delStatus;
 
     /**
-    * This field corresponds to the database column sys_dept.remark
-    * <p>
-    * description:备注
-    */
+     * This field corresponds to the database column sys_dept.remark
+     * <p>
+     * description:备注
+     */
     @Column
     private String remark;
 
     /**
-    * This field corresponds to the database column sys_dept.update_time
-    * <p>
-    * description:最后一次修改时间
-    */
+     * This field corresponds to the database column sys_dept.update_time
+     * <p>
+     * description:最后一次修改时间
+     */
     @Column
     private Date updateTime;
 
     /**
-    * This field corresponds to the database column sys_dept.active_status
-    * <p>
-    * description:活动状态(1、正常,2、停用)
-    */
+     * This field corresponds to the database column sys_dept.active_status
+     * <p>
+     * description:活动状态(1、正常,2、停用)
+     */
     @Column
+    @NotNull
     private Integer activeStatus;
 
     /**
-    * This field corresponds to the database column sys_dept.sort_num
-    * <p>
-    * description:排序序号
-    */
+     * This field corresponds to the database column sys_dept.sort_num
+     * <p>
+     * description:排序序号
+     */
     @Column
     private Integer sortNum;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_mail
-    * <p>
-    * description:负责人联系邮箱
-    */
+     * This field corresponds to the database column sys_dept.dept_mail
+     * <p>
+     * description:负责人联系邮箱
+     */
     @Column
     private String deptMail;
 
     /**
-    * This field corresponds to the database column sys_dept.dept_lead
-    * <p>
-    * description:部门负责人
-    */
+     * This field corresponds to the database column sys_dept.dept_lead
+     * <p>
+     * description:部门负责人
+     */
     @Column
     private String deptLead;
     @Column

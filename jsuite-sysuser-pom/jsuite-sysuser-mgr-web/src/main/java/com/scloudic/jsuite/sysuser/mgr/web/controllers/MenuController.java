@@ -5,30 +5,25 @@ import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysRoleMenu;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysRoleMenuService;
-import com.scloudic.jsuite.sysuser.mgr.web.vo.MenuVo;
+import com.scloudic.jsuite.sysuser.mgr.web.model.MenuVo;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.core.utils.UUIDUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.*;
 
-@Component
-@Path("/jsuite/menuMgr")
-@Singleton
-public class MenuController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/menuMgr")
+public class MenuController extends AbstractRabbitController {
     @Autowired
     private SysMenuService sysMenuService;
     @Autowired
@@ -37,16 +32,13 @@ public class MenuController extends AbstractContextResource {
     /**
      * 查询菜单功能列表
      *
-     * @param request request
-     * @param menuId  菜单主键
+     * @param menuId 菜单主键
      * @return json
      */
-    @GET
-    @Path("findMenu")
+    @GetMapping("findMenu")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "功能菜单tree查询")
-    public Result<List<MenuVo>> findMenu(@Context HttpServletRequest request,
-                                         @DefaultValue("-1") @QueryParam("menuId") String menuId) {
+    public Result<List<MenuVo>> findMenu(@RequestParam(value = "menuId", defaultValue = "-1", required = false) String menuId) {
         List<MenuVo> menuVos = new ArrayList<>();
         menuVos = findChildrenMainMenu(menuId, new HashMap<>());
         return success(menuVos);
@@ -55,18 +47,15 @@ public class MenuController extends AbstractContextResource {
     /**
      * 获取菜单集合
      *
-     * @param request    request
      * @param menuName   查询菜单名称
      * @param rootStatus 是否包括根级节点
      * @return json
      */
-    @GET
-    @Path("listMenu")
+    @GetMapping("listMenu")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "功能菜单列表查询")
-    public Result<List<SysMenu>> listMenu(@Context HttpServletRequest request,
-                                          @QueryParam("menuName") String menuName,
-                                          @DefaultValue("2") @QueryParam("rootStatus") Integer rootStatus) {
+    public Result<List<SysMenu>> listMenu(@RequestParam(value = "menuName", required = false) String menuName,
+                                          @RequestParam(value = "rootStatus", defaultValue = "2", required = false) Integer rootStatus) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
 
@@ -117,25 +106,25 @@ public class MenuController extends AbstractContextResource {
         return result;
     }
 
-    @POST
-    @Path("addMenu")
-    @FormValid
+    @PostMapping("addMenu")
+    @FormValid(fieldFilter = "sysMenuId")
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "添加功能菜单")
-    public Result addMenu(@Context HttpServletRequest request,
-                          @NotBlank @FormParam("menuName") String menuName,
-                          @NotBlank @FormParam("parentMenuId") String parentMenuId,
-                          @DefaultValue("1") @FormParam("target") Integer target,
-                          @FormParam("frontEndUrl") String frontEndUrl,
-                          @FormParam("frontEndParamName") String frontEndParamName,
-                          @FormParam("backEndUrl") String backEndUrl,
-                          @FormParam("menuCode") String menuCode,
-                          @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                          @DefaultValue("1") @FormParam("menuType") Integer menuType,
-                          @FormParam("iconPath") String iconPath,
-                          @FormParam("menuDesc") String menuDesc,
-                          @DefaultValue("1") @FormParam("btnFlag") Integer btnFlag) {
-
+    public Result addMenu(@RequestBody SysMenu menu) {
+        String menuCode = menu.getMenuCode();
+        String parentMenuId = menu.getParentMenuId();
+        if (menu.getTarget() == null) {
+            menu.setTarget(1);
+        }
+        if (menu.getSortNum() == null) {
+            menu.setSortNum(0);
+        }
+        if (menu.getMenuType() == null) {
+            menu.setMenuType(1);
+        }
+        if (menu.getBtnFlag() == null) {
+            menu.setBtnFlag(1);
+        }
         if (StringUtils.isNotBlank(menuCode)) {
             Where where = new Where();
             Criteria criteria = where.createCriteria();
@@ -144,51 +133,24 @@ public class MenuController extends AbstractContextResource {
             if (totalCount > 0) {
                 throw new BizException("菜单标识不能重复!");
             }
-        } else {
-            menuCode = null;
         }
         SysMenu sysMenu = sysMenuService.selectById(parentMenuId);
         Date date = new Date();
-        SysMenu menu = new SysMenu();
         menu.setSysMenuId(UUIDUtils.getTimeUUID32());
         menu.setMenuLevel(sysMenu.getMenuLevel().intValue() + 1);
-        menu.setMenuDesc(menuDesc);
-        menu.setBtnFlag(btnFlag);
         menu.setCreateTime(date);
-        menu.setIconPath(iconPath);
-        menu.setMenuCode(menuCode);
-        menu.setFrontEndParamName(frontEndParamName);
-        menu.setMenuName(menuName);
-        menu.setParentMenuId(parentMenuId);
-        menu.setFrontEndUrl(frontEndUrl);
-        menu.setBackEndUrl(backEndUrl);
-        menu.setTarget(target);
-        menu.setSortNum(sortNum);
         menu.setUpdateTime(date);
-        menu.setMenuType(menuType);
         sysMenuService.saveMenu(menu);
         return success();
     }
 
-    @POST
-    @Path("updateMenu")
-    @FormValid
+    @PostMapping("updateMenu")
+    @FormValid(fieldFilter = "parentMenuId")
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改功能菜单")
-    public Result updateMenu(@Context HttpServletRequest request,
-                             @NotBlank @FormParam("menuName") String menuName,
-                             @NotBlank @FormParam("menuId") String menuId,
-                             @FormParam("url") String url,
-                             @FormParam("target") Integer target,
-                             @FormParam("frontEndUrl") String frontEndUrl,
-                             @FormParam("backEndUrl") String backEndUrl,
-                             @FormParam("menuCode") String menuCode,
-                             @FormParam("frontEndParamName") String frontEndParamName,
-                             @FormParam("sortNum") Integer sortNum,
-                             @FormParam("menuType") Integer menuType,
-                             @FormParam("iconPath") String iconPath,
-                             @FormParam("menuDesc") String menuDesc,
-                             @FormParam("btnFlag") Integer btnFlag) {
+    public Result updateMenu(@RequestBody SysMenu sysMenu) {
+        String menuCode = sysMenu.getMenuCode();
+        String menuId = sysMenu.getSysMenuId();
         if (StringUtils.isNotBlank(menuCode)) {
             Where where = new Where();
             Criteria criteria = where.createCriteria();
@@ -204,18 +166,18 @@ public class MenuController extends AbstractContextResource {
         Date date = new Date();
         SysMenu menu = new SysMenu();
         menu.setSysMenuId(menuId);
-        menu.setMenuDesc(menuDesc);
-        menu.setBtnFlag(btnFlag);
-        menu.setFrontEndParamName(frontEndParamName);
-        menu.setIconPath(iconPath);
-        menu.setMenuName(menuName);
-        menu.setFrontEndUrl(frontEndUrl);
-        menu.setBackEndUrl(backEndUrl);
+        menu.setMenuDesc(sysMenu.getMenuDesc());
+        menu.setBtnFlag(sysMenu.getBtnFlag());
+        menu.setFrontEndParamName(sysMenu.getFrontEndParamName());
+        menu.setIconPath(sysMenu.getIconPath());
+        menu.setMenuName(sysMenu.getMenuName());
+        menu.setFrontEndUrl(sysMenu.getFrontEndUrl());
+        menu.setBackEndUrl(sysMenu.getBackEndUrl());
         menu.setMenuCode(menuCode);
-        menu.setTarget(target);
-        menu.setSortNum(sortNum);
+        menu.setTarget(sysMenu.getTarget());
+        menu.setSortNum(sysMenu.getSortNum());
         menu.setUpdateTime(date);
-        menu.setMenuType(menuType);
+        menu.setMenuType(sysMenu.getMenuType());
         sysMenuService.updateMenu(menu);
         return success();
     }
@@ -223,17 +185,15 @@ public class MenuController extends AbstractContextResource {
     /**
      * 删除菜单
      *
-     * @param request request
-     * @param menuId  菜单主键
-     * @return json
+     * @param sysMenu
+     * @return
      */
-    @POST
-    @Path("delMenu")
-    @FormValid
+    @PostMapping("delMenu")
+    @FormValid(fieldFilter = {"parentMenuId", "menuName"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.DEL, remark = "删除功能菜单")
-    public Result delMenu(@Context HttpServletRequest request,
-                          @NotBlank @FormParam("menuId") String menuId) {
+    public Result delMenu(@RequestBody SysMenu sysMenu) {
+        String menuId = sysMenu.getSysMenuId();
         if ("1".equals(menuId)) {
             throw new BizException("can.not.menu");
         }
@@ -244,19 +204,16 @@ public class MenuController extends AbstractContextResource {
     /**
      * 获取所有菜单,并根据角色主键判断菜单是否选中
      *
-     * @param request      request
      * @param parentMenuId 父菜单主键
      * @param sysRoleId    角色主键
      * @return json
      */
-    @GET
-    @Path("findRoleMenu")
+    @GetMapping("findRoleMenu")
     @UriPermissions
     @FormValid
     @Log(operatorType = Log.OperateType.SELECT, remark = "根据角色查询功能菜单")
-    public Result<List<MenuVo>> findRoleMenu(@Context HttpServletRequest request,
-                                             @DefaultValue("1") @QueryParam("parentMenuId") String parentMenuId,
-                                             @NotBlank @QueryParam("sysRoleId") Long sysRoleId) {
+    public Result<List<MenuVo>> findRoleMenu(@RequestParam(value = "parentMenuId", required = false, defaultValue = "1") String parentMenuId,
+                                             @NotBlank @RequestParam("sysRoleId") Long sysRoleId) {
         List<MenuVo> menuVos = new ArrayList<MenuVo>();
         Map<Long, SysRoleMenu> menuMap = sysRoleMenuService.findSysRoleMenuByRoleId(sysRoleId);
         menuVos = findChildrenMainMenu(parentMenuId, menuMap);

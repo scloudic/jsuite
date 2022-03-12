@@ -3,27 +3,21 @@ package com.scloudic.jsuite.sysuser.mgr.web.controllers;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysDept;
-import com.scloudic.jsuite.sysuser.mgr.entity.SysUser;
 import com.scloudic.jsuite.sysuser.mgr.service.SysDeptService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
-import com.scloudic.jsuite.sysuser.mgr.web.vo.DeptVo;
+import com.scloudic.jsuite.sysuser.mgr.web.model.DeptVo;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.BeanUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +25,9 @@ import java.util.List;
 /**
  * 部门管理
  */
-@Component
-@Path("/jsuite/deptMgr")
-@Singleton
-public class DeptController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/deptMgr")
+public class DeptController extends AbstractRabbitController {
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
@@ -43,26 +36,16 @@ public class DeptController extends AbstractContextResource {
     /**
      * 树型结构获取部门所有信息
      *
-     * @param request request
-     * @param userId  用户主键
-     * @return json
+     * @param deptId
+     * @return
      */
-    @GET
-    @Path("deptTree")
+    @GetMapping("deptTree")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "树型结构获取部门所有信息")
-    public Result<List<DeptVo>> deptTree(@Context HttpServletRequest request,
-                                         @NotBlank @QueryParam("userId") String userId,
-                                         @DefaultValue("0") @QueryParam("deptId") Integer deptId) {
+    public Result<List<DeptVo>> deptTree(@RequestParam(value = "deptId",
+            required = false, defaultValue = "0") Integer deptId) {
         List<DeptVo> result = new ArrayList<DeptVo>();
-        Integer selectDeptId = 0;
-        if (StringUtils.isNotBlank(userId)) {
-            SysUser sysUser = sysUserService.selectById(userId);
-            if (sysUser != null) {
-                selectDeptId = sysUser.getDeptId();
-            }
-        }
-        result = findChildren(deptId, selectDeptId);
+        result = findChildren(deptId, deptId);
         return success(result);
     }
 
@@ -97,16 +80,14 @@ public class DeptController extends AbstractContextResource {
     /**
      * 查询所有部门信息
      *
-     * @param request  request
      * @param deptName 部门名称
      * @return json
      */
-    @GET
-    @Path("listAll")
+    @GetMapping("listAll")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "查询所有部门信息")
-    public Result<List<SysDept>> list(@Context HttpServletRequest request,
-                                      @QueryParam("deptName") String deptName) {
+    public Result<List<SysDept>> list(@RequestParam(value = "deptName", required = false)
+                                              String deptName) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SysDept::getDelStatus, Enums.DelStatus.NORMAL.getValue());
@@ -118,37 +99,24 @@ public class DeptController extends AbstractContextResource {
         return success(sysDepts);
     }
 
-    @POST
-    @Path("addDept")
-    @FormValid
+    @PostMapping("addDept")
+    @FormValid(fieldFilter = {"deptId", "activeStatus"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "添加部门")
-    public Result<Object> addDept(@Context HttpServletRequest request,
-                                  @NotBlank @FormParam("deptName") String deptName,
-                                  @NotBlank @FormParam("deptParentId") Integer deptParentId,
-                                  @FormParam("deptLead") String deptLead,
-                                  @FormParam("deptPhone") String deptPhone,
-                                  @FormParam("deptMail") String deptMail,
-                                  @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                                  @FormParam("remark") String remark) {
-        SysDept sysDept = new SysDept();
-        sysDept.setDeptParentId(deptParentId);
-        sysDept.setDeptName(deptName);
-        sysDept.setDeptLead(deptLead);
-        sysDept.setDeptPhone(deptPhone);
-        sysDept.setDeptMail(deptMail);
-        sysDept.setSortNum(sortNum);
+    public Result<Object> addDept(@RequestBody SysDept sysDept) {
+        if (sysDept.getSortNum() == null) {
+            sysDept.setSortNum(0);
+        }
         Date date = new Date();
         sysDept.setDelStatus(Enums.DelStatus.NORMAL.getValue());
         sysDept.setActiveStatus(Enums.ActiveStatus.OPEN.getValue());
         sysDept.setCreateTime(date);
         sysDept.setUpdateTime(date);
-        sysDept.setRemark(remark);
         sysDeptService.insertByEntity(sysDept);
-        SysDept dept = sysDeptService.selectById(deptParentId);
+        SysDept dept = sysDeptService.selectById(sysDept.getDeptParentId());
         String deptIds = dept.getDeptIds();
         String deptNames = sysDept.getDeptName();
-        if (deptParentId.intValue() != 1) {
+        if (sysDept.getDeptParentId().intValue() != 1) {
             deptNames = dept.getDeptNames();
             deptNames = deptNames + "," + sysDept.getDeptName();
         }
@@ -162,68 +130,48 @@ public class DeptController extends AbstractContextResource {
     }
 
 
-    @POST
-    @Path("updateDept")
-    @FormValid
+    @PostMapping("updateDept")
+    @FormValid(fieldFilter = {"activeStatus"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "修改部门")
-    public Result updateDept(@Context HttpServletRequest request,
-                             @NotBlank @FormParam("deptName") String deptName,
-                             @NotBlank @FormParam("deptId") Integer deptId,
-                             @FormParam("deptLead") String deptLead,
-                             @FormParam("deptPhone") String deptPhone,
-                             @FormParam("deptMail") String deptMail,
-                             @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                             @FormParam("remark") String remark) {
-        SysDept sysDept = new SysDept();
-        sysDept.setDeptId(deptId);
-        sysDept.setDeptName(deptName);
-        sysDept.setDeptLead(deptLead);
-        sysDept.setDeptPhone(deptPhone);
-        sysDept.setDeptMail(deptMail);
-        sysDept.setSortNum(sortNum);
+    public Result updateDept(@RequestBody SysDept sysDept) {
         Date date = new Date();
         sysDept.setUpdateTime(date);
-        sysDept.setRemark(remark);
         sysDeptService.updateDept(sysDept);
-        return success();
+        return success(sysDept.getDeptId());
     }
 
-    @POST
-    @Path("updateActiveStatus")
-    @FormValid
+    @PostMapping("updateActiveStatus")
+    @FormValid(fieldFilter = {"deptParentId", "deptName"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改部门启用状态")
-    public Result updateActiveStatus(@Context HttpServletRequest request,
-                                     @NotBlank @FormParam("deptId") Integer deptId,
-                                     @NotBlank @FormParam("activeStatus") Integer activeStatus) {
+    public Result updateActiveStatus(@RequestBody SysDept dept) {
         SysDept sysDept = new SysDept();
-        sysDept.setDeptId(deptId);
-        if (Enums.ActiveStatus.getActiveStatus(activeStatus) == null) {
+        sysDept.setDeptId(dept.getDeptId());
+        if (Enums.ActiveStatus.getActiveStatus(dept.getActiveStatus()) == null) {
             throw new BizException("activeStatus.null");
         }
         Where where = new Where();
         Criteria criteria = where.createCriteria();
-        criteria.andEqual(SysDept::getDeptParentId, deptId);
+        criteria.andEqual(SysDept::getDeptParentId, dept.getDeptId());
         criteria.andEqual(SysDept::getDelStatus, Enums.DelStatus.NORMAL.getValue());
         long count = sysDeptService.selectCountByParams(where);
         if (count > 0) {
             throw new BizException("dept.haveChildrenDept.error");
         }
 
-        sysDept.setActiveStatus(activeStatus);
+        sysDept.setActiveStatus(dept.getActiveStatus());
         sysDept.setUpdateTime(new Date());
         sysDeptService.updateByEntity(sysDept);
         return success();
     }
 
-    @POST
-    @Path("del")
+    @PostMapping("del")
     @UriPermissions
-    @FormValid
+    @FormValid(fieldFilter = {"deptParentId", "deptName", "activeStatus"})
     @Log(operatorType = Log.OperateType.DEL, remark = "删除部门信息")
-    public Result del(@Context HttpServletRequest request,
-                      @NotBlank @FormParam("deptId") Integer deptId) {
+    public Result del(@RequestBody SysDept sysDept) {
+        Integer deptId = sysDept.getDeptId();
         if (deptId.intValue() == 1) {
             throw new BizException("机构部门不能删除!");
         }
@@ -235,9 +183,9 @@ public class DeptController extends AbstractContextResource {
         if (count > 0) {
             throw new BizException("还有子部门不能删除!");
         }
-        SysDept sysDept = new SysDept();
-        sysDept.setDeptId(deptId);
-        sysDept.setDelStatus(Enums.DelStatus.DEL.getValue());
+        SysDept updateDept = new SysDept();
+        updateDept.setDeptId(deptId);
+        updateDept.setDelStatus(Enums.DelStatus.DEL.getValue());
         sysDeptService.updateByEntity(sysDept);
         return success();
     }
