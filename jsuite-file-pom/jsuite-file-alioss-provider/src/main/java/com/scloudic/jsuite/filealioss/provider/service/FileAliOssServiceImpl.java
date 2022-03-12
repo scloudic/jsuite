@@ -43,12 +43,10 @@ public class FileAliOssServiceImpl implements FileService {
      * @param fileCategoryName 文件分类名称
      * @param srcFileName      原文件名
      * @param inputStream      文件流
-     * @param fileMediaType    文件类型
      * @return {@link FileBaseInfo}
      */
     @Override
-    public FileBaseInfo fileUpload(String fileCategoryName, String srcFileName,
-                                   InputStream inputStream, String fileMediaType) {
+    public FileBaseInfo fileUpload(String fileCategoryName, String srcFileName, InputStream inputStream) {
         String extName = FilenameUtils.getExtension(srcFileName);
         String saveFileName = UUIDUtils.getRandomUUID32() + "." + extName;
         String fileFullPath = jsuiteProperties.getLocalFileStore();
@@ -65,8 +63,7 @@ public class FileAliOssServiceImpl implements FileService {
         }
         fileUrl = fileUrl + "/" + saveFileName;
         uploadAliOss(fileCategoryName, saveFileName, inputStream);
-        if (FileUtils.imageFileType.contains(extName.toLowerCase())
-                && fileMediaType.contains(FileUtils.PREFIX_IMAGE)) {
+        if (FileUtils.imageFileType.contains(extName.toLowerCase())) {
             imgUpload(fileCategoryName, saveFileName, inputStream, extName);
         }
 

@@ -3,29 +3,24 @@ package com.scloudic.jsuite.article.api.web.controllers;
 import com.scloudic.jsuite.article.entity.ArticleCategory;
 import com.scloudic.jsuite.article.service.ArticleCategoryService;
 import com.scloudic.jsuite.core.utils.Enums;
-import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
-import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import java.util.List;
 
-@Component
-@Path("/jsuite/api/articleCategory")
-@Singleton
-public class ArticleCategoryApiController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/api/articleCategory")
+public class ArticleCategoryApiController extends AbstractRabbitController {
     @Autowired
     private ArticleCategoryService articleCategoryService;
 
-    @GET
-    @Path("list")
+    @GetMapping("list")
     public Result<List<ArticleCategory>> list() {
         Where where = new Where();
         Criteria criteria = where.createCriteria();

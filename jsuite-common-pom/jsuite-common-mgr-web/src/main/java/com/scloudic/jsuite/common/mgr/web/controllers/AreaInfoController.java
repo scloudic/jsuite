@@ -1,25 +1,20 @@
 package com.scloudic.jsuite.common.mgr.web.controllers;
 
 import com.scloudic.jsuite.common.entity.AreaInfo;
+import com.scloudic.jsuite.common.mgr.web.model.AreaActiveStatusForm;
+import com.scloudic.jsuite.common.mgr.web.model.AreaDelForm;
 import com.scloudic.jsuite.common.service.AreaInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
-import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,26 +23,22 @@ import java.util.List;
  *
  * @author min.xie
  */
-@Component
-@Singleton
-@Path("/jsuite/areaMgr/")
-public class AreaInfoController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/areaMgr/")
+public class AreaInfoController extends AbstractRabbitController {
     @Autowired
     private AreaInfoService areaInfoService;
 
     /**
      * 查询地区信息树型结构
      *
-     * @param request request
-     * @param areaId  地区主键
+     * @param areaId 地区主键
      * @return obj
      */
-    @GET
-    @Path("areaTree")
+    @GetMapping("areaTree")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "地区查询")
-    public Result<List<AreaInfo>> findAreaInfo(@Context HttpServletRequest request,
-                                               @DefaultValue("0") @QueryParam("areaId") Integer areaId) {
+    public Result<List<AreaInfo>> findAreaInfo(@RequestParam(value = "areaId", defaultValue = "0", required = false) Integer areaId) {
         List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaId, null);
         areaInfos.forEach(areaInfo -> {
             Integer pAreaId = areaInfo.getAreaId();
@@ -62,32 +53,25 @@ public class AreaInfoController extends AbstractContextResource {
         return success(areaInfos);
     }
 
-    @POST
-    @Path("add")
+    @PostMapping("add")
     @UriPermissions
-    @FormValid
+    @FormValid(fieldFilter = {"areaId", "activeStatus"})
     @Log(operatorType = Log.OperateType.ADD, remark = "地区添加")
-    public Result add(@Context HttpServletRequest request,
-                      @NotBlank @FormParam("areaName") String areaName,
-                      @FormParam("latitude") String latitude,
-                      @NotBlank @FormParam("parentAreaId") Integer parentAreaId,
-                      @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                      @DefaultValue("2") @FormParam("hotStatus") Integer hotStatus,
-                      @FormParam("longitude") String longitude) {
-        AreaInfo areaInfo = new AreaInfo();
-        areaInfo.setParentAreaId(parentAreaId);
-        areaInfo.setLatitude(latitude);
-        areaInfo.setLongitude(longitude);
-        areaInfo.setSortNum(sortNum);
-        areaInfo.setHotStatus(hotStatus);
-        areaInfo.setAreaName(areaName);
+    public Result add(@RequestBody AreaInfo areaInfo) {
+        if (areaInfo.getSortNum() == null) {
+            areaInfo.setSortNum(0);
+        }
+        if (areaInfo.getHotStatus() == null) {
+            areaInfo.setHotStatus(2);
+        }
+        areaInfo.setActiveStatus(Enums.ActiveStatus.OPEN.getValue());
         areaInfo.setCreateTime(new Date());
         areaInfoService.addAreaInfo(areaInfo);
 
-        AreaInfo parentAreaInfo = areaInfoService.selectById(parentAreaId);
+        AreaInfo parentAreaInfo = areaInfoService.selectById(areaInfo.getParentAreaId());
         String areaIds = parentAreaInfo.getAreaIds();
         String areaNames = areaInfo.getAreaName();
-        if (parentAreaId.intValue() != 1) {
+        if (areaInfo.getParentAreaId().intValue() != 1) {
             areaNames = parentAreaInfo.getAreaNames();
             areaNames = areaNames + "," + areaInfo.getAreaName();
         }
@@ -100,66 +84,47 @@ public class AreaInfoController extends AbstractContextResource {
         return success();
     }
 
-    @POST
-    @Path("update")
+    @PostMapping("update")
     @UriPermissions
-    @FormValid
+    @FormValid(fieldFilter = "activeStatus")
     @Log(operatorType = Log.OperateType.UPDATE, remark = "地区修改")
-    public Result update(@Context HttpServletRequest request,
-                         @NotBlank @FormParam("areaId") Integer areaId,
-                         @NotBlank @FormParam("areaName") String areaName,
-                         @FormParam("latitude") String latitude,
-                         @DefaultValue("0") @FormParam("sortNum") Integer sortNum,
-                         @DefaultValue("2") @FormParam("hotStatus") Integer hotStatus,
-                         @FormParam("longitude") String longitude) {
-        AreaInfo areaInfo = new AreaInfo();
-        areaInfo.setAreaId(areaId);
-        areaInfo.setAreaName(areaName);
-        areaInfo.setLongitude(longitude);
-        areaInfo.setSortNum(sortNum);
-        areaInfo.setHotStatus(hotStatus);
-        areaInfo.setLatitude(latitude);
+    public Result update(@RequestBody AreaInfo areaInfo) {
+        areaInfo.setActiveStatus(null);
         areaInfoService.updateAreaInfo(areaInfo);
         return success();
     }
 
-    @POST
-    @Path("del")
+    @PostMapping("del")
     @UriPermissions
     @FormValid
     @Log(operatorType = Log.OperateType.DEL, remark = "地区删除")
-    public Result del(@Context HttpServletRequest request,
-                      @FormParam("areaId") Integer areaId) {
-        List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaId, null);
-
+    public Result del(@RequestBody AreaDelForm areaDelForm) {
+        List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaDelForm.getAreaId(), null);
         if (areaInfos.size() > 0) {
             return failure("还有子集不能删除");
         }
-        areaInfoService.delArea(areaId);
+        areaInfoService.delArea(areaDelForm.getAreaId());
         return success();
     }
 
-    @POST
-    @Path("updateActiveStatus")
+    @PostMapping("updateActiveStatus")
     @FormValid
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改地区启用状态")
-    public Result<Object> updateActiveStatus(@Context HttpServletRequest request,
-                                             @NotBlank @FormParam("areaId") Integer areaId,
-                                             @NotBlank @FormParam("activeStatus") Integer activeStatus) {
+    public Result<Object> updateActiveStatus(@RequestBody AreaActiveStatusForm statusForm) {
         AreaInfo areaInfo = new AreaInfo();
-        areaInfo.setAreaId(areaId);
+        areaInfo.setAreaId(statusForm.getAreaId());
         Where where = new Where();
         Criteria criteria = where.createCriteria();
-        if (Enums.ActiveStatus.getActiveStatus(activeStatus) == null) {
+        if (Enums.ActiveStatus.getActiveStatus(statusForm.getActiveStatus()) == null) {
             return failure("当前活动状态不存在！");
         }
-        criteria.andEqual(AreaInfo::getParentAreaId, areaId);
+        criteria.andEqual(AreaInfo::getParentAreaId, statusForm.getAreaId());
         long count = areaInfoService.selectCountByParams(where);
         if (count > 0) {
             return failure("还有子栏目不能修改！");
         }
-        areaInfo.setActiveStatus(activeStatus);
+        areaInfo.setActiveStatus(statusForm.getActiveStatus());
         areaInfoService.updateByEntity(areaInfo);
         return success();
     }

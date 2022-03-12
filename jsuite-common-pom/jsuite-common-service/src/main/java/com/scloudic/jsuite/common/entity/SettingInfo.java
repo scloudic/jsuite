@@ -1,11 +1,13 @@
 package com.scloudic.jsuite.common.entity;
 
-import java.beans.Transient;
-import java.util.Date;
+import com.scloudic.rabbitframework.jbatis.annontations.Column;
+import com.scloudic.rabbitframework.jbatis.annontations.ID;
+import com.scloudic.rabbitframework.jbatis.annontations.Table;
 
-import com.scloudic.rabbitframework.jbatis.annontations.*;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Table
 public class SettingInfo implements Serializable {
@@ -16,12 +18,14 @@ public class SettingInfo implements Serializable {
      * 配置主键
      */
     @ID
+    @NotNull
     private Integer settingId;
 
     /**
      * 配置名称
      */
     @Column
+    @NotBlank
     private String settingName;
 
     /**
@@ -34,12 +38,14 @@ public class SettingInfo implements Serializable {
      * 配置值
      */
     @Column
+    @NotBlank
     private String settingValue;
 
     /**
      * 配置code
      */
     @Column
+    @NotBlank
     private String settingCode;
 
     /**

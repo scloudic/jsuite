@@ -2,45 +2,37 @@ package com.scloudic.jsuite.mgr.web.controllers.admin;
 
 import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
-import org.glassfish.jersey.server.mvc.Viewable;
+import com.scloudic.rabbitframework.web.AbstractRabbitContextController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 主页请求控制
  *
  * @since 1.0
  */
-@Component
-@Singleton
-@Path("/")
-@Produces(MediaType.TEXT_HTML)
-public class AdminIndexController extends AbstractContextResource {
+@Controller
+@RequestMapping("/")
+public class AdminIndexController extends AbstractRabbitContextController {
     private static final Logger logger = LoggerFactory.getLogger(AdminIndexController.class);
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;
 
-    @GET
-    @Path("")
-    @UserAuthentication
-    public Object index() {
+    @RequestMapping(value = "test", method = {RequestMethod.GET})
+    //@UserAuthentication
+    public ModelAndView index() {
         logger.info("index跳转页");
-        return new Viewable(mgrJsuiteProperties.getAdminPath() + "/index.html");
+        return new ModelAndView("index");
     }
 
-    @GET
-    @Path("main")
+    @RequestMapping(value = "main", method = {RequestMethod.GET})
     @UserAuthentication
-    public Object main() {
-        return new Viewable(mgrJsuiteProperties.getAdminPath() + "/main.html");
+    public ModelAndView main() {
+        return new ModelAndView("main");
     }
 }

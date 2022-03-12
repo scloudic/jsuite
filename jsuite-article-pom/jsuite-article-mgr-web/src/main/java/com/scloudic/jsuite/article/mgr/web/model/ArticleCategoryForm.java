@@ -2,56 +2,46 @@ package com.scloudic.jsuite.article.mgr.web.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.FormParam;
 
 public class ArticleCategoryForm {
     /**
      * 文章分类主键
      */
     @NotNull
-    @FormParam("articleCategoryId")
     private Long articleCategoryId;
 
     /**
      * 摘要
      */
-    @FormParam("summary")
     private String summary;
 
     /**
      * 图标地址
      */
-    @FormParam("iconPath")
     private String iconPath;
 
     /**
      * 分类类型(1、资讯、2、专题)
      */
-    @FormParam("categoryType")
     private Integer categoryType = 1;
 
-    @FormParam("commentStatus")
     private Integer commentStatus = 1;
-    @FormParam("sortNum")
     private Integer sortNum = 0;
     /**
      * 文章分类父主键
      */
     @NotNull
-    @FormParam("articleCategoryParentId")
     private Long articleCategoryParentId;
 
     /**
      * 文章分类名称
      */
     @NotBlank
-    @FormParam("articleCategoryName")
     private String articleCategoryName;
 
     /**
      * 内容
      */
-    @FormParam("content")
     private String content;
 
     public Long getArticleCategoryId() {

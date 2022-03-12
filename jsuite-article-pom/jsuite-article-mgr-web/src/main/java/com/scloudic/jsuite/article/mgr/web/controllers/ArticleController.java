@@ -1,8 +1,8 @@
 package com.scloudic.jsuite.article.mgr.web.controllers;
 
-import com.scloudic.jsuite.article.ArticleEnums;
 import com.scloudic.jsuite.article.entity.Article;
 import com.scloudic.jsuite.article.entity.ArticleCategoryMapping;
+import com.scloudic.jsuite.article.mgr.web.model.ArticleDelForm;
 import com.scloudic.jsuite.article.mgr.web.model.ArticleForm;
 import com.scloudic.jsuite.article.service.ArticleService;
 import com.scloudic.jsuite.core.utils.Enums;
@@ -15,41 +15,33 @@ import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.security.authz.annotation.UriPermissions;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Component
-@Path("/jsuite/articleMgr")
-@Singleton
-public class ArticleController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/articleMgr")
+public class ArticleController extends AbstractRabbitController {
     @Autowired
     private ArticleService articleService;
 
     /**
      * 创建文章
      *
-     * @param request
      * @param articleForm
      * @return
      */
-    @POST
-    @Path("add")
+    @PostMapping("add")
     @UriPermissions
     @FormValid(fieldFilter = {"articleId"})
-    public Result<String> add(@Context HttpServletRequest request,
-                              @BeanParam ArticleForm articleForm) {
+    public Result<String> add(@RequestBody ArticleForm articleForm) {
         Article article = new Article();
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
@@ -75,12 +67,10 @@ public class ArticleController extends AbstractContextResource {
         return success(article.getArticleId());
     }
 
-    @POST
-    @Path("update")
+    @PostMapping("update")
     @UriPermissions
     @FormValid
-    public Result<String> update(@Context HttpServletRequest request,
-                                 @BeanParam ArticleForm articleForm) {
+    public Result<String> update(@RequestBody ArticleForm articleForm) {
         Article article = new Article();
         Date date = new Date();
         BeanUtils.copyProperties(article, articleForm);
@@ -103,12 +93,10 @@ public class ArticleController extends AbstractContextResource {
         return success(article.getArticleId());
     }
 
-    @GET
-    @Path("getArticleDetail")
+    @GetMapping("getArticleDetail")
     @UriPermissions
     @FormValid
-    public Result<Article> getArticleDetail(@Context HttpServletRequest request,
-                                            @NotBlank @QueryParam("articleId") String articleId) {
+    public Result<Article> getArticleDetail(@NotBlank @RequestParam("articleId") String articleId) {
         Article article = articleService.selectById(articleId);
         if (article == null || article.getDelStatus().intValue() == Enums.DelStatus.DEL.getValue()) {
             return failure("文章不存在！");
@@ -116,15 +104,13 @@ public class ArticleController extends AbstractContextResource {
         return success(article);
     }
 
-    @GET
-    @Path("list")
+    @GetMapping("list")
     @UriPermissions
-    public Result<PageBean<Article>> list(@Context HttpServletRequest request,
-                                          @QueryParam("articleTitle") String articleTitle,
-                                          @QueryParam("startDate") String startDate,
-                                          @QueryParam("endDate") String endDate,
-                                          @QueryParam("pageNum") Long pageNum,
-                                          @QueryParam("pageSize") Long pageSize) {
+    public Result<PageBean<Article>> list(@RequestParam(value = "articleTitle", required = false) String articleTitle,
+                                          @RequestParam(value = "startDate", required = false) String startDate,
+                                          @RequestParam(value = "endDate", required = false) String endDate,
+                                          @RequestParam(value = "pageNum", required = false) Long pageNum,
+                                          @RequestParam(value = "pageSize", required = false) Long pageSize) {
         Where where = new Where(Article.NO_CONTENT_FIELDS);
         Criteria criteria = where.createCriteria();
         criteria.andLike(StringUtils.isNotBlank(articleTitle), Article::getArticleTitle, "%" + articleTitle + "%");
@@ -138,17 +124,15 @@ public class ArticleController extends AbstractContextResource {
     }
 
 
-    @POST
-    @Path("articleDel")
+    @PostMapping("articleDel")
     @UriPermissions
     @FormValid
-    public Result<String> articleDel(@Context HttpServletRequest request,
-                                     @NotBlank @FormParam("articleId") String articleId) {
+    public Result<String> articleDel(@RequestBody ArticleDelForm delForm) {
         Article update = new Article();
-        update.setArticleId(articleId);
+        update.setArticleId(delForm.getArticleId());
         update.setUpdateTime(new Date());
         update.setDelStatus(Enums.DelStatus.DEL.getValue());
         articleService.updateByEntity(update);
-        return success(articleId);
+        return success(delForm.getArticleId());
     }
 }

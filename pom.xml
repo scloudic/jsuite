@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.scloudic</groupId>
         <artifactId>parent</artifactId>
-        <version>3.5.2.RELEASE</version>
+        <version>3.6.0</version>
     </parent>
     <artifactId>jsuite</artifactId>
     <packaging>pom</packaging>

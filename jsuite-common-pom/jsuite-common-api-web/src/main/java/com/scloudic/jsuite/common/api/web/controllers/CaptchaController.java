@@ -1,32 +1,26 @@
 package com.scloudic.jsuite.common.api.web.controllers;
 
-import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.scloudic.jsuite.common.api.web.component.CaptchaProperties;
 import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
 import com.scloudic.rabbitframework.redisson.RedisCache;
-import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
-import javax.inject.Singleton;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Context;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-@Component
-@Singleton
-@Path("/jsuite/captcha")
-public class CaptchaController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/captcha")
+public class CaptchaController extends AbstractRabbitController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
     @Autowired(required = false)
@@ -39,11 +33,10 @@ public class CaptchaController extends AbstractContextResource {
     /**
      * 验证码生成
      */
-    @GET
-    @Path("captchaImage/{uuid}")
-    public void getKaptchaImage(@PathParam("uuid") String uuid,
-                                @Context HttpServletRequest request,
-                                @Context HttpServletResponse response) {
+    @GetMapping("captchaImage/{uuid}")
+    public void getKaptchaImage(@PathVariable("uuid") String uuid,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
         ServletOutputStream out = null;
         try {
             response.setDateHeader("Expires", 0);
@@ -62,13 +55,7 @@ public class CaptchaController extends AbstractContextResource {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-
-            }
+            IOUtils.closeQuietly(out, null);
         }
     }
 }

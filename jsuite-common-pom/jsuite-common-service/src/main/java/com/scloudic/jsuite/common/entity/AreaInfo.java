@@ -3,6 +3,8 @@ package com.scloudic.jsuite.common.entity;
 import com.scloudic.rabbitframework.jbatis.annontations.*;
 import com.scloudic.rabbitframework.jbatis.mapping.GenerationType;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class AreaInfo implements Serializable {
      * description:机构主键
      */
     @ID(keyType = GenerationType.MANUAL)
+    @NotNull
     private Integer areaId;
 
     /**
@@ -27,6 +30,7 @@ public class AreaInfo implements Serializable {
      * description:机构名称
      */
     @Column
+    @NotBlank
     private String areaName;
 
     /**
@@ -59,6 +63,7 @@ public class AreaInfo implements Serializable {
      * description:父机构主键，根值为0
      */
     @Column
+    @NotNull
     private Integer parentAreaId;
 
 
@@ -68,6 +73,7 @@ public class AreaInfo implements Serializable {
      * description:活动状态(1、正常,2、停用)
      */
     @Column
+    @NotNull
     private Integer activeStatus;
 
     /**

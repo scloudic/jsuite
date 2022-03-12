@@ -2,6 +2,9 @@ server:
   servlet:
     context-path: /jsuiteMgr
 spring:
+  servlet:
+    multipart:
+      enabled: true
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -27,21 +30,30 @@ spring:
   #全局加载配置
   messages:
     basename: messages/globalMessages
+  freemarker:
+    allow-request-override: false
+    allow-session-override: false
+    cache: true
+    suffix: .html
+    request-context-attribute: request
+    template-loader-path:
+      - classpath:/views/admin/
+      - classpath:/views/error/
 rabbit:
   redisson:
     open-status: false
   web:
-    rest-packages: com.scloudic.jsuite.**.controllers
-    request-log: true
-    freemarker-path: /
-    static-content-regex: .*/static/.*
-    template-variable-path: com.scloudic.jsuite.**.template
+    request-log-enable: true
+    freemarker-enable: true
+    xss-filter-enable: true
+    freemarker-variable-path: com.scloudic.jsuite.**.template
   security:
     cookie:
       name: jsuite
       path: /
     session-type: local
     cache-type: memory
+    filter-urls: /(((static|css|img|images|lib|res)/.*)|(favicon.ico))
     filter-chain-definitions:
       authc: /jsuite/api/file/**
     session-dao-key-prefix: jsuite_session_test
@@ -55,8 +67,8 @@ rabbit:
   commons:
     front-black: false
     page404: true
-    sys404-error-url: /error/404
-    sys500-error-url: /error/500
-    sys405-error-url: /error/404
-    unauthorized-url: /error/unauthorized
+    sys404-error-url: /404
+    sys500-error-url: /500
+    sys405-error-url: /404
+    unauthorized-url: /unauthorized
     login-url: /login

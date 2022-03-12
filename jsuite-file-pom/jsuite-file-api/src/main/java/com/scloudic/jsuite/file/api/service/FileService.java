@@ -18,9 +18,7 @@ public interface FileService {
      * @param fileCategoryName 文件分类名称
      * @param srcFileName      原文件名
      * @param inputStream      文件流
-     * @param fileMediaType    文件类型
      * @return {@link FileBaseInfo}
      */
-    public FileBaseInfo fileUpload(String fileCategoryName, String srcFileName,
-                                   InputStream inputStream, String fileMediaType);
+    public FileBaseInfo fileUpload(String fileCategoryName, String srcFileName, InputStream inputStream);
 }

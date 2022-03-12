@@ -4,30 +4,27 @@ import com.scloudic.jsuite.common.entity.SettingInfo;
 import com.scloudic.jsuite.common.service.SettingInfoService;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Singleton;
 import javax.validation.constraints.NotBlank;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 
-@Component
-@Singleton
-@Path("/jsuite/api/setting")
-public class SettingInfoApiController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/api/setting")
+public class SettingInfoApiController extends AbstractRabbitController {
     @Autowired
     private SettingInfoService settingInfoService;
 
-    @GET
-    @Path("getSettingInfoByCode")
+    @GetMapping("getSettingInfoByCode")
     @FormValid
     public Result<SettingInfo> getSettingInfoByCode(@NotBlank
-                                                    @QueryParam("settingCode") String settingCode) {
+                                                    @RequestParam("settingCode") String settingCode) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SettingInfo::getSettingCode, settingCode);
@@ -35,11 +32,10 @@ public class SettingInfoApiController extends AbstractContextResource {
         return Result.success(settingInfo);
     }
 
-    @GET
-    @Path("getValueByCode")
+    @GetMapping("getValueByCode")
     @FormValid
     public Result<String> getValueByCode(@NotBlank
-                                         @QueryParam("settingCode") String settingCode) {
+                                         @RequestParam("settingCode") String settingCode) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(SettingInfo::getSettingCode, settingCode);

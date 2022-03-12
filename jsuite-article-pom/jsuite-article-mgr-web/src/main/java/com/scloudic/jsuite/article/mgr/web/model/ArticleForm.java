@@ -3,40 +3,27 @@ package com.scloudic.jsuite.article.mgr.web.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.ws.rs.FormParam;
 import java.util.List;
 
 public class ArticleForm {
     @NotBlank
-    @FormParam("articleId")
     private String articleId;
-    @FormParam("summary")
     private String summary;
-    @FormParam("articleContent")
     private String articleContent;
-    @FormParam("userName")
     private String userName;
-    @FormParam("commentStatus")
     private Integer commentStatus = 1;
-    @FormParam("linkTo")
     private String linkTo;
     @NotBlank
-    @FormParam("articleTitle")
     private String articleTitle;
-    @FormParam("thumbnailPath")
     private String thumbnailPath;
     /**
      * '文章状态(1、已发布,2、草稿)'
      */
     @NotNull
-    @FormParam("articleStatus")
     private Integer articleStatus;
-    @FormParam("editMode")
     private String editMode = "html";
-    @FormParam("sortNum")
     private Integer sortNum = 0;
     @Size(min = 1)
-    @FormParam("articleCategoryId")
     private List<Long> articleCategoryId;
 
     public String getArticleId() {

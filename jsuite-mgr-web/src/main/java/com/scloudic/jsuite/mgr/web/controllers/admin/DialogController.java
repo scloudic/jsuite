@@ -2,33 +2,28 @@ package com.scloudic.jsuite.mgr.web.controllers.admin;
 
 import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
-import org.glassfish.jersey.server.mvc.Viewable;
+import com.scloudic.rabbitframework.web.AbstractRabbitContextController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Singleton;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-@Singleton
-@Path("/admin/dialog")
-@Produces(MediaType.TEXT_HTML)
-public class DialogController extends AbstractContextResource {
+@Controller
+@RequestMapping("/admin/dialog")
+public class DialogController extends AbstractRabbitContextController {
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;
 
-    @GET
-    @Path("fileDialog")
+    @RequestMapping(value = "fileDialog", method = RequestMethod.GET)
     @UserAuthentication
-    public Object fileDialog(@DefaultValue("")
-                             @QueryParam("fileType") String fileType) {
+    public ModelAndView fileDialog(@RequestParam(value = "fileType", required = false, defaultValue = "") String fileType) {
         Map<String, Object> params = new HashMap<>();
         params.put("fileType", fileType);
-        return new Viewable(mgrJsuiteProperties.getAdminPath()
-                + "/dialog/fileDialog.html", params);
+        return new ModelAndView("dialog/fileDialog", params);
     }
 }

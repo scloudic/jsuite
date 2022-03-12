@@ -4,18 +4,16 @@ import com.scloudic.jsuite.common.entity.AreaInfo;
 import com.scloudic.jsuite.common.service.AreaInfoService;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Singleton;
 import javax.validation.constraints.NotBlank;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +21,9 @@ import java.util.List;
  *
  * @author juyang.liang
  */
-@Component
-@Singleton
-@Path("/jsuite/api/area")
-public class AreaInfoApiController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/api/area")
+public class AreaInfoApiController extends AbstractRabbitController {
     @Autowired
     private AreaInfoService areaInfoService;
 
@@ -36,10 +33,9 @@ public class AreaInfoApiController extends AbstractContextResource {
      * @param areaLevel 地区级别
      * @return obj
      */
-    @GET
-    @Path("getAreaByLevel")
+    @GetMapping("getAreaByLevel")
     @FormValid
-    public Result<List<AreaInfo>> getAreaByLevel(@NotBlank @QueryParam("areaLevel") Integer areaLevel) {
+    public Result<List<AreaInfo>> getAreaByLevel(@NotBlank @RequestParam("areaLevel") Integer areaLevel) {
         Where where = new Where();
         where.createCriteria().andEqual(AreaInfo::getAreaLevel, areaLevel)
                 .andEqual(AreaInfo::getActiveStatus, Enums.ActiveStatus.OPEN.getValue());
@@ -54,10 +50,9 @@ public class AreaInfoApiController extends AbstractContextResource {
      * @param areaId 地区主键
      * @return obj
      */
-    @GET
-    @Path("getAreaById")
+    @GetMapping("getAreaById")
     @FormValid
-    public Result<List<AreaInfo>> getAreaById(@NotBlank @QueryParam("areaId") Integer areaId) {
+    public Result<List<AreaInfo>> getAreaById(@NotBlank @RequestParam("areaId") Integer areaId) {
         List<AreaInfo> areaInfos = areaInfoService.findAreaByParentAreaId(areaId, Enums.ActiveStatus.OPEN.getValue());
         areaInfos.forEach(areaInfo -> {
             Integer pAreaId = areaInfo.getAreaId();

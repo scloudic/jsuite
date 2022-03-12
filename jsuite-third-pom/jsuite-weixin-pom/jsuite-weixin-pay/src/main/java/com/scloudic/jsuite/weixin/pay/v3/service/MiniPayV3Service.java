@@ -34,6 +34,21 @@ public interface MiniPayV3Service {
      */
     public V3PayResponse<SearchPayResult> searchPayByOutTradeNo(PayerParams payerParams, String outTradeNo);
 
+    /**
+     * 退款申请
+     *
+     * @param payerParams
+     * @param refundsRequest
+     */
+    public V3PayResponse<RefundResult> refunds(PayerParams payerParams, RefundsRequest refundsRequest);
+
+    /**
+     * 退款结果查询
+     *
+     * @param payerParams
+     * @param outRefundNo
+     */
+    public V3PayResponse<RefundResult> refundsSearch(PayerParams payerParams, String outRefundNo);
 
     public void setCertificate(WeiXinCertificate weiXinCertificate);
 }

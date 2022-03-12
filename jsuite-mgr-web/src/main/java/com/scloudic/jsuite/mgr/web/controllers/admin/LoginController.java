@@ -1,36 +1,31 @@
 package com.scloudic.jsuite.mgr.web.controllers.admin;
 
-import com.google.code.kaptcha.Constants;
 import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
+import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.jsuite.log.model.LogBean;
 import com.scloudic.jsuite.log.notification.OperateLogEvent;
 import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
-import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.rabbitframework.core.notification.NotificationServerManager;
 import com.scloudic.rabbitframework.core.utils.CommonResponseUrl;
-import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.security.LoginFailException;
 import com.scloudic.rabbitframework.security.SecurityUser;
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
 import com.scloudic.rabbitframework.web.AbstractContextResource;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import com.scloudic.rabbitframework.web.utils.WebUtils;
-import org.apache.shiro.session.Session;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -39,9 +34,8 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.*;
 
-@Component
-@Singleton
-@Path("/")
+@Controller
+@RequestMapping("/")
 public class LoginController extends AbstractContextResource {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
@@ -55,6 +49,7 @@ public class LoginController extends AbstractContextResource {
 
     @Path("userLogin")
     @POST
+    @Pos
     @FormValid
     public Result<Map<String, Object>> userLogin(@Context HttpServletRequest request,
                                                  @NotBlank @FormParam("verifyKey") String verifyKey,
