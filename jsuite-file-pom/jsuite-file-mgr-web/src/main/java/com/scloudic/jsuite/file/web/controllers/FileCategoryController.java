@@ -27,7 +27,8 @@ import java.util.List;
  *
  * @since 1.0
  */
-@RestController("/jsuite/file/categoryMgr")
+@RestController
+@RequestMapping("/jsuite/file/categoryMgr")
 public class FileCategoryController extends AbstractRabbitController {
     @Autowired
     private FileCategoryService fileCategoryService;

@@ -2,7 +2,7 @@ package com.scloudic.jsuite.mgr.web.controllers.admin;
 
 import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.web.AbstractRabbitContextController;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/dialog")
-public class DialogController extends AbstractRabbitContextController {
+public class DialogController extends AbstractRabbitController {
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;
 

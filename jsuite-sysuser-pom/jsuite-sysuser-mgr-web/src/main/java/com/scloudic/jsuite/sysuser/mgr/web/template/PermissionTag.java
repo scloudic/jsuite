@@ -2,7 +2,7 @@ package com.scloudic.jsuite.sysuser.mgr.web.template;
 
 import com.scloudic.rabbitframework.security.SecurityUtils;
 import com.scloudic.rabbitframework.web.annotations.TemplateVariable;
-import com.scloudic.rabbitframework.web.mvc.freemarker.TemplateDirective;
+import com.scloudic.rabbitframework.web.freemarker.TemplateDirective;
 import freemarker.core.Environment;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.SimpleScalar;

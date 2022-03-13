@@ -33,7 +33,7 @@ spring:
   freemarker:
     allow-request-override: false
     allow-session-override: false
-    cache: true
+    cache: false
     suffix: .html
     request-context-attribute: request
     template-loader-path:

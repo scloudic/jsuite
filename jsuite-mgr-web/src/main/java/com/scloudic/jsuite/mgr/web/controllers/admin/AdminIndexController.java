@@ -2,7 +2,7 @@ package com.scloudic.jsuite.mgr.web.controllers.admin;
 
 import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication;
-import com.scloudic.rabbitframework.web.AbstractRabbitContextController;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/")
-public class AdminIndexController extends AbstractRabbitContextController {
+public class AdminIndexController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(AdminIndexController.class);
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;

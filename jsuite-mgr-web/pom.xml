@@ -92,6 +92,10 @@
             <artifactId>jsuite-article-mgr-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.scloudic</groupId>
             <artifactId>jsuite-article-api-web</artifactId>
         </dependency>

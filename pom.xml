@@ -63,11 +63,7 @@
                 <artifactId>jsuite-file-mgr-web</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-file-alioss-provider</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-file-local-provider</artifactId>

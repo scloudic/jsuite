@@ -1,33 +1,27 @@
 package com.scloudic.jsuite.mgr.web.controllers;
 
-import com.scloudic.rabbitframework.web.AbstractContextResource;
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 错误处理跳转
  *
  * @since 1.0
  */
-@Singleton
-@Path("/error")
-@Produces(MediaType.TEXT_HTML)
-public class ErrorController extends AbstractContextResource {
-    @GET
-    @Path("404")
-    public Object sys404() {
-        return new Viewable("/error/404.html");
+@Controller
+@RequestMapping("/error")
+public class ErrorController extends AbstractRabbitController {
+    @RequestMapping(value = "404", method = RequestMethod.GET)
+    public ModelAndView sys404() {
+        return new ModelAndView("error/404.html");
     }
 
-    @GET
-    @Path("500")
-    public Object sys500() {
-        return new Viewable("/error/500.html");
+    @RequestMapping(value = "500", method = RequestMethod.GET)
+    public ModelAndView sys500() {
+        return new ModelAndView("error/500.html");
     }
 
     /**
@@ -35,9 +29,8 @@ public class ErrorController extends AbstractContextResource {
      *
      * @return
      */
-    @GET
-    @Path("unauthorized")
-    public Object unauthorized() {
-        return new Viewable("/error/unauthorized.html");
+    @RequestMapping(value = "unauthorized", method = RequestMethod.GET)
+    public ModelAndView unauthorized() {
+        return new ModelAndView("/error/unauthorized.html");
     }
 }

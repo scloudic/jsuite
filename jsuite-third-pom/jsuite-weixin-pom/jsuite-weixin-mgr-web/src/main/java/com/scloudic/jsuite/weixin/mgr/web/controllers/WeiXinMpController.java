@@ -8,23 +8,18 @@ import com.scloudic.jsuite.weixin.mp.model.WeiXinMpProperties;
 import com.scloudic.jsuite.weixin.mp.service.WeiXinMpService;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
-import com.scloudic.rabbitframework.web.AbstractContextResource;
+import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Singleton;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 微信公众号
  */
-@Component
-@Path("/jsuite/weiXinMp")
-@Singleton
-public class WeiXinMpController extends AbstractContextResource {
+@RestController
+@RequestMapping("/jsuite/weiXinMp")
+public class WeiXinMpController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(WeiXinMpController.class);
     @Autowired
     private WeiXinMpService weiXinMpService;
@@ -40,13 +35,11 @@ public class WeiXinMpController extends AbstractContextResource {
      * @param echostr   echostr
      * @return string
      */
-    @GET
-    @Path("notifyMsg")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String notify(@QueryParam("signature") String signature,
-                         @QueryParam("timestamp") String timestamp,
-                         @QueryParam("nonce") String nonce,
-                         @QueryParam("echostr") String echostr) {
+    @GetMapping("notifyMsg")
+    public String notify(@RequestParam("signature") String signature,
+                         @RequestParam("timestamp") String timestamp,
+                         @RequestParam("nonce") String nonce,
+                         @RequestParam("echostr") String echostr) {
         String msgSignature = weiXinMpService.notifyVerify(getWeiXinMpProperties(), timestamp, nonce);
         if (msgSignature.equals(signature)) {
             return echostr;
@@ -71,9 +64,7 @@ public class WeiXinMpController extends AbstractContextResource {
      * @param msg
      * @return
      */
-    @POST
-    @Path("notifyMsg")
-    @Produces(MediaType.TEXT_PLAIN)
+    @PostMapping("notifyMsg")
     public String notifyMsg(String msg) {
         if (StringUtils.isBlank(msg)) {
             throw new CryptException(CryptException.ComputeSignatureError);
