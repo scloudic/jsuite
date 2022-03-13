@@ -47,7 +47,7 @@ spring:
 
 rabbit:
   redisson:
-    open-status: false
+    open-status: true
   web:
     request-log-enable: true
     freemarker-enable: true
@@ -58,7 +58,7 @@ rabbit:
       name: jsuite
       path: /
     session-type: local
-    cache-type: memory
+    cache-type: redis
     filter-urls: /(((static|css|img|images|lib|res)/.*)|(favicon.ico))
     filter-chain-definitions:
       authc: /jsuite/api/file/**

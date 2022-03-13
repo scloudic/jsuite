@@ -35,12 +35,13 @@ public class UserTag extends TemplateDirective {
         boolean isLogin = true;
         if (securityUser == null) {
             isLogin = false;
+        } else {
+            String userId = securityUser.getUserId();
+            SysUser sysUser = sysUserService.selectById(userId);
+            TemplateModel userModel = beansWrapper.wrap(sysUser);
+            environment.setVariable("userInfo", userModel);
         }
-        String userId = securityUser.getUserId();
-        SysUser sysUser = sysUserService.selectById(userId);
         TemplateModel isLoginModel = beansWrapper.wrap(isLogin);
-        TemplateModel userModel = beansWrapper.wrap(sysUser);
-        environment.setVariable("userInfo", userModel);
         environment.setVariable("isLogin", isLoginModel);
         templateDirectiveBody.render(environment.getOut());
     }

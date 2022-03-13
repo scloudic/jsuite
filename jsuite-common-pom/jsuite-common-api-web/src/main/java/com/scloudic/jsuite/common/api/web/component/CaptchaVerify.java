@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Constants;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
+import com.scloudic.rabbitframework.web.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +25,7 @@ public class CaptchaVerify {
             id = ":" + key;
             value = redisCache.get(id);
         } else {
-            HttpSession session = null;
-            if (request instanceof SecurityHttpServletRequest) {
-                session = ((SecurityHttpServletRequest) request).getHttpSession();
-            } else {
-                session = request.getSession();
-            }
+            HttpSession session = WebUtils.getOrigRequest(request).getSession();
             //session机制不考虑过期
             Object obj = session.getAttribute(id);
             value = String.valueOf(obj != null ? obj : "");
@@ -47,12 +43,7 @@ public class CaptchaVerify {
             id = ":" + key;
             redisCache.set(id, value, captchaProperties.getKaptchaCacheExpire());
         } else {
-            HttpSession session = null;
-            if (request instanceof SecurityHttpServletRequest) {
-                session = ((SecurityHttpServletRequest) request).getHttpSession();
-            } else {
-                session = request.getSession();
-            }
+            HttpSession session = WebUtils.getOrigRequest(request).getSession();
             session.setAttribute(id, value);
         }
     }

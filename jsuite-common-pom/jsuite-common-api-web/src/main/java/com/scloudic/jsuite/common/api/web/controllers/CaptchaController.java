@@ -3,6 +3,7 @@ package com.scloudic.jsuite.common.api.web.controllers;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.scloudic.jsuite.common.api.web.component.CaptchaProperties;
 import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
+import com.scloudic.rabbitframework.core.exceptions.ServiceException;
 import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +54,7 @@ public class CaptchaController extends AbstractRabbitController {
             ImageIO.write(bi, "jpg", out);
             out.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServiceException("获取验证码失败!");
         } finally {
             IOUtils.closeQuietly(out, null);
         }

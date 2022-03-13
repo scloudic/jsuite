@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "../include/layout.html"/>
+    <#include "/include/layout.html"/>
     <@header>
         <@treetableLink/>
     </@header>
     <body class="gray-bg">
-        <#include "../include/loading.html"/>
-        <#include "add.html"/>
-        <#include "edit.html"/>
+        <#include "/include/loading.html"/>
+        <#include "/menu/add.html"/>
+        <#include "/menu/edit.html"/>
         <@permission url="/jsuite/menuMgr/addMenu">
             <#if isPermission==true>
                 <#assign addMenu="${basePath}/jsuite/menuMgr/addMenu"/>
@@ -56,7 +56,7 @@
         <@script>
             <@treetable/>
             <@moment/>
-            <#include "script.html"/>
+            <#include "/menu/script.html"/>
         </@script>
     </body>
 </html>

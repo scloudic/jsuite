@@ -66,6 +66,16 @@
             <appender-ref ref="RollingFile"/>
             <AppenderRef ref="RollingFileError"/>
         </AsyncLogger>
+        <AsyncLogger name="org.apache.commons" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+            <AppenderRef ref="RollingFileError"/>
+        </AsyncLogger>
+        <AsyncLogger name="org.redisson" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+            <AppenderRef ref="RollingFileError"/>
+        </AsyncLogger>
         <AsyncRoot level="debug" includeLocation="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
