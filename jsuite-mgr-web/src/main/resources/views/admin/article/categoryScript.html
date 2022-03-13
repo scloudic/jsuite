@@ -18,7 +18,7 @@
                         if (!$.form.validate("editCategoryForm", rules)) {
                             return false;
                         }
-                        var data = $.form.getData("editCategoryForm");
+                        var data = $.common.formToJSON("editCategoryForm");
                         $.loading();
                         $.postAjax("${updateCategory}",
                             data, function (status, respData) {
@@ -42,7 +42,7 @@
                                 return false;
                             }
 
-                            var data = $.form.getData("addCategoryForm");
+                            var data = $.common.formToJSON("addCategoryForm");
                             $.loading();
                             $.postAjax("${addCategory}",
                                 data, function (status, respData) {

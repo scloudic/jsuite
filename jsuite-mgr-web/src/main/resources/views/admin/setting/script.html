@@ -24,7 +24,7 @@
                 if (!$.form.validate("formEditSetting", rules)) {
                     return false;
                 }
-                var data = $.form.getData("formEditSetting");
+                var data = $.common.formToJSON("formEditSetting");
                 $.loading();
                 $.postAjax("${updateSetting}",
                     data, function (status, respData) {
@@ -56,7 +56,7 @@
                         return false;
                     }
 
-                    var data = $.form.getData("formAddSetting");
+                    var data = $.common.formToJSON("formAddSetting");
                     $.loading();
                     $.postAjax("${addSetting}",
                         data, function (status, respData) {

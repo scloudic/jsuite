@@ -131,7 +131,7 @@
                                     if (!$.form.validate("formUpdatePassword", rules)) {
                                         return false;
                                     }
-                                    var data = $.form.getData("formUpdatePassword");
+                                    var data = $.common.formToJSON("formUpdatePassword");
                                     $.loading();
                                     $.postAjax("${basePath}/jsuite/user/updatePwd",
                                         data, function (status, respData) {

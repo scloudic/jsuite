@@ -90,13 +90,14 @@
             $(function () {
                 $.validator.setDefaults({
                     submitHandler: function () {
-                        var loginData = $.form.getData("loginForm");
+                        var loginData = $.common.formToJSON("loginForm");
                         $.loading('登录中....');
                         $.postAjax("${basePath}/userLogin", loginData,
                             function (status) {
                                 window.location.href = "${basePath}/";
                             }, function () {
-                                var url = "${basePath}/jsuite/captcha/captchaImage?s=" + Math.random();
+                                var uid = $("#verifyKey").val();
+                                var url = "${basePath}/jsuite/captcha/captchaImage/"+uid+"?s=" + Math.random();
                                 $('.captchaImage').attr("src", url);
                             });
                     }

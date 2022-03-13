@@ -174,7 +174,7 @@
                     if (!$.form.validate("editUserForm", rules)) {
                         return false;
                     }
-                    var data = $.form.getData("editUserForm");
+                    var data = $.common.formToJSON("editUserForm");
                     $.loading();
                     $.postAjax("${basePath}/jsuite/user/update",
                         data, function (status, respData) {

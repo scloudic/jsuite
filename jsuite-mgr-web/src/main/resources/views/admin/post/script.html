@@ -22,7 +22,7 @@
                     if (!$.form.validate("formEditPost", rules)) {
                         return false;
                     }
-                    var data = $.form.getData("formEditPost");
+                    var data = $.common.formToJSON("formEditPost");
                     $.loading();
                     $.postAjax("${updatePost}",
                         data, function (status, respData) {
@@ -76,7 +76,7 @@
                     if (!$.form.validate("formAddPost", rules)) {
                         return false;
                     }
-                    var data = $.form.getData("formAddPost");
+                    var data = $.common.formToJSON("formAddPost");
                     $.loading();
                     $.postAjax("${addPost}",
                         data, function (status, respData) {

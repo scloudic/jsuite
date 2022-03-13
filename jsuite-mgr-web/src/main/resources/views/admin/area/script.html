@@ -20,7 +20,7 @@
                         return false;
                     }
 
-                    var data = $.form.getData("formAddArea");
+                    var data = $.common.formToJSON("formAddArea");
                     $.loading();
                     $.postAjax("${addArea}",
                         data, function (status, respData) {
@@ -70,7 +70,7 @@
                     if (!$.form.validate("formEditArea", rules)) {
                         return false;
                     }
-                    var data = $.form.getData("formEditArea");
+                    var data = $.common.formToJSON("formEditArea");
                     $.loading();
                     $.postAjax("${updateArea}",
                         data, function (status, respData) {

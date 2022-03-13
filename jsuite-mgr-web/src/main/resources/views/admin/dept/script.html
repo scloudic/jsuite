@@ -15,7 +15,7 @@
                         return false;
                     }
 
-                    var data = $.form.getData("formAddDept");
+                    var data = $.common.formToJSON("formAddDept");
                     $.loading();
                     $.postAjax("${addDept}",
                         data, function (status, respData) {
@@ -46,7 +46,7 @@
                     if (!$.form.validate("formEditDept", rules)) {
                         return false;
                     }
-                    var data = $.form.getData("formEditDept");
+                    var data = $.common.formToJSON("formEditDept");
                     $.loading();
                     $.postAjax("${updateDept}",
                         data, function (status, respData) {

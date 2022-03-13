@@ -33,12 +33,18 @@ spring:
   freemarker:
     allow-request-override: false
     allow-session-override: false
-    cache: false
+    cache: true
     suffix: .html
+    enabled: true
     request-context-attribute: request
     template-loader-path:
       - classpath:/views/admin/
       - classpath:/views/error/
+    settings:
+      template_update_delay: 10
+      classic_compatible: true
+      default_encoding: UTF-8
+
 rabbit:
   redisson:
     open-status: false

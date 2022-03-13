@@ -23,13 +23,6 @@ public class AdminIndexController extends AbstractRabbitController {
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;
 
-    @RequestMapping(value = "test", method = {RequestMethod.GET})
-    //@UserAuthentication
-    public ModelAndView index() {
-        logger.info("index跳转页");
-        return new ModelAndView("index");
-    }
-
     @RequestMapping(value = "main", method = {RequestMethod.GET})
     @UserAuthentication
     public ModelAndView main() {

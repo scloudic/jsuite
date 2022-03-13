@@ -60,7 +60,7 @@
                 $("#summary").val(text.slice(0, 80));
             }
 
-            var loginData = $.form.getData("articleForm");
+            var loginData = $.common.formToJSON("articleForm");
             $.loading();
             $.postAjax("${basePath}/jsuite/articleMgr/update", loginData,
                 function (status, respData) {

@@ -21,7 +21,7 @@
                 if (!$.form.validate("formEditRole", rules)) {
                     return false;
                 }
-                var data = $.form.getData("formEditRole");
+                var data = $.common.formToJSON("formEditRole");
                 $.loading();
                 $.postAjax("${updateRole}",
                     data, function (status, respData) {
@@ -95,7 +95,7 @@
                         return false;
                     }
 
-                    var data = $.form.getData("formAddRole");
+                    var data = $.common.formToJSON("formAddRole");
                     $.loading();
                     $.postAjax("${addRole}",
                         data, function (status, respData) {

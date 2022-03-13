@@ -15,7 +15,7 @@
                     return false;
                 }
 
-                var data = $.form.getData("formAddMenu");
+                var data = $.common.formToJSON("formAddMenu");
                 $.loading();
                 $.postAjax("${addMenu}",
                     data, function (status, respData) {
@@ -54,7 +54,7 @@
                 if (!$.form.validate("formEditMenu", rules)) {
                     return false;
                 }
-                var data = $.form.getData("formEditMenu");
+                var data = $.common.formToJSON("formEditMenu");
                 $.loading();
                 $.postAjax("${updateMenu}",
                     data, function (status, respData) {
