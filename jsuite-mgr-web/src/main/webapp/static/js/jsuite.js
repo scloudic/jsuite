@@ -439,7 +439,8 @@ $(function () {
                 return value;
             },
             del: function (id, callback) {
-                var params = $.options.delKey + "=" + id;
+                var params = {};
+                params[$.options.delKey]=id;
                 $.modal.confirm('是否确认删除', function () {
                     $.postAjax($.options.delUrl, params, function () {
                         $.table.search($.options.formId);

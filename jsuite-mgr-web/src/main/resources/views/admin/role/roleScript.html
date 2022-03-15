@@ -53,15 +53,10 @@
             $.tree.treeDataLoad(config, jsonData);
             $.modal.dialog('添加角色菜单', 'openRoleMenu', 350, '',
                 function () {
-                    var menuIds = "";
+                    var menuIds = [];
                     var nodes = $.tree.getCheckedNodes(true);
                     $.each(nodes, function (i, field) {
-                        if (i == 0) {
-                            menuIds = "";
-                        } else {
-                            menuIds = menuIds + ",";
-                        }
-                        menuIds = menuIds + field.menuId;
+                        menuIds.push(field.menuId);
                     });
                     var data = {
                         "sysRoleId": id,
