@@ -200,7 +200,7 @@
                     }
                     $.loading();
                     var formData = new FormData();
-                    formData.append("files", $("#addfilePath")[0].files[0]);
+                    formData.append("file", $("#addfilePath")[0].files[0]);
                     $.fileAjax("${basePath}/jsuite/user/avatar",
                         formData, function (status, respData) {
                             toastr.info("头像上传成功");
