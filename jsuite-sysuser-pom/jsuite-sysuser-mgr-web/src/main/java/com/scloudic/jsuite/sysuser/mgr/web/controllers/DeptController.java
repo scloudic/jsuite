@@ -131,7 +131,7 @@ public class DeptController extends AbstractRabbitController {
 
 
     @PostMapping("updateDept")
-    @FormValid(fieldFilter = {"activeStatus"})
+    @FormValid(fieldFilter = {"activeStatus","deptParentId"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.ADD, remark = "修改部门")
     public Result updateDept(@RequestBody SysDept sysDept) {
@@ -186,7 +186,7 @@ public class DeptController extends AbstractRabbitController {
         SysDept updateDept = new SysDept();
         updateDept.setDeptId(deptId);
         updateDept.setDelStatus(Enums.DelStatus.DEL.getValue());
-        sysDeptService.updateByEntity(sysDept);
+        sysDeptService.updateByEntity(updateDept);
         return success();
     }
 }

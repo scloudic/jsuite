@@ -42,9 +42,8 @@ public class SysDeptServiceImpl extends IServiceImpl<SysDeptMapper, SysDept> imp
                 dept.setDeptNames(StringUtils.replace(dns, tempDept.getDeptName(), sysDept.getDeptName()));
                 sysDeptMapper.updateByEntity(dept);
             }
-
-            sysDeptMapper.updateByEntity(sysDept);
         }
+        sysDeptMapper.updateByEntity(sysDept);
     }
 }
 
