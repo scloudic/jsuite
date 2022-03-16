@@ -135,7 +135,6 @@
 
             </#if>
             <#if updateActiveStatus?length gt 0>
-
             enable = function (id) {
                 var params = {
                     "sysUserId": id,
@@ -148,7 +147,7 @@
                 });
             };
 
-            function disable(id) {
+            disable = function(id) {
                 var params = {
                     "sysUserId": id,
                     "activeStatus": 2,

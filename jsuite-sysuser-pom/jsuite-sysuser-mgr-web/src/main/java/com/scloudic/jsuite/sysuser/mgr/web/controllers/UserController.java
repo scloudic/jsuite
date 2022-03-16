@@ -62,6 +62,9 @@ public class UserController extends AbstractRabbitController {
                                               @RequestParam(value = "endDate", required = false) String endDate,
                                               @RequestParam(value = "pageNum", required = false) Long pageNum,
                                               @RequestParam(value = "pageSize", required = false) Long pageSize) {
+        if (activeStatus != null && activeStatus.intValue() == 0) {
+            activeStatus = null;
+        }
         PageBean<SysUser> sysUserPageBean = sysUserService.findUserInfoByParams(name, userPhone, pageNum,
                 pageSize, activeStatus, startDate, endDate, jsuiteSysUserProperties.isShowAdmin());
         return success(sysUserPageBean);
@@ -98,7 +101,7 @@ public class UserController extends AbstractRabbitController {
 
 
     @PostMapping("updateUser")
-    @FormValid(fieldFilter = {"activeStatus"})
+    @FormValid(fieldFilter = {"activeStatus", "loginName"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改用户信息")
     public Result<String> updateUser(@RequestBody SysUserDto sysUserDto) {
