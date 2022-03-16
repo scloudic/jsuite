@@ -59,13 +59,19 @@
                 var text = activeEditor.selection.getContent({'format': 'text'});
                 $("#summary").val(text.slice(0, 80));
             }
-
-            var loginData = $.common.formToJSON("articleForm");
-            $.loading();
-            $.postAjax("${basePath}/jsuite/articleMgr/update", loginData,
-                function (status, respData) {
-                    history.back(-1);
+            var as = $("#articleStatus").val();
+            var msg = "是否确定保存!";
+            if(as == 1) {
+            msg = "是否确定发布!";
+            }
+             $.modal.confirm(msg, function () {
+                var loginData = $.common.formToJSON("articleForm");
+                      $.loading();
+                      $.postAjax("${basePath}/jsuite/articleMgr/update", loginData,
+                      function (status, respData) {
+                        history.back(-1);
                 });
+             });
         };
         $("#saveArticle").click(function () {
             $("#articleStatus").val("2");

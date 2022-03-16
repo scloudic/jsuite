@@ -64,7 +64,8 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
         criteria.andEqual(SysUser::getDelStatus, Enums.DelStatus.NORMAL.getValue());
         if (StringUtils.isNotBlank(name)) {
             whereParamType.addCreateCriteria()
-                    .orEqual(SysUser::getRealName, "%" + name + "%");
+                    .orLike(SysUser::getRealName, "%" + name + "%")
+                    .orLike(SysUser::getLoginName, "%" + name + "%");
         }
         if (activeStatus != null) {
             criteria.andEqual(SysUser::getActiveStatus, activeStatus);

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "../include/layout.html"/>
+    <#include "/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
     </@header>
     <body class="gray-bg">
-        <#include "../include/loading.html"/>
-        <#include "categoryOper.html"/>
+        <#include "/include/loading.html"/>
+        <#include "/file/categoryOper.html"/>
         <@permission url="/jsuite/file/categoryMgr/add">
             <#if isPermission==true>
                 <#assign saveCategory="${basePath}/jsuite/file/categoryMgr/add"/>
@@ -44,7 +44,7 @@
         <@script>
             <@bootstraptable/>
             <@moment/>
-            <#include "categoryScript.html"/>
+            <#include "/file/categoryScript.html"/>
         </@script>
     </body>
 </html>

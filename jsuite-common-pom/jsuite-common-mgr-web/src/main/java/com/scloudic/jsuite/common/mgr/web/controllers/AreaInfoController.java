@@ -86,7 +86,7 @@ public class AreaInfoController extends AbstractRabbitController {
 
     @PostMapping("update")
     @UriPermissions
-    @FormValid(fieldFilter = "activeStatus")
+    @FormValid(fieldFilter = {"activeStatus","parentAreaId"})
     @Log(operatorType = Log.OperateType.UPDATE, remark = "地区修改")
     public Result update(@RequestBody AreaInfo areaInfo) {
         areaInfo.setActiveStatus(null);

@@ -46,12 +46,20 @@
                 $("#summary").val(text.slice(0, 80));
             }
 
-            var loginData = $.common.formToJSON("articleForm");
-            $.loading();
-            $.postAjax("${basePath}/jsuite/articleMgr/add", loginData,
-                function (status, respData) {
-                    $.form.clearForm();
-                });
+            var as = $("#articleStatus").val();
+            var msg = "是否确定保存!";
+            if(as == 1) {
+            msg = "是否确定发布!";
+            }
+             $.modal.confirm(msg, function () {
+                var loginData = $.common.formToJSON("articleForm");
+                $.loading();
+                $.postAjax("${basePath}/jsuite/articleMgr/add", loginData,
+                    function (status, respData) {
+                          toastr.info("添加成功！");
+                        $.form.clearForm();
+                    });
+             });
         };
         $("#saveArticle").click(function () {
             $("#articleStatus").val("2");

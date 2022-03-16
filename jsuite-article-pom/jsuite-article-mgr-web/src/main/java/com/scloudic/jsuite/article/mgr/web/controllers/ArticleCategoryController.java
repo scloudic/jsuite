@@ -30,9 +30,9 @@ public class ArticleCategoryController extends AbstractRabbitController {
     @GetMapping("list")
     @UriPermissions
     @Log(operatorType = Log.OperateType.SELECT, remark = "查询文章分类")
-    public Result<PageBean<ArticleCategory>> list(@RequestParam("articleCategoryName") String articleCategoryName,
-                                                  @RequestParam("pageNum") Long pageNum,
-                                                  @RequestParam("pageSize") Long pageSize) {
+    public Result<PageBean<ArticleCategory>> list(@RequestParam(value = "articleCategoryName", required = false) String articleCategoryName,
+                                                  @RequestParam(value = "pageNum", required = false) Long pageNum,
+                                                  @RequestParam(value = "pageSize", required = false) Long pageSize) {
         Where where = new Where();
         Criteria criteria = where.createCriteria();
         criteria.andEqual(ArticleCategory::getDelStatus, Enums.DelStatus.NORMAL.getValue());

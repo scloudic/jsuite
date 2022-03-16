@@ -64,7 +64,7 @@ public class FileAliOssServiceImpl implements FileService {
         fileUrl = fileUrl + "/" + saveFileName;
         uploadAliOss(fileCategoryName, saveFileName, inputStream);
         if (FileUtils.imageFileType.contains(extName.toLowerCase())) {
-            imgUpload(fileCategoryName, saveFileName, inputStream, extName);
+            imgUpload(fileCategoryName, saveFileName, inputStream, "." + extName);
         }
 
         FileBaseInfo fileBaseInfo = new FileBaseInfo();

@@ -113,7 +113,10 @@
             };
             $.modal.confirm('是否禁用', function () {
                 $.postAjax('${updateActiveStatus}', params, function () {
-                    $.treeTable.search();
+                    var params = {
+                        areaId: $("#areaId").val(),
+                    }
+                    $.table.searchByParams(params);
                 });
             });
         }

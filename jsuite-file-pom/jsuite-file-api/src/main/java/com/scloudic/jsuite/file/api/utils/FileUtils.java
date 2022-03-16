@@ -16,10 +16,10 @@ public class FileUtils extends com.scloudic.rabbitframework.core.utils.FileUtils
         videoFileType.add("video/3gpp");
         videoFileType.add("video/3gpp2");
         videoFileType.add("video/x-ms-wmv");
-        imageFileType.add(".jpeg");
-        imageFileType.add(".jpg");
-        imageFileType.add(".png");
-        imageFileType.add(".bmp");
+        imageFileType.add("jpeg");
+        imageFileType.add("jpg");
+        imageFileType.add("png");
+        imageFileType.add("bmp");
     }
 
 

@@ -62,7 +62,7 @@ public class FileLocalServiceImpl implements FileService {
             throw new BizException("upload.file.error");
         }
         if (FileUtils.imageFileType.contains(extName.toLowerCase())) {
-            imgUpload(fileCategoryName, saveFileName, inputStream, extName);
+            imgUpload(fileCategoryName, saveFileName, inputStream, "."+extName);
         }
         FileBaseInfo fileBaseInfo = new FileBaseInfo();
         fileBaseInfo.setFileName(saveFileName);

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<#include "../include/layout.html" />
+<#include "/include/layout.html" />
 <@header>
     <@bootstrapTableLink />
     <@ztreeLink />
 </@header>
 
 <body class="gray-bg">
-    <#include "../include/loading.html" />
-    <#include "categoryAdd.html" />
-    <#include "categoryEdit.html" />
+    <#include "/include/loading.html" />
+    <#include "/article/categoryAdd.html" />
+    <#include "/article/categoryEdit.html" />
     <@permission url="/jsuite/articleCategoryMgr/add">
         <#if isPermission==true>
             <#assign addCategory="${basePath}/jsuite/articleCategoryMgr/add" />
@@ -58,7 +58,7 @@
     <@script>
         <@bootstraptable />
         <@moment />
-        <#include "categoryScript.html" />
+        <#include "/article/categoryScript.html" />
     </@script>
 </body>
 

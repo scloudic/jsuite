@@ -104,8 +104,9 @@ public class FileInfoController extends AbstractRabbitController {
     @PostMapping("upload")
     @UriPermissions
     public Result<String> upload(@RequestPart("file") MultipartFile multipartFile,
-                                 @RequestParam("fileName") String fileName,
-                                 @RequestParam(value = "fileCategoryId", defaultValue = "1") String fileCategoryId) {
+                                 @RequestParam(value = "fileName", required = false) String fileName,
+                                 @RequestParam(value = "fileCategoryId", required = false
+                                         , defaultValue = "1") String fileCategoryId) {
         InputStream is = null;
         try {
             FileCategory fileCategory = fileCategoryService.selectById(fileCategoryId);
@@ -152,7 +153,8 @@ public class FileInfoController extends AbstractRabbitController {
     @PostMapping("batchUpload")
     @UriPermissions
     public Result<List<String>> batchFileUpload(@RequestPart("files") MultipartFile[] multipartFile,
-                                                @RequestParam(value = "fileCategoryId", defaultValue = "1") String fileCategoryId) {
+                                                @RequestParam(value = "fileCategoryId", required = false,
+                                                        defaultValue = "1") String fileCategoryId) {
         List<FileInfo> fileInfos = new ArrayList<FileInfo>();
         List<String> fileUrls = new ArrayList<String>();
         String userId = SecurityUtils.getUserId();

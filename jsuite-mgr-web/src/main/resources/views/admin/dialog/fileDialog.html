@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "../include/layout.html"/>
+    <#include "/include/layout.html"/>
     <@header>
     </@header>
     <body class="white-bg">
-        <#include "../include/loading.html"/>
+        <#include "/include/loading.html"/>
         <div class="wrapper-content animated fadeIn">
             <input id="selectCurrFile" type="text" name="selectCurrFile" style="display: none"/>
             <div class="tabs-container">
@@ -67,7 +67,7 @@
                     });
                     $("#fileUpload").click(function () {
                         var formData = new FormData();
-                        formData.append("files", $("#addfilePath")[0].files[0]);
+                        formData.append("file", $("#addfilePath")[0].files[0]);
                         $.loading();
                         $.fileAjax("${basePath}/jsuite/fileMgr/upload",
                             formData, function (status, respData) {

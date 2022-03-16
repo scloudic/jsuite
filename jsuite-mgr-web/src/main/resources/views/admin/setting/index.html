@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "../include/layout.html"/>
+    <#include "/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
     </@header>
     <body class="gray-bg">
-        <#include "../include/loading.html"/>
-        <#include "add.html"/>
-        <#include "edit.html"/>
+        <#include "/include/loading.html"/>
+        <#include "/setting/add.html"/>
+        <#include "/setting/edit.html"/>
         <@permission url="/jsuite/settingMgr/add">
             <#if isPermission==true>
                 <#assign addSetting="${basePath}/jsuite/settingMgr/add"/>
@@ -59,7 +59,7 @@
         <@script>
             <@bootstraptable/>
             <@moment/>
-            <#include "script.html"/>
+            <#include "/setting/script.html"/>
         </@script>
     </body>
 </html>
