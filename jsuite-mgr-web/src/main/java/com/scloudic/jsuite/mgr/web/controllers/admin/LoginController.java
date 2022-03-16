@@ -108,8 +108,8 @@ public class LoginController extends AbstractRabbitController {
      * @return
      */
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public ModelAndView login() {
-        return new ModelAndView("login");
+    public String login() {
+        return "login";
     }
 
     /**
@@ -119,13 +119,13 @@ public class LoginController extends AbstractRabbitController {
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     @UserAuthentication
-    public ModelAndView logout() {
+    public String logout() {
         try {
             SecurityUtils.logout();
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
-        return login();
+        return "redirect:login";
     }
 
 }

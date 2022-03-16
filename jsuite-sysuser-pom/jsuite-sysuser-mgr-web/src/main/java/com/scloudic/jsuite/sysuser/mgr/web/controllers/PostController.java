@@ -20,7 +20,8 @@ import java.util.List;
 /**
  * 岗位管理
  */
-@RestController("/jsuite/postMgr")
+@RestController
+@RequestMapping("/jsuite/postMgr")
 public class PostController extends AbstractRabbitController {
     @Autowired
     private SysPostService sysPostService;
