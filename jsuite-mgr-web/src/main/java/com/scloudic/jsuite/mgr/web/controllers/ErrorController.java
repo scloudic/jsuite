@@ -15,13 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/error")
 public class ErrorController extends AbstractRabbitController {
     @RequestMapping(value = "404", method = RequestMethod.GET)
-    public ModelAndView sys404() {
-        return new ModelAndView("error/404.html");
+    public String sys404() {
+        return "404";
     }
 
     @RequestMapping(value = "500", method = RequestMethod.GET)
-    public ModelAndView sys500() {
-        return new ModelAndView("error/500.html");
+    public String sys500() {
+        return "500";
     }
 
     /**
@@ -30,7 +30,7 @@ public class ErrorController extends AbstractRabbitController {
      * @return
      */
     @RequestMapping(value = "unauthorized", method = RequestMethod.GET)
-    public ModelAndView unauthorized() {
-        return new ModelAndView("/error/unauthorized.html");
+    public String unauthorized() {
+        return "unauthorized";
     }
 }
