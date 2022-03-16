@@ -17,7 +17,7 @@ public class UserProfileIndexController extends AbstractRabbitController {
 
     @RequestMapping(value = "userProfile", method = RequestMethod.GET)
     @UserAuthentication
-    public ModelAndView index() {
-        return new ModelAndView("user/profileIndex.html");
+    public String index() {
+        return "user/profileIndex";
     }
 }

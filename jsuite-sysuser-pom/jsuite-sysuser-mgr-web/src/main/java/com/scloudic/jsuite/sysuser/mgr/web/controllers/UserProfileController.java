@@ -95,7 +95,7 @@ public class UserProfileController extends AbstractRabbitController {
     }
 
     @PostMapping("update")
-    @FormValid
+    @FormValid(fieldFilter = {"sysUserId","loginName","activeStatus"})
     @UserAuthentication
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改当前登录用户信息")
     public Result update(@RequestBody SysUserDto sysUserDto) {
