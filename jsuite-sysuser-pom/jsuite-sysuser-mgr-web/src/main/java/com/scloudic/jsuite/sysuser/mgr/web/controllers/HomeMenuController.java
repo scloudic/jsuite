@@ -6,11 +6,7 @@ import com.scloudic.rabbitframework.security.authz.annotation.UserAuthentication
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +14,7 @@ import java.util.Map;
 /**
  * 首页获取功能菜单
  */
-@Controller
+@RestController
 @RequestMapping("/jsuite/homeMenu")
 public class HomeMenuController extends AbstractRabbitController {
     @Autowired
@@ -32,9 +28,8 @@ public class HomeMenuController extends AbstractRabbitController {
      * @param parentMenuId 父菜单ID
      * @return json
      */
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @GetMapping("list")
     @UserAuthentication
-    @ResponseBody
     public Result<List<Map<String, Object>>> homeMenu(@RequestParam(value = "parentMenuId", required = false, defaultValue = "1")
                                                               String parentMenuId) {
         List<Map<String, Object>> homeMenu = homeMenuComponent.homeMenu(parentMenuId);
@@ -47,9 +42,8 @@ public class HomeMenuController extends AbstractRabbitController {
      * @param parentMenuId 父菜单ID
      * @return json
      */
-    @RequestMapping(value = "findRoleMenuByParentId", method = RequestMethod.GET)
+    @GetMapping("findRoleMenuByParentId")
     @UserAuthentication
-    @ResponseBody
     public Result<List<Map<String, Object>>> findRoleMenuByMenuParentId(@RequestParam(value = "parentMenuId", required = false, defaultValue = "-1")
                                                                                 String parentMenuId) {
         List<Map<String, Object>> result = homeMenuComponent.findRoleMenuByMenuParentId(parentMenuId);

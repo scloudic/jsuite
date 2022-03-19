@@ -20,6 +20,8 @@ import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import com.scloudic.rabbitframework.web.annotations.FormValid;
 import com.scloudic.rabbitframework.web.utils.ServletContextHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +35,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/jsuite/roleMgr")
 public class RoleController extends AbstractRabbitController {
+    private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
     @Autowired
     private SysRoleService sysRoleService;
     @Autowired
@@ -156,6 +159,10 @@ public class RoleController extends AbstractRabbitController {
             String realmServiceName = jsuiteProperties.getRealmServiceName();
             if (StringUtils.isNotBlank(realmServiceName)) {
                 SecurityAuthorizingRealm securityAuthorizingRealm = (SecurityAuthorizingRealm) ServletContextHelper.getBean(realmServiceName);
+                if (securityAuthorizingRealm == null) {
+                    logger.warn("清除用户权限失败!");
+                    return;
+                }
                 Where where = new Where();
                 where.createCriteria().andEqual(SysUserRole::getSysRoleId, roleMenuDto.getSysRoleId());
                 List<SysUserRole> sysUserRoles = sysUserRoleService.selectByParams(where);
