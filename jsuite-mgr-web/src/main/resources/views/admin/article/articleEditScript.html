@@ -19,7 +19,7 @@
             radioClass: 'iradio_square-blue',
         });
         $("#imgFileUpload").click(function () {
-            $.modal.dialogIframe('图片选择器', '${basePath}/admin/dialog/fileDialog?fileType=img', '', '',
+            $.modal.dialogIframe('图片选择器', '${basePath}/dialog/fileDialog?fileType=img', '', '',
                 function (index, layero) {
                     var body = layer.getChildFrame('body', index).contents();
                     var content = body.find("#selectCurrFile");
@@ -96,7 +96,7 @@
                     icon: "image",
                     onAction: function (_) {
                         $.modal.dialogIframe('选择图片',
-                            '${basePath}/admin/dialog/fileDialog?fileType=img', '600', '',
+                            '${basePath}/dialog/fileDialog?fileType=img', '600', '',
                             function (index, layero) {
                                 var body = layer.getChildFrame('body', index).contents();
                                 var content = body.find("#selectCurrFile");

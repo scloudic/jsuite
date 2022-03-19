@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/admin/dialog")
+@RequestMapping("/dialog")
 public class DialogController extends AbstractRabbitController {
     @Autowired
     private MgrJsuiteProperties mgrJsuiteProperties;
@@ -24,6 +24,6 @@ public class DialogController extends AbstractRabbitController {
     public ModelAndView fileDialog(@RequestParam(value = "fileType", required = false, defaultValue = "") String fileType) {
         Map<String, Object> params = new HashMap<>();
         params.put("fileType", fileType);
-        return new ModelAndView("dialog/fileDialog", params);
+        return new ModelAndView("/admin/dialog/fileDialog", params);
     }
 }
