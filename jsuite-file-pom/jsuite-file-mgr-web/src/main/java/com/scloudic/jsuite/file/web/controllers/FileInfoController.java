@@ -11,7 +11,7 @@ import com.scloudic.jsuite.file.service.FileInfoService;
 import com.scloudic.jsuite.file.web.model.FileInfoDto;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
-import com.scloudic.rabbitframework.core.utils.DateFormatUtil;
+import com.scloudic.rabbitframework.core.utils.DateUtils;
 import com.scloudic.rabbitframework.core.utils.PageBean;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.core.utils.UUIDUtils;
@@ -158,7 +158,7 @@ public class FileInfoController extends AbstractRabbitController {
         List<FileInfo> fileInfos = new ArrayList<FileInfo>();
         List<String> fileUrls = new ArrayList<String>();
         String userId = SecurityUtils.getUserId();
-        String fileCategoryName = DateFormatUtil.dateToStr(new Date(), "yyyyMM");
+        String fileCategoryName = DateUtils.formatDate(new Date(), "yyyyMM");
         try {
             for (MultipartFile bodyPart : multipartFile) {
                 InputStream is = bodyPart.getInputStream();

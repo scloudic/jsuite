@@ -51,6 +51,11 @@ rabbit:
     request-log-enable: true
     freemarker-enable: true
     xss-filter-enable: true
+    exclude-xss-uri:
+      - /jsuite/articleMgr/add
+      - /jsuite/articleMgr/update
+      - /jsuite/settingMgr/add
+      - /jsuite/settingMgr/update
     freemarker-variable-path: com.scloudic.jsuite.**.template
   security:
     cookie:

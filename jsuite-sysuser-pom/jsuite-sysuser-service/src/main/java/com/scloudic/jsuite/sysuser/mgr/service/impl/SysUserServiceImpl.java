@@ -7,7 +7,6 @@ import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.*;
 import com.scloudic.rabbitframework.jbatis.mapping.RowBounds;
-import com.scloudic.rabbitframework.jbatis.mapping.lambda.SFunctionUtils;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Criteria;
 import com.scloudic.rabbitframework.jbatis.mapping.param.Where;
 import com.scloudic.rabbitframework.jbatis.service.IServiceImpl;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户信息服务接口实现类
@@ -78,9 +76,9 @@ public class SysUserServiceImpl extends IServiceImpl<SysUserMapper, SysUser> imp
         }
         if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
             criteria.andGreaterThanEqual(SysUser::getCreateTime,
-                    DateFormatUtil.getDate(startDate + " 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+                    DateUtils.getDate(startDate + " 00:00:00", "yyyy-MM-dd HH:mm:ss"));
             criteria.andLessThanEqual(SysUser::getCreateTime,
-                    DateFormatUtil.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss"));
+                    DateUtils.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss"));
         }
         Long totalCount = sysUserMapper.selectCountByParams(whereParamType);
         PageBean<SysUser> pageBean = new PageBean<SysUser>(pageNum, pageSize, totalCount);

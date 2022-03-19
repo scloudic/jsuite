@@ -17,8 +17,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -67,11 +70,12 @@ public class OperateLogInterceptor {
             String clientVersion = "";
             for (int i = 0; i < parameterLength; i++) {
                 Parameter parameter = parameters[i];
-                if (HttpServletRequest.class == parameter.getType()) {
-                    HttpServletRequest request = (HttpServletRequest) args[i];
-                    ip = getRemoteAddr(request);
-                    operateSource = getOperatorSource(request);
-                    clientVersion = getClientVersion(request);
+                Object value = args[i];
+                if (value instanceof HttpServletResponse) {
+                    continue;
+                }
+                if (value instanceof HttpServletRequest) {
+                    continue;
                 }
                 Annotation[] annotations = parameter.getAnnotations();
                 LogParamExclude logParamExclude = parameter.getAnnotation(LogParamExclude.class);
@@ -84,6 +88,14 @@ public class OperateLogInterceptor {
                 }
                 paramsValue.put(parameter.getName(), args[i]);
             }
+            HttpServletRequest request = (HttpServletRequest) RequestContextHolder.currentRequestAttributes()
+                    .resolveReference(RequestAttributes.REFERENCE_REQUEST);
+            if (request != null) {
+                ip = getRemoteAddr(request);
+                operateSource = getOperatorSource(request);
+                clientVersion = getClientVersion(request);
+            }
+
             LogBean operateLog = new LogBean();
             if (paramsValue.size() > 0) {
                 operateLog.setContent(JsonUtils.toJson(paramsValue, true, true));

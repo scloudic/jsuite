@@ -3,7 +3,7 @@ package com.scloudic.jsuite.file.api.web.controllers;
 import com.scloudic.jsuite.file.api.model.FileBaseInfo;
 import com.scloudic.jsuite.file.api.service.FileService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
-import com.scloudic.rabbitframework.core.utils.DateFormatUtil;
+import com.scloudic.rabbitframework.core.utils.DateUtils;
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import com.scloudic.rabbitframework.web.Result;
 import org.apache.commons.io.IOUtils;
@@ -63,7 +63,7 @@ public class FileInfoApiController extends AbstractRabbitController {
     @PostMapping("batchUpload")
     public Result<List<String>> batchFileUpload(@RequestPart("files") MultipartFile[] multipartFile) {
         List<String> fileUrls = new ArrayList<String>();
-        String fileCategoryName = DateFormatUtil.dateToStr(new Date(), "yyyyMM");
+        String fileCategoryName = DateUtils.formatDate(new Date(), "yyyyMM");
         try {
             for (MultipartFile bodyPart : multipartFile) {
                 InputStream is = null;
