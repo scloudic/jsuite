@@ -86,7 +86,7 @@ public class OperateLogInterceptor {
                 if (isExclude) {
                     continue;
                 }
-                paramsValue.put(parameter.getName(), args[i]);
+                paramsValue.put(parameter.getName(), value);
             }
             HttpServletRequest request = (HttpServletRequest) RequestContextHolder.currentRequestAttributes()
                     .resolveReference(RequestAttributes.REFERENCE_REQUEST);
