@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
-        <#include "/role/add.html"/>
-        <#include "/role/edit.html"/>
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/role/add.html"/>
+        <#include "/admin/role/edit.html"/>
         <@permission url="/jsuite/roleMgr/addRole">
             <#if isPermission==true>
                 <#assign addRole="${basePath}/jsuite/roleMgr/addRole"/>
@@ -67,7 +67,7 @@
         <@script>
             <@bootstraptable/>
             <@ztree/>
-            <#include "/role/roleScript.html"/>
+            <#include "/admin/role/roleScript.html"/>
         </@script>
     </body>
 </html>

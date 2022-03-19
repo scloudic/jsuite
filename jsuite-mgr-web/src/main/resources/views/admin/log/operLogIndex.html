@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
@@ -11,7 +11,7 @@
         </style>
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
+        <#include "/admin/include/loading.html"/>
         <div class="jsuite-wrapper">
             <div class="row">
                 <div class="col-sm-12 search-collapse">
@@ -61,7 +61,7 @@
             <@bootstraptable/>
             <@laydate/>
             <@moment/>
-            <#include "/log/operLogScript.html"/>
+            <#include "/admin/log/operLogScript.html"/>
         </@script>
     </body>
 </html>

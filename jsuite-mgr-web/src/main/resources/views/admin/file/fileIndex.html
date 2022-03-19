@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
         <@jquerylayoutLink />
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
-        <#include "/file/fileEdit.html"/>
-        <#include  "/file/fileAdd.html"/>
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/file/fileEdit.html"/>
+        <#include  "/admin/file/fileAdd.html"/>
         <@permission url="/jsuite/fileMgr/upload">
             <#if isPermission==true>
                 <#assign uploadFile="${basePath}/jsuite/fileMgr/upload"/>
@@ -72,7 +72,7 @@
             <@moment/>
             <@jquerylayout/>
             <@ztree/>
-            <#include "/file/fileScript.html"/>
+            <#include "/admin/file/fileScript.html"/>
         </@script>
     </body>
 </html>

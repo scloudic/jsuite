@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
-        <#include "/post/add.html"/>
-        <#include "/post/edit.html"/>
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/post/add.html"/>
+        <#include "/admin/post/edit.html"/>
         <@permission url="/jsuite/postMgr/add">
             <#if isPermission==true>
                 <#assign addPost="${basePath}/jsuite/postMgr/add"/>
@@ -63,7 +63,7 @@
         <@script>
             <@bootstraptable/>
             <@moment/>
-            <#include "/post/script.html"/>
+            <#include "/admin/post/script.html"/>
         </@script>
     </body>
 </html>

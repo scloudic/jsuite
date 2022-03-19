@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<#include "/include/layout.html" />
+<#include "/admin/include/layout.html" />
 <@header>
     <@iCheckLink />
     <style>
@@ -27,7 +27,7 @@
 </@header>
 
 <body class="gray-bg">
-<#include "/include/loading.html" />
+<#include "/admin/include/loading.html" />
 <div>
     <form class="form-horizontal" id="articleForm" name="articleForm">
         <input type="hidden" id="articleStatus" name="articleStatus"/>
@@ -126,7 +126,7 @@
 <@script>
     <@iCheck />
     <@tinymce />
-    <#include "/article/articleCreateScript.html" />
+    <#include "/admin/article/articleCreateScript.html" />
 </@script>
 </body>
 

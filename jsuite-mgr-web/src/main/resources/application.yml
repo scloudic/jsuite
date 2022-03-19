@@ -38,8 +38,7 @@ spring:
     enabled: true
     request-context-attribute: request
     template-loader-path:
-      - classpath:/views/admin/
-      - classpath:/views/error/
+      - classpath:/views/
     settings:
       template_update_delay: 10
       classic_compatible: true
@@ -73,8 +72,8 @@ rabbit:
   commons:
     front-black: false
     page404: true
-    sys404-error-url: /404
-    sys500-error-url: /500
-    sys405-error-url: /404
-    unauthorized-url: /unauthorized
-    login-url: /login
+    sys404-error-url: /error/404
+    sys500-error-url: /error/500
+    sys405-error-url: /error/404
+    unauthorized-url: /error/unauthorized
+    login-url: /admin/login

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
@@ -11,10 +11,10 @@
         </style>
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
+        <#include "/admin/include/loading.html"/>
         <@roleAll> </@roleAll>
-        <#include "/user/add.html"/>
-        <#include "/user/edit.html"/>
+        <#include "/admin/user/add.html"/>
+        <#include "/admin/user/edit.html"/>
         <@permission url="/jsuite/userMgr/saveUser">
             <#if isPermission==true>
                 <#assign saveUser="${basePath}/jsuite/userMgr/saveUser"/>
@@ -117,7 +117,7 @@
             <@laydate/>
             <@moment/>
             <@ztree/>
-            <#include "/user/userScript.html"/>
+            <#include "/admin/user/userScript.html"/>
         </@script>
     </body>
 </html>

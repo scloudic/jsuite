@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:jsuite.properties")
 public class MgrJsuiteProperties {
-    
+
 }

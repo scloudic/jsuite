@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@treetableLink/>
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
-        <#include "/dept/add.html"/>
-        <#include "/dept/edit.html"/>
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/dept/add.html"/>
+        <#include "/admin/dept/edit.html"/>
         <@permission url="/jsuite/deptMgr/addDept">
             <#if isPermission==true>
                 <#assign addDept="${basePath}/jsuite/deptMgr/addDept"/>
@@ -57,7 +57,7 @@
         <@script>
             <@treetable/>
             <@moment/>
-            <#include "/dept/script.html"/>
+            <#include "/admin/dept/script.html"/>
         </@script>
     </body>
 </html>

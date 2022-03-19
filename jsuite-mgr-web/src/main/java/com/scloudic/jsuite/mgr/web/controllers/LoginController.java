@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.mgr.web.controllers.admin;
+package com.scloudic.jsuite.mgr.web.controllers;
 
 import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
 import com.scloudic.jsuite.core.utils.Enums;
@@ -9,6 +9,7 @@ import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.jsuite.mgr.web.model.UserLoginDto;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
+import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
 import com.scloudic.rabbitframework.core.notification.NotificationServerManager;
 import com.scloudic.rabbitframework.security.LoginFailException;
 import com.scloudic.rabbitframework.security.SecurityUser;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -43,6 +43,8 @@ public class LoginController extends AbstractRabbitController {
     private NotificationServerManager notificationServerManager;
     @Autowired
     private CaptchaVerify captchaVerify;
+    @Autowired
+    private JsuiteSysUserProperties jsuiteSysUserProperties;
 
     @RequestMapping(value = "userLogin", method = RequestMethod.POST)
     @ResponseBody
@@ -102,15 +104,6 @@ public class LoginController extends AbstractRabbitController {
         return success(data);
     }
 
-    /**
-     * 跳转到登录界面
-     *
-     * @return
-     */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String login() {
-        return "login";
-    }
 
     /**
      * 退出登录
@@ -125,7 +118,7 @@ public class LoginController extends AbstractRabbitController {
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
-        return "redirect:login";
+        return "redirect:" + jsuiteSysUserProperties.getLoginPagePath();
     }
 
 }

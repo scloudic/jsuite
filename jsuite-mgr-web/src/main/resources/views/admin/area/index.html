@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <#include "/include/layout.html"/>
+    <#include "/admin/include/layout.html"/>
     <@header>
         <@bootstrapTableLink/>
         <@ztreeLink/>
         <@jquerylayoutLink />
     </@header>
     <body class="gray-bg">
-        <#include "/include/loading.html"/>
+        <#include "/admin/include/loading.html"/>
         <@permission url="/jsuite/areaMgr/add">
             <#if isPermission==true>
-                <#include "/area/add.html"/>
+                <#include "/admin/area/add.html"/>
                 <#assign addArea="${basePath}/jsuite/areaMgr/add"/>
             <#else>
                 <#assign addArea=""/>
@@ -18,7 +18,7 @@
         </@permission>
         <@permission url="/jsuite/areaMgr/update">
             <#if isPermission>
-                <#include "/area/edit.html"/>
+                <#include "/admin/area/edit.html"/>
                 <#assign updateArea="${basePath}/jsuite/areaMgr/update"/>
             <#else>
                 <#assign updateArea=""/>
@@ -66,7 +66,7 @@
             <@moment/>
             <@jquerylayout/>
             <@ztree/>
-            <#include "/area/script.html"/>
+            <#include "/admin/area/script.html"/>
         </@script>
     </body>
 </html>
