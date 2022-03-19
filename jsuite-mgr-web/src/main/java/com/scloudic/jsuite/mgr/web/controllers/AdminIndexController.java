@@ -43,15 +43,6 @@ public class AdminIndexController extends AbstractRabbitController {
         return "admin/index";
     }
 
-    /**
-     * 跳转到登录界面
-     *
-     * @return
-     */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String login() {
-        return "admin/login";
-    }
 
     @RequestMapping(value = "main", method = {RequestMethod.GET})
     @UserAuthentication

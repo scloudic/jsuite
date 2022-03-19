@@ -11,16 +11,6 @@ public class JsuiteSysUserProperties {
     private String avatarPath;
     @Value("${sysuser.showAdmin.list:false}")
     private boolean showAdmin;
-    @Value("${sysuser.login.path:login}")
-    private String loginPagePath;
-
-    public String getLoginPagePath() {
-        return loginPagePath;
-    }
-
-    public void setLoginPagePath(String loginPagePath) {
-        this.loginPagePath = loginPagePath;
-    }
 
     public String getAvatarPath() {
         return avatarPath;

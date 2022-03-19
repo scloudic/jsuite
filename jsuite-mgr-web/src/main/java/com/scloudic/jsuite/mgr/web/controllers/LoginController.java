@@ -104,6 +104,15 @@ public class LoginController extends AbstractRabbitController {
         return success(data);
     }
 
+    /**
+     * 跳转到登录界面
+     *
+     * @return
+     */
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String login() {
+        return "admin/login";
+    }
 
     /**
      * 退出登录
@@ -118,7 +127,7 @@ public class LoginController extends AbstractRabbitController {
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
-        return "redirect:" + jsuiteSysUserProperties.getLoginPagePath();
+        return "redirect:login";
     }
 
 }
