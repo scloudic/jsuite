@@ -18,6 +18,6 @@ public class UserProfileIndexController extends AbstractRabbitController {
     @RequestMapping(value = "userProfile", method = RequestMethod.GET)
     @UserAuthentication
     public String index() {
-        return "user/profileIndex";
+        return "admin/user/profileIndex";
     }
 }
