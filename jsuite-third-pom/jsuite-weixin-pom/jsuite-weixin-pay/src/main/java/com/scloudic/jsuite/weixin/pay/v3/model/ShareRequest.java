@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 请求分账参数
  */
-public class ShareOrderRequest {
+public class ShareRequest {
     /**
      * 应用ID,微信分配的商户appid
      */

@@ -40,4 +40,34 @@ public class WeiXinEnums {
                     '}';
         }
     }
+
+    public enum RelationType {
+        STORE("STORE", "门店"),
+        STAFF("STAFF", "员工"),
+        STORE_OWNER("STORE_OWNER", "店主"),
+        PARTNER("PARTNER", "合作伙伴"),
+        HEADQUARTER("HEADQUARTER", "总部"),
+        BRAND("BRAND", "品牌方"),
+        DISTRIBUTOR("DISTRIBUTOR", "分销商"),
+        USER("USER", "用户"),
+        SUPPLIER("SUPPLIER", "供应商"),
+        CUSTOM("CUSTOM", "自定义"),
+        ;
+        private String value;
+        
+        private String message;
+
+        RelationType(String value, String message) {
+            this.value = value;
+            this.message = message;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 }

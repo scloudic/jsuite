@@ -15,8 +15,8 @@ public interface SharePayMchService {
      * @param request
      * @param payerParams
      */
-    public V3PayResponse<ShareOrderResult> orders(PayerParams payerParams,
-                                                  ShareOrderRequest request);
+    public V3PayResponse<ShareResult> orders(PayerParams payerParams,
+                                             ShareRequest request);
 
     /**
      * 分冻/解冻查询
@@ -25,7 +25,67 @@ public interface SharePayMchService {
      * @param request
      * @return
      */
-    public V3PayResponse<ShareOrderResult> searchOrders(PayerParams payerParams,
-                                                        ShareOrderSearchRequest request);
+    public V3PayResponse<ShareResult> searchOrders(PayerParams payerParams,
+                                                   ShareSearchRequest request);
 
+    /**
+     * 分账回退请求
+     * 此接口采用同步处理模式，即在接收到商户请求后，会实时返回处理结果。
+     *
+     * @param payerParams
+     * @param shareRefundRequest
+     * @return
+     */
+    public V3PayResponse<ShareRefundResult> returnOrders(PayerParams payerParams,
+                                                         ShareRefundRequest shareRefundRequest);
+
+    /**
+     * 查询分账回退结果
+     *
+     * @param payerParams
+     * @param shareRefundRequest
+     * @return
+     */
+    public V3PayResponse<ShareRefundResult> searchReturnOrders(PayerParams payerParams,
+                                                               ShareSearchRefundRequest shareRefundRequest);
+
+    /**
+     * 解冻剩余资金
+     *
+     * @param payerParams
+     * @param shareUnfreezeRequest
+     * @return
+     */
+    public V3PayResponse<ShareResult> unfreeze(PayerParams payerParams,
+                                               ShareUnfreezeRequest shareUnfreezeRequest);
+
+    /**
+     * 查询剩余金额
+     *
+     * @param payerParams
+     * @param transactionId
+     * @return
+     */
+    public V3PayResponse<ShareRemainResult> shareRemain(PayerParams payerParams,
+                                                        String transactionId);
+
+    /**
+     * 添加分账用户
+     *
+     * @param payerParams
+     * @param request
+     * @return
+     */
+    public V3PayResponse<ShareAddReceiversResult> addReceivers(PayerParams payerParams,
+                                                               ShareAddReceiversRequest request);
+
+    /**
+     * 删除接收方
+     *
+     * @param payerParams
+     * @param request
+     * @return
+     */
+    public V3PayResponse<ShareDelReceiversResult> delReceivers(PayerParams payerParams,
+                                                               ShareDelReceiversRequest request);
 }

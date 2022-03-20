@@ -1,6 +1,6 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
-public class ShareOrderRevResult {
+public class ShareRevResult {
     /**
      * 单位分
      */

@@ -79,12 +79,15 @@ public abstract class WeiXinCertificate {
     }
 
     /**
-     * 获取平台证书
+     * 获取平台证书,如果不传预列号,从证书中取第一个
      *
      * @param serialNumber
      * @return
      */
     public abstract X509Certificate getCertificate(PayerParams payerParams, String serialNumber);
+
+
+    public abstract Map<String,X509Certificate> getCertificate(PayerParams payerParams);
 
     /**
      * 设置平台证书

@@ -31,7 +31,7 @@ public class V3ResponseBody {
         timestamp = responseBody.header(V3ResponseBody.WECHAT_PAY_TIMESTAMP);
         nonce = responseBody.header(V3ResponseBody.WECHAT_PAY_NONCE);
     }
-
+    
     public boolean verify(X509Certificate certificate) {
         try {
             String message = timestamp + "\n"

@@ -2,7 +2,7 @@ package com.scloudic.jsuite.weixin.pay.v3.model;
 
 import java.util.List;
 
-public class ShareOrderResult {
+public class ShareResult {
     private String transaction_id;
     private String out_order_no;
     /**
@@ -18,7 +18,7 @@ public class ShareOrderResult {
     /**
      * 分账接收方列表
      */
-    private List<ShareOrderRevResult> receivers;
+    private List<ShareRevResult> receivers;
 
     public String getTransaction_id() {
         return transaction_id;
@@ -52,11 +52,11 @@ public class ShareOrderResult {
         this.state = state;
     }
 
-    public List<ShareOrderRevResult> getReceivers() {
+    public List<ShareRevResult> getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(List<ShareOrderRevResult> receivers) {
+    public void setReceivers(List<ShareRevResult> receivers) {
         this.receivers = receivers;
     }
 }

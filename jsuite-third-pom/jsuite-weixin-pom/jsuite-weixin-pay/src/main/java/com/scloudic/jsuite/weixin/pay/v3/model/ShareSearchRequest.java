@@ -1,6 +1,6 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
-public class ShareOrderSearchRequest {
+public class ShareSearchRequest {
     private String transactionId;
     private String outOrderNo;
 
