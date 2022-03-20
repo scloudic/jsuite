@@ -4,7 +4,7 @@ import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
 import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
-import com.scloudic.jsuite.weixin.pay.v3.service.ShareMchService;
+import com.scloudic.jsuite.weixin.pay.v3.service.SharePayMchService;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.cert.X509Certificate;
 
-public class ShareMchServiceImpl implements ShareMchService {
+public class SharePayMchServiceImpl implements SharePayMchService {
     @Autowired
     private WeiXinCertificate weiXinCertificate;
 
-    private static final Logger logger = LoggerFactory.getLogger(ShareMchServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SharePayMchServiceImpl.class);
 
     @Override
     public V3PayResponse<ShareOrderResult> orders(PayerParams payerParams,

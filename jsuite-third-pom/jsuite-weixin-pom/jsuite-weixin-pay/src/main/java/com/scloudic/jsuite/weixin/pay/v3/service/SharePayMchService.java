@@ -5,7 +5,7 @@ import com.scloudic.jsuite.weixin.pay.v3.model.*;
 /**
  * 商户平台分账，只有V3版才能支持分账
  */
-public interface ShareMchService {
+public interface SharePayMchService {
     /**
      * 对同一笔订单最多能发起50次分账请求，每次请求最多分给50个接收方
      * <p>
@@ -25,6 +25,7 @@ public interface ShareMchService {
      * @param request
      * @return
      */
-    public V3PayResponse<ShareOrderResult> searchOrders(PayerParams payerParams, ShareOrderSearchRequest request);
+    public V3PayResponse<ShareOrderResult> searchOrders(PayerParams payerParams,
+                                                        ShareOrderSearchRequest request);
 
 }
