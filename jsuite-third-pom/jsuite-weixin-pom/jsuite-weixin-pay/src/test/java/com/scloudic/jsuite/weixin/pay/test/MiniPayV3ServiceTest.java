@@ -1,10 +1,12 @@
 package com.scloudic.jsuite.weixin.pay.test;
 
 import com.scloudic.jsuite.weixin.pay.utils.CertificateUtils;
-import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
-import com.scloudic.jsuite.weixin.pay.v3.model.*;
-import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayV3Service;
-import com.scloudic.jsuite.weixin.pay.v3.service.impl.MiniPayV3ServiceImpl;
+import com.scloudic.jsuite.weixin.pay.v3.model.JsapiRequest;
+import com.scloudic.jsuite.weixin.pay.v3.model.PayerParams;
+import com.scloudic.jsuite.weixin.pay.v3.model.V3Pay;
+import com.scloudic.jsuite.weixin.pay.v3.model.V3PayResponse;
+import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayMchV3Service;
+import com.scloudic.jsuite.weixin.pay.v3.service.impl.MiniPayMchV3ServiceImpl;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import com.scloudic.rabbitframework.core.utils.UUIDUtils;
 import org.junit.Test;
@@ -33,7 +35,7 @@ public class MiniPayV3ServiceTest {
         jsapiRequest.setSubject("购买商品");
         jsapiRequest.setTotal(100);
         jsapiRequest.setPayerClientIp("127.0.0.1");
-        MiniPayV3Service payV3Service = new MiniPayV3ServiceImpl();
+        MiniPayMchV3Service payV3Service = new MiniPayMchV3ServiceImpl();
         payV3Service.setCertificate(new WeiXinCertificateImpl());
         V3PayResponse<V3Pay> v3PayResponse = payV3Service.pay(payerParams, jsapiRequest);
         logger.debug("返回结果：" + JsonUtils.toJson(v3PayResponse));

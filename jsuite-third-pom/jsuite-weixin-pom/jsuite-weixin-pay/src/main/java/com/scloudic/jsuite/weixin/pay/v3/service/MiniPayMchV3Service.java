@@ -4,9 +4,9 @@ import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
 
 /**
- * 商户平台支付
+ * 商户平台,小程序支付
  */
-public interface MiniPayV3Service {
+public interface MiniPayMchV3Service {
     /**
      * 发起支付请求
      *

@@ -5,7 +5,7 @@ import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
 import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
-import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayV3Service;
+import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayMchV3Service;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
 import com.scloudic.rabbitframework.core.httpclient.ResponseBody;
 import com.scloudic.rabbitframework.core.utils.JsonUtils;
@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class MiniPayV3ServiceImpl implements MiniPayV3Service {
-    private static final Logger logger = LoggerFactory.getLogger(MiniPayV3ServiceImpl.class);
-    @Autowired(required = false)
+public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
+    private static final Logger logger = LoggerFactory.getLogger(MiniPayMchV3ServiceImpl.class);
+    @Autowired
     private WeiXinCertificate weiXinCertificate;
 
     @Override
@@ -35,6 +35,7 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
         v3PayResponse.setPayStatus(jsapi.getPayStatus());
         v3PayResponse.setMsg(jsapi.getMsg());
         v3PayResponse.setRequestBody(jsapi.getRequestBody());
+        v3PayResponse.setResponseBody(jsapi.getResponseBody());
         v3PayResponse.setCode(jsapi.getCode());
         v3PayResponse.setRequestUrl(jsapi.getRequestUrl());
         if (jsapi.getPayStatus() != WeiXinEnums.WeiXinPayStatus.SUCCESS) {
@@ -77,8 +78,6 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
         V3PayResponse<RefundResult> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
         v3PayResponse.setRequestUrl(url);
-        String resultBody = "";
-        boolean errorBool = false;
         try {
             logger.debug("微信小程序退款申请");
             Map<String, Object> rootMap = new HashMap<>();
@@ -99,16 +98,18 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
             logger.info("请求地址：" + url + ",token:" + token + ",请求参数：" + requestBody);
             ResponseBody responseBody = HttpClientUtils.post(url, requestBody, V3RequestUtils.getHeaders(token));
             int code = responseBody.code();
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
+            String resultBody = v3Response.getBody();
+            v3PayResponse.setResponseBody(resultBody);
             v3PayResponse.setCode(code);
             if (!responseBody.isSuccessful()) {
-                String msg = responseBody.string();
+                String msg = resultBody;
                 logger.error("错误消息：" + msg + ",错误状态：" + code);
                 v3PayResponse.setMsg(msg);
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.FAIL);
                 return v3PayResponse;
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
-            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
             String serial = v3Response.getSerial();
             X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
@@ -122,20 +123,13 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR.getMessage());
                 return v3PayResponse;
             }
-            resultBody = v3Response.getBody();
+            RefundResult refundResult = JsonUtils.getObject(resultBody, RefundResult.class);
+            v3PayResponse.setData(refundResult);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.ERROR);
             v3PayResponse.setMsg(e.getMessage());
-            errorBool = true;
         }
-
-        if (errorBool) {
-            return v3PayResponse;
-        }
-        RefundResult refundResult = JsonUtils.getObject(resultBody, RefundResult.class);
-        v3PayResponse.setResponseBody(resultBody);
-        v3PayResponse.setData(refundResult);
         return v3PayResponse;
     }
 
@@ -144,24 +138,24 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
         V3PayResponse<RefundResult> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/" + outRefundNo;
         v3PayResponse.setRequestUrl(url);
-        String resultBody = "";
-        boolean errorBool = false;
         try {
             logger.debug("微信支付退款查询");
             String token = V3RequestUtils.getToken(payerParams, "GET", HttpUrl.parse(url));
             logger.info("请求地址：" + url + ",token:" + token);
             ResponseBody responseBody = HttpClientUtils.get(url, null, V3RequestUtils.getHeaders(token));
             int code = responseBody.code();
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
+            String resultBody = v3Response.getBody();
             v3PayResponse.setCode(code);
+            v3PayResponse.setResponseBody(resultBody);
             if (!responseBody.isSuccessful()) {
-                String msg = responseBody.string();
+                String msg = resultBody;
                 logger.error("错误消息：" + msg + ",错误状态：" + code);
                 v3PayResponse.setMsg(msg);
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.FAIL);
                 return v3PayResponse;
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
-            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
             String serial = v3Response.getSerial();
             X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
@@ -175,43 +169,37 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR.getMessage());
                 return v3PayResponse;
             }
-            resultBody = v3Response.getBody();
+            RefundResult refundResult = JsonUtils.getObject(resultBody, RefundResult.class);
+            v3PayResponse.setData(refundResult);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.ERROR);
             v3PayResponse.setMsg(e.getMessage());
-            errorBool = true;
         }
-        if (errorBool) {
-            return v3PayResponse;
-        }
-        RefundResult refundResult = JsonUtils.getObject(resultBody, RefundResult.class);
-        v3PayResponse.setResponseBody(resultBody);
-        v3PayResponse.setData(refundResult);
         return v3PayResponse;
     }
 
     private V3PayResponse<SearchPayResult> getSearchPayResult(PayerParams payerParams, String url) {
         V3PayResponse<SearchPayResult> v3PayResponse = new V3PayResponse<>();
         v3PayResponse.setRequestUrl(url);
-        String resultBody = "";
-        boolean errorBool = false;
         try {
             logger.debug("微信支付订单号查询");
             String token = V3RequestUtils.getToken(payerParams, "GET", HttpUrl.parse(url));
             logger.info("请求地址：" + url + ",token:" + token);
             ResponseBody responseBody = HttpClientUtils.get(url, null, V3RequestUtils.getHeaders(token));
             int code = responseBody.code();
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
+            String resultBody = v3Response.getBody();
+            v3PayResponse.setResponseBody(resultBody);
             v3PayResponse.setCode(code);
             if (!responseBody.isSuccessful()) {
-                String msg = responseBody.string();
+                String msg = resultBody;
                 logger.error("错误消息：" + msg + ",错误状态：" + code);
                 v3PayResponse.setMsg(msg);
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.FAIL);
                 return v3PayResponse;
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
-            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
             String serial = v3Response.getSerial();
             X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
@@ -225,29 +213,20 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR.getMessage());
                 return v3PayResponse;
             }
-            resultBody = v3Response.getBody();
+            SearchPayResult searchPayResult = JsonUtils.getObject(resultBody, SearchPayResult.class);
+            v3PayResponse.setData(searchPayResult);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.ERROR);
             v3PayResponse.setMsg(e.getMessage());
-            errorBool = true;
         }
-        if (errorBool) {
-            return v3PayResponse;
-        }
-        SearchPayResult searchPayResult = JsonUtils.getObject(resultBody, SearchPayResult.class);
-        v3PayResponse.setResponseBody(resultBody);
-        v3PayResponse.setData(searchPayResult);
         return v3PayResponse;
     }
-
-
+    
     private V3PayResponse<Jsapi> jsapi(PayerParams payerParams, JsapiRequest jsapiRequest) {
         V3PayResponse<Jsapi> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
         v3PayResponse.setRequestUrl(url);
-        String resultBody = "";
-        boolean errorBool = false;
         try {
             logger.debug("微信小程序JSAPI下单");
             Map<String, Object> rootMap = new HashMap<>();
@@ -271,17 +250,19 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
             String token = V3RequestUtils.getToken(payerParams, "POST", HttpUrl.parse(url), requestBody);
             logger.info("请求地址：" + url + ",token:" + token + ",请求参数：" + requestBody);
             ResponseBody responseBody = HttpClientUtils.post(url, requestBody, V3RequestUtils.getHeaders(token));
+            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
+            String resultBody = v3Response.getBody();
             int code = responseBody.code();
             v3PayResponse.setCode(code);
+            v3PayResponse.setResponseBody(resultBody);
             if (!responseBody.isSuccessful()) {
-                String msg = responseBody.string();
+                String msg = resultBody;
                 logger.error("错误消息：" + msg + ",错误状态：" + code);
                 v3PayResponse.setMsg(msg);
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.FAIL);
                 return v3PayResponse;
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
-            V3ResponseBody v3Response = new V3ResponseBody(responseBody);
             String serial = v3Response.getSerial();
             X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
@@ -295,20 +276,13 @@ public class MiniPayV3ServiceImpl implements MiniPayV3Service {
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.VERIFY_ERROR.getMessage());
                 return v3PayResponse;
             }
-            resultBody = v3Response.getBody();
+            Jsapi jsapi = JsonUtils.getObject(resultBody, Jsapi.class);
+            v3PayResponse.setData(jsapi);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.ERROR);
             v3PayResponse.setMsg(e.getMessage());
-            errorBool = true;
         }
-
-        if (errorBool) {
-            return v3PayResponse;
-        }
-        Jsapi jsapi = JsonUtils.getObject(resultBody, Jsapi.class);
-        v3PayResponse.setResponseBody(resultBody);
-        v3PayResponse.setData(jsapi);
         return v3PayResponse;
     }
 
