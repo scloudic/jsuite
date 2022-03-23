@@ -5,6 +5,10 @@ spring:
   servlet:
     multipart:
       enabled: true
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

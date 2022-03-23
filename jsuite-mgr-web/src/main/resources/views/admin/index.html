@@ -47,7 +47,7 @@
                                         <#if (userInfo.avatarPath)?? && (userInfo.avatarPath)?length gt 0>
                                             <img src="${userInfo.avatarPath}" height="20px" width="20px" class="img-circle"/>
                                         <#else>
-                                            <img src="${basePath}/static/images/profile_small.jpg" height="20px" width="20px" class="img-circle"/>
+                                            <img src="${basePath}/images/profile_small.jpg" height="20px" width="20px" class="img-circle"/>
                                         </#if>
                                         <span class="hidden-xs">${userInfo.realName}</span>
                                     </a>
@@ -107,9 +107,9 @@
                 <@metisMenu/>
                 <@contextMenu/>
                 <!-- 自定义js -->
-                <script src="${basePath}/static/js/index.js?v=4.1.0"></script>
-                <script src="${basePath}/static/js/contabs.js?v=1.2"></script>
-                <script src="${basePath}/static/plugins/bootstrap-hover/bootstrap-hover-dropdown.min.js"></script>
+                <script src="${basePath}/js/index.js?v=4.1.0"></script>
+                <script src="${basePath}/js/contabs.js?v=1.2"></script>
+                <script src="${basePath}/plugins/bootstrap-hover/bootstrap-hover-dropdown.min.js"></script>
                 <script>
                     $(function () {
                         $("#updateUserPwd").click(function () {

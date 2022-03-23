@@ -20,7 +20,7 @@
                             <div class="m-l-md">
                                 <input type="file" id="addfilePath" name="file" style="display: none">
                                 <img id="imgFileUpload"
-                                     src="${basePath}/static/images/chose-image-btn.png"
+                                     src="${basePath}/images/chose-image-btn.png"
                                      width="200" height="200"/>
                             </div>
                             <div class="m-t m-l-md">
@@ -33,10 +33,10 @@
                         <div class="panel-body">
                             <div class="ibox float-e-margins">
                                 <div class="lightBoxGallery">
-                                    <img alt="image" src="/static/images/p_big1.jpg"
-                                         onerror="this.src='${basePath}/static/images/default-img.png'"/>
-                                    <img alt="image" src="/static/images/p_big1.jpg"
-                                         onerror="this.src='${basePath}/static/images/default-img.png'"/>
+                                    <img alt="image" src="/images/p_big1.jpg"
+                                         onerror="this.src='${basePath}/images/default-img.png'"/>
+                                    <img alt="image" src="/images/p_big1.jpg"
+                                         onerror="this.src='${basePath}/images/default-img.png'"/>
                                 </div>
                             </div>
                             <div id="example" style="text-align: center">
@@ -49,7 +49,7 @@
             </div>
         </div>
         <@script>
-            <script src="${basePath}/static/js/bootstrap-paginator.min.js"></script>
+            <script src="${basePath}/js/bootstrap-paginator.min.js"></script>
             <script>
                 $(function () {
                     var selectFileUrl = "";
@@ -91,7 +91,7 @@
                                     let resultData = data.datas[i];
                                     let img = '<img  alt="' + resultData.fileName + '" ' +
                                         'src="' + resultData.httpUrl + '" ' +
-                                        'onerror="this.src=\'${basePath}/static/images/default-img.png\'"/>';
+                                        'onerror="this.src=\'${basePath}/images/default-img.png\'"/>';
                                     $(".lightBoxGallery").html(img + $(".lightBoxGallery").html());
                                 }
                                 $('#pagination').bootstrapPaginator({
