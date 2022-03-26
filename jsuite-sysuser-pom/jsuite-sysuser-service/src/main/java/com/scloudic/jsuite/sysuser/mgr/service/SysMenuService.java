@@ -41,7 +41,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param menuId
      * @return
      */
-    int delMenu(String menuId);
+    int delMenu(List<String> menuId);
 
     /**
      * 根据角色主键获取当前角色下的子菜单

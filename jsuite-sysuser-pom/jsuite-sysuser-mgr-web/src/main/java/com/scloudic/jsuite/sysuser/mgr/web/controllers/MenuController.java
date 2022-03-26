@@ -192,13 +192,34 @@ public class MenuController extends AbstractRabbitController {
     @FormValid(fieldFilter = {"parentMenuId", "menuName"})
     @UriPermissions
     @Log(operatorType = Log.OperateType.DEL, remark = "删除功能菜单")
-    public Result delMenu(@RequestBody SysMenu sysMenu) {
+    public Result<String> delMenu(@RequestBody SysMenu sysMenu) {
         String menuId = sysMenu.getSysMenuId();
         if ("1".equals(menuId)) {
             throw new BizException("can.not.menu");
         }
-        sysMenuService.delMenu(menuId);
-        return success();
+        List<String> delMenuId = getDelMenuId(menuId);
+        delMenuId.add(menuId);
+        sysMenuService.delMenu(delMenuId);
+        return success(menuId);
+    }
+
+    public List<String> getDelMenuId(String menuId) {
+        List<String> delMenuId = new ArrayList<>();
+        Where where = new Where();
+        Criteria criteria = where.createCriteria();
+        criteria.andEqual(SysMenu::getParentMenuId, menuId);
+        List<SysMenu> sysMenus = sysMenuService.selectByParams(where);
+        for (SysMenu sysMenu : sysMenus) {
+            String mId = sysMenu.getSysMenuId();
+            delMenuId.add(mId);
+            Where wherec = new Where();
+            Criteria criteriac = wherec.createCriteria();
+            criteriac.andEqual(SysMenu::getParentMenuId, mId);
+            if (sysMenuService.selectCountByParams(wherec) > 0) {
+                delMenuId.addAll(getDelMenuId(mId));
+            }
+        }
+        return delMenuId;
     }
 
     /**

@@ -78,22 +78,12 @@ public class SysMenuServiceImpl extends
      */
     @Transactional
     @Override
-    public int delMenu(String menuId) {
-        if (StringUtils.isBlank(menuId)) {
-            throw new BizException("menuId is null");
-        }
-        Where paramType = new Where();
-        Criteria criteria = paramType.createCriteria();
-        criteria.andEqual(SysMenu::getParentMenuId, menuId);
-        long count = sysMenuMapper.selectCountByParams(paramType);
-        if (count > 0) {
-            throw new BizException("have.child.menu");
-        }
+    public int delMenu(List<String> menuId) {
         Where delWhere = new Where();
         Criteria delCriteria = delWhere.createCriteria();
-        delCriteria.andEqual(SysMenu::getSysMenuId, menuId);
+        delCriteria.andIn(SysMenu::getSysMenuId, menuId);
         sysRoleMenuMapper.deleteByParams(delWhere);
-        return sysMenuMapper.deleteById(menuId);
+        return sysMenuMapper.deleteByParams(delWhere);
     }
 
     /**
