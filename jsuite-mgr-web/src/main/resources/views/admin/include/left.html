@@ -1,0 +1,28 @@
+<!--左侧导航开始-->
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="nav-close"><i class="fa fa-times-circle"></i></div>
+    <div class="sidebar-collapse tab-content" id="side-menu">
+        <div class="user-panel" style="margin-top: 10px">
+            <a class="J_menuItem noactive" title="个人中心" href="${basePath}/userProfile">
+                <div class="hidden">个人中心</div>
+                <div class="pull-left image">
+                    <#if (userInfo.avatarPath)?? && (userInfo.avatarPath)?length gt 0>
+                        <img src="${userInfo.avatarPath}" width="45px" height="45px" class="img-circle" />
+                        <#else>
+                            <img src="${basePath}/images/profile_small.jpg" class="img-circle" />
+                    </#if>
+                </div>
+            </a>
+            <div class="pull-left info">
+                <p>
+                    ${userInfo.realName}
+                </p>
+                <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+                <a href="${basePath}/logout" style="padding-left:5px;"><i class="fa fa-sign-out text-danger"></i>
+                    注销</a>
+            </div>
+        </div>
+        <#include "/admin/include/menu.html" />
+    </div>
+</nav>
+<!--左侧导航结束-->

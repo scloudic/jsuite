@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/setting/add.html"/>
+        <#include "/admin/setting/edit.html"/>
+        <@permission url="/jsuite/settingMgr/add">
+            <#if isPermission==true>
+                <#assign addSetting="${basePath}/jsuite/settingMgr/add"/>
+            <#else>
+                <#assign addSetting=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/settingMgr/update">
+            <#if isPermission>
+                <#assign updateSetting="${basePath}/jsuite/settingMgr/update"/>
+            <#else>
+                <#assign updateSetting=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/settingMgr/del">
+            <#if isPermission>
+                <#assign delSetting="${basePath}/jsuite/settingMgr/del"/>
+            <#else>
+                <#assign delSetting=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="settingForm" name="settingForm" class="form-horizontal">
+                        <label class="col-label">配置名称：</label>
+                        <input type="text" name="settingName" id="settingName" class="col-form width-sm"/>
+                        <label class="col-label">配置编码：</label>
+                        <input type="text" name="settingCode" id="settingCode" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.table.search('settingForm')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if addSetting?length gt 0>
+                        <a class="btn btn-success" id="settingAdd" href="javascript:void(0)">
+                            <i class="fa fa-plus"></i>新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="settingTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@moment/>
+            <#include "/admin/setting/script.html"/>
+        </@script>
+    </body>
+</html>

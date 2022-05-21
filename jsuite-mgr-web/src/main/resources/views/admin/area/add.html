@@ -1,0 +1,43 @@
+<div id="addAreaDialog" class="white-bg " style="display: none">
+    <div class="wrapper wrapper-content">
+        <form class="form-horizontal" id="formAddArea">
+            <input id="addParentAreaId" name="parentAreaId" type="hidden"/>
+            <div class="form-group">
+                <label class="col-sm-3 m-r-n control-label is-required">地区名称：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="areaName" id="addAreaName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 m-r-n control-label">纬度：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="latitude" id="addLatitude">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editUrl" class="col-sm-3 m-r-n control-label">经度：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="longitude" id="addLongitude">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 m-r-n control-label">排序序号：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="sortNum" id="addSortNum">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 m-r-n control-label">热门标记：</label>
+                <div class="col-sm-8">
+                    <label class="radio-box">
+                        <input type="radio" name="hotStatus" value="1"/> 是
+                    </label>
+                    <label class="radio-box">
+                        <input type="radio" name="hotStatus" value="2" checked/>
+                        否
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

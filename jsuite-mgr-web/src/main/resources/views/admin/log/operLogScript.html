@@ -1,0 +1,110 @@
+<script>
+    $(function () {
+            laydate.render({
+                elem: '#select-time'
+                , range: ['#startDate', '#endDate']
+            });
+            var options = {
+                id: "logTable",
+                uniqueId: "",
+                delKey: "",
+                delUrl: "",
+                url: "${basePath}/jsuite/logMgr/list",
+                columns: [{
+                    checkbox: true,
+                    visible: false                  //是否显示复选框
+                }, {
+                    title: '日志标题',
+                    align: "center",
+                    valign: "middle",
+                    field: 'logRemark',
+                    width: '10%',
+                }, {
+                    title: '方法全称',
+                    align: "center",
+                    valign: "middle",
+                    field: 'methodFullName',
+                    width: '10%',
+                }, {
+                    title: '登录人',
+                    field: 'loginName',
+                    width: '10%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '操作来源',
+                    field: 'operateSource',
+                    width: '10%',
+                    align: "center",
+                    valign: "middle"
+                }, {
+                    title: '操作类型',
+                    field: 'operateType',
+                    width: '5%',
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        if (!value) {
+                            return "";
+                        }
+                        if ('add' == value) {
+                            return "添加";
+                        }
+                        if ('del' == value) {
+                            return "删除";
+                        }
+                        if ('select' == value) {
+                            return "查询";
+                        }
+                        if ('update' == value) {
+                            return "修改";
+                        }
+                        if ('stat' == value) {
+                            return "统计";
+                        }
+                        if ('export' == value) {
+                            return "导出";
+                        }
+
+                        if ('import' == value) {
+                            return "导入";
+                        }
+                        if ('login' == value) {
+                            return "登录";
+                        }
+                        return value;
+
+                    }
+                }, {
+                    title: '请求IP',
+                    align: "center",
+                    valign: "middle",
+                    field: 'ipAddress',
+                    width: '30%',
+                }, {
+                    title: '请求参数',
+                    align: "center",
+                    valign: "middle",
+                    field: 'content',
+                    width: '30%',
+                }, {
+                    title: '返回参数',
+                    align: "center",
+                    valign: "middle",
+                    field: 'returnResult',
+                    width: '50%',
+                }, {
+                    title: '创建时间',
+                    field: 'createTime',
+                    width: '20%',
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return $.formatDate(row.createTime, 'YYYY-MM-DD HH:mm:ss');
+                    }
+                }],
+            };
+            $.table.load(options);
+        }
+    );
+</script>

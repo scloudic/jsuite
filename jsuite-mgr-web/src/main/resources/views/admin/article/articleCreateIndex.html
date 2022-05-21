@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<#include "/admin/include/layout.html" />
+<@header>
+    <@iCheckLink />
+    <style>
+        .right {
+            float: left;
+            padding-right: 10px;
+            width: 75%;
+            height: 100%;
+            padding-left: 5px;
+        }
+
+        .left {
+            float: left;
+            width: 25%;
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+
+        .title_left {
+            width: 10%;
+            padding-right: 5px;
+        }
+    </style>
+</@header>
+
+<body class="gray-bg">
+<#include "/admin/include/loading.html" />
+<div>
+    <form class="form-horizontal" id="articleForm" name="articleForm">
+        <input type="hidden" id="articleStatus" name="articleStatus"/>
+        <div class="col-sm-4 left">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>文章分类</h5>
+                </div>
+                <div class="ibox-content">
+                    <@articleCategory articleId="">
+                        <#if articleCategories?size gt 0>
+                            <#list articleCategories as ac>
+                                <div class="checkbox i-checks">
+                                    <label>
+                                        <input type="checkbox" name="articleCategoryId"
+                                               value="${ac.articleCategoryId}"> <i></i>${ac.articleCategoryName}
+                                    </label>
+                                </div>
+                            </#list>
+                        </#if>
+                    </@articleCategory>
+                </div>
+                <div class="ibox-title">
+                    <h5>表单内容</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">上传封面</label>
+                        <div class="clo-sm-8">
+                            <input type="text" id="thumbnailPath" name="thumbnailPath" style="display: none"/>
+                            <img class="m-l-md" id="imgFileUpload"
+                                 src="${basePath}/images/chose-image-btn.png" width="155" height="155"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">是否可评论：</label>
+                        <div class="col-sm-10">
+                            <label class="radio-box">
+                                <input type="radio" name="commentStatus" value="1" checked/>
+                                是
+                            </label>
+                            <label class="radio-box">
+                                <input type="radio" name="commentStatus" value="2"/>否
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">排序序号：</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" value="0" name="sortNum" id="sortNum">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-1">
+                            <a class="btn btn-success" id="addArticle" href="javascript:void(0)">
+                                <i class="fa fa-paper-plane"></i> 发布</a>
+                            <a class="btn btn-success" id="saveArticle" href="javascript:void(0)">
+                                <i class="fa fa-save"></i> 保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 right">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>写文章</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-3 title_left control-label is-required">标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="articleTitle" id="articleTitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 title_left control-label">作者：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="userName" id="userName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 title_left control-label">摘要：</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="4" name="summary" id="summary"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="articleContent" id="articleContent"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<@script>
+    <@iCheck />
+    <@tinymce />
+    <#include "/admin/article/articleCreateScript.html" />
+</@script>
+</body>
+
+</html>

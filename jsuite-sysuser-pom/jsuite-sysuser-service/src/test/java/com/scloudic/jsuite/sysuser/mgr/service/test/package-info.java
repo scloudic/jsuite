@@ -1,0 +1,1 @@
+package com.scloudic.jsuite.sysuser.mgr.service.test;

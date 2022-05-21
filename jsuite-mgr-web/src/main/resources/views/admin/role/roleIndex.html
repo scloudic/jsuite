@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/role/add.html"/>
+        <#include "/admin/role/edit.html"/>
+        <@permission url="/jsuite/roleMgr/addRole">
+            <#if isPermission==true>
+                <#assign addRole="${basePath}/jsuite/roleMgr/addRole"/>
+            <#else>
+                <#assign addRole=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/roleMgr/updateRole">
+            <#if isPermission>
+                <#assign updateRole="${basePath}/jsuite/roleMgr/updateRole"/>
+            <#else>
+                <#assign updateRole=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/roleMgr/delRole">
+            <#if isPermission>
+                <#assign delRole="${basePath}/jsuite/roleMgr/delRole"/>
+            <#else>
+                <#assign delRole=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/menuMgr/findRoleMenu">
+            <#if isPermission>
+                <#assign findRoleMenu="${basePath}/jsuite/menuMgr/findRoleMenu"/>
+                <div id="openRoleMenu" class="white-bg " style="display: none">
+                    <ul id="menuTree" class="ztree"></ul>
+                </div>
+            <#else>
+                <#assign findRoleMenu=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="roleForm" name="roleForm" class="form-horizontal">
+                        <label for="roleName" class="col-label">角色名称：</label>
+                        <input type="text" name="roleName" id="roleName" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.table.search('roleForm')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if addRole?length gt 0>
+                        <a class="btn btn-success" id="roleAdd" href="javascript:void(0)"><i
+                                    class="fa fa-plus"></i>新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="roleTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@ztree/>
+            <#include "/admin/role/roleScript.html"/>
+        </@script>
+    </body>
+</html>

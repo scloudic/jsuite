@@ -1,0 +1,33 @@
+<#macro menu parentId>
+    <@homeMenu menuParentId=parentId>
+        <#if menuInfos?size gt 0>
+            <#list menuInfos as menuInfo>
+                <li class="nav-item">
+                    <#if menuInfo.childMenuNum gt 0>
+                        <a href="#" class="nav-link" onclick="javascript:$.menuChangeIcon(this);">
+                            <i class="nav-icon fa fa-folder"></i>
+                            <span class="nav-label">${menuInfo.name}</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <#if menuInfo.menuLevel+1==2>
+                            <#assign levelName="nav-second-level" />
+                            <#else>
+                                <#assign levelName="nav-third-level" />
+                        </#if>
+                        <ul class="nav ${levelName}">
+                            <@menu menuInfo.menuId />
+                        </ul>
+                        <#else>
+                            <a href="${basePath}/funIndex/${menuInfo.menuCode}"
+                                class="J_menuItem nav-link">
+                                <i class="nav-icon fa fa-file"></i>${menuInfo.name}
+                            </a>
+                    </#if>
+                </li>
+            </#list>
+        </#if>
+    </@homeMenu>
+</#macro>
+<ul class="nav">
+    <@menu "1" />
+</ul>

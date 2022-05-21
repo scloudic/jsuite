@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+        <style>
+            input[readonly] {
+                background-color: #ffffff !important;
+            }
+        </style>
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <@roleAll> </@roleAll>
+        <#include "/admin/user/add.html"/>
+        <#include "/admin/user/edit.html"/>
+        <@permission url="/jsuite/userMgr/saveUser">
+            <#if isPermission==true>
+                <#assign saveUser="${basePath}/jsuite/userMgr/saveUser"/>
+            <#else>
+                <#assign saveUser=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/postMgr/apiList">
+            <#if isPermission==true>
+                <#assign postList="${basePath}/jsuite/postMgr/apiList"/>
+            <#else>
+                <#assign postList=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/userMgr/updateUser">
+            <#if isPermission>
+                <#assign updateUser="${basePath}/jsuite/userMgr/updateUser"/>
+            <#else>
+                <#assign updateUser=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/userMgr/delUser">
+            <#if isPermission>
+                <#assign delUser="${basePath}/jsuite/userMgr/delUser"/>
+            <#else>
+                <#assign delUser=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/userMgr/pwdReset">
+            <#if isPermission>
+                <#assign pwdReset="${basePath}/jsuite/userMgr/pwdReset"/>
+            <#else>
+                <#assign pwdReset=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/userMgr/updateActiveStatus">
+            <#if isPermission>
+                <#assign updateActiveStatus="${basePath}/jsuite/userMgr/updateActiveStatus"/>
+            <#else>
+                <#assign updateActiveStatus=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/deptMgr/deptTree">
+            <#if isPermission>
+                <#assign deptTree="${basePath}/jsuite/deptMgr/deptTree"/>
+                <div id="openDeptTree" class="white-bg " style="display: none">
+                    <ul id="menuTree" class="ztree"></ul>
+                </div>
+            <#else>
+                <#assign deptTree=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="userForm" name="userForm">
+                        <div class="form-group-sm">
+                            <label for="name" class="col-label">用户名称：</label>
+                            <input type="text" name="name" id="name" class="col-form width-sm"/>
+                            <label for="userPhone" class="col-label m-l-md">用户手机号：</label>
+                            <input type="text" name="userPhone" id="userPhone" class="col-form width-sm"/>
+                            <label for="userPhone" class="col-label m-l-md">启用状态：</label>
+                            <select name="activeStatus" id="activeStatus" class="col-form width-sm">
+                                <option value="0">全部</option>
+                                <option value="1">启用</option>
+                                <option value="2">禁用</option>
+                            </select>
+                        </div>
+                        <div class="form-group-sm">
+                    <span id="select-time">
+                        <label for="startDate" class="col-label">创建时间：</label>
+                        <input readonly type="text" name="startDate" id="startDate" placeholder="开始时间"
+                               class="col-form width-150"/>
+                        <label for="endDate" class="col-label">-</label>
+                        <input readonly type="text" name="endDate" id="endDate" placeholder="结束时间"
+                               class="col-form width-150"/>
+                    </span>
+                            <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                               onclick="$.table.search('userForm')">
+                                <i class="fa fa-search"></i> 搜索</a>
+                            <a style="margin-left: 10px" class="btn btn-warning btn-rounded"
+                               onclick="$.form.clearForm()">
+                                <i class="fa fa-refresh"></i> 重置</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if saveUser?length gt 0>
+                        <a class="btn btn-success" id="userAdd" href="javascript:void(0)"><i
+                                    class="fa fa-plus"></i> 新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="userTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@laydate/>
+            <@moment/>
+            <@ztree/>
+            <#include "/admin/user/userScript.html"/>
+        </@script>
+    </body>
+</html>

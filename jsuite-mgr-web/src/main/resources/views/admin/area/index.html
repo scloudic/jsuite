@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+        <@jquerylayoutLink />
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <@permission url="/jsuite/areaMgr/add">
+            <#if isPermission==true>
+                <#include "/admin/area/add.html"/>
+                <#assign addArea="${basePath}/jsuite/areaMgr/add"/>
+            <#else>
+                <#assign addArea=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/update">
+            <#if isPermission>
+                <#include "/admin/area/edit.html"/>
+                <#assign updateArea="${basePath}/jsuite/areaMgr/update"/>
+            <#else>
+                <#assign updateArea=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/updateActiveStatus">
+            <#if isPermission>
+                <#assign updateActiveStatus="${basePath}/jsuite/areaMgr/updateActiveStatus"/>
+            <#else>
+                <#assign updateActiveStatus=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/areaMgr/del">
+            <#if isPermission>
+                <#assign delArea="${basePath}/jsuite/areaMgr/del"/>
+            <#else>
+                <#assign delArea=""/>
+            </#if>
+        </@permission>
+        <div class="ui-layout-west white-bg">
+            <div class="m-t-md">
+                <ul id="menuTree" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="jsuite-wrapper">
+                <div class="row">
+                    <form id="areaForm" name="areaForm">
+                        <input id="areaId" name="areaId" value="1" type="hidden"/>
+                    </form>
+                    <div class="btn-group-sm" id="toolbar" role="group">
+                        <#if addArea?length gt 0>
+                            <a class="btn btn-success" id="parentAddArea" href="javascript:void(0)"><i
+                                        class="fa fa-plus"></i>新增</a>
+                        </#if>
+                    </div>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="areaTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@moment/>
+            <@jquerylayout/>
+            <@ztree/>
+            <#include "/admin/area/script.html"/>
+        </@script>
+    </body>
+</html>

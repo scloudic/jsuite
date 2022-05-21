@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@treetableLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/menu/add.html"/>
+        <#include "/admin/menu/edit.html"/>
+        <@permission url="/jsuite/menuMgr/addMenu">
+            <#if isPermission==true>
+                <#assign addMenu="${basePath}/jsuite/menuMgr/addMenu"/>
+            <#else>
+                <#assign addMenu=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/menuMgr/updateMenu">
+            <#if isPermission>
+                <#assign updateMenu="${basePath}/jsuite/menuMgr/updateMenu"/>
+            <#else>
+                <#assign updateMenu=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/menuMgr/delMenu">
+            <#if isPermission>
+                <#assign delMenu="${basePath}/jsuite/menuMgr/delMenu"/>
+            <#else>
+                <#assign delMenu=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="menuForm" name="menuForm" class="form-horizontal">
+                        <label for="menuName" class="col-label">菜单名称：</label>
+                        <input type="text" name="menuName" id="menuName" class="col-form width-sm"/>
+                        <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                           onclick="$.treeTable.search('menuForm')">
+                            <i class="fa fa-search"></i> 搜索</a>
+                        <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                            <i class="fa fa-refresh"></i> 重置</a>
+                    </form>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if addMenu?length gt 0>
+                        <a class="btn btn-success" href="javascript:void(0)" onclick="menuAdd(1);"><i
+                                    class="fa fa-plus"></i>新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="menuTreeTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@treetable/>
+            <@moment/>
+            <#include "/admin/menu/script.html"/>
+        </@script>
+    </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+        <@ztreeLink/>
+        <@jquerylayoutLink />
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/file/fileEdit.html"/>
+        <#include  "/admin/file/fileAdd.html"/>
+        <@permission url="/jsuite/fileMgr/upload">
+            <#if isPermission==true>
+                <#assign uploadFile="${basePath}/jsuite/fileMgr/upload"/>
+            <#else>
+                <#assign uploadFile=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/fileMgr/update">
+            <#if isPermission==true>
+                <#assign updateFile="${basePath}/jsuite/fileMgr/update"/>
+            <#else>
+                <#assign updateFile=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/fileMgr/del">
+            <#if isPermission==true>
+                <#assign delFile="${basePath}/jsuite/fileMgr/del"/>
+            <#else>
+                <#assign delFile=""/>
+            </#if>
+        </@permission>
+        <div class="ui-layout-west white-bg">
+            <div class="m-t-md">
+                <ul id="categoryTree" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="jsuite-wrapper">
+                <div class="row">
+                    <div class="col-sm-12 search-collapse">
+                        <form id="formSearchFile" name="fileForm">
+                            <input type="hidden" id="fileCategoryId" name="fileCategoryId"/>
+                            <div class="form-group-sm">
+                                <label class="col-label">文件名称：</label>
+                                <input type="text" name="fileName" id="fileName" class="col-form width-sm"/>
+                                <a href="javascript:void(0)" style="margin-left: 10px"
+                                   class="btn btn-primary btn-rounded"
+                                   onclick="$.table.search('formSearchFile')">
+                                    <i class="fa fa-search"></i> 搜索</a>
+                                <a style="margin-left: 10px" class="btn btn-warning btn-rounded"
+                                   onclick="fileCleanSearchForm();">
+                                    <i class="fa fa-refresh"></i> 重置</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="btn-group-sm" id="toolbar" role="group">
+                        <#if uploadFile?length gt 0>
+                        <a class="btn btn-success" id="fileAdd" href="javascript:void(0)"><i
+                                    class="fa fa-plus"></i> 新增</a>
+                        </#if>
+                    </div>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="fileTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@moment/>
+            <@jquerylayout/>
+            <@ztree/>
+            <#include "/admin/file/fileScript.html"/>
+        </@script>
+    </body>
+</html>

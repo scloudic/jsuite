@@ -1,0 +1,123 @@
+<script>
+    $(function () {
+        $.getAjax("${basePath}/jsuite/articleMgr/getArticleDetail?articleId=${articleId}",
+             function (status, data, message) {
+                $("#articleStatus").val(data.articleStatus);
+                if(data.thumbnailPath!="") {
+                    $("#thumbnailPath").val(data.thumbnailPath);
+                    $("#imgFileUpload").attr("src", data.thumbnailPath);
+                }
+                $('input[name="commentStatus"][value='+data.commentStatus+']').attr("checked",true);
+                $("#sortNum").val(data.sortNum);
+                $("#articleTitle").val(data.articleTitle);
+                $("#userName").val(data.userName);
+                $("#summary").val(data.summary);
+                $("#articleContent").val(data.articleContent);
+        });
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+        });
+        $("#imgFileUpload").click(function () {
+            $.modal.dialogIframe('图片选择器', '${basePath}/dialog/fileDialog?fileType=img', '', '',
+                function (index, layero) {
+                    var body = layer.getChildFrame('body', index).contents();
+                    var content = body.find("#selectCurrFile");
+                    var value = content.val();
+                    $("#thumbnailPath").val(value);
+                    $("#imgFileUpload").attr("src", value);
+                    return true;
+                });
+        });
+
+        submitArticle = function () {
+            var rules = {
+                articleTitle: {
+                    required: true
+                }
+            };
+            if (!$.form.validate("articleForm", rules)) {
+                return false;
+            }
+            var activeEditor = tinymce.activeEditor;
+            var content = activeEditor.getContent();
+            if ($.common.isEmpty(content)) {
+                toastr.error("内容不能为空！");
+                return false;
+            }
+            var chkValue = [];
+            $('input[name="articleCategoryId"]:checked').each(function () {
+                chkValue.push($(this).val());
+            });
+            if (chkValue.length == 0) {
+                toastr.error("请选择文章分类！");
+            }
+            $("#articleContent").val(content);
+            if ($.common.isEmpty($("#summary").val())) {
+                var editBody = activeEditor.getBody();
+                activeEditor.selection.select(editBody);
+                var text = activeEditor.selection.getContent({'format': 'text'});
+                $("#summary").val(text.slice(0, 80));
+            }
+            var as = $("#articleStatus").val();
+            var msg = "是否确定保存!";
+            if(as == 1) {
+            msg = "是否确定发布!";
+            }
+             $.modal.confirm(msg, function () {
+                var loginData = $.common.formToJSON("articleForm");
+                      $.loading();
+                      $.postAjax("${basePath}/jsuite/articleMgr/update", loginData,
+                      function (status, respData) {
+                        history.back(-1);
+                });
+             });
+        };
+        $("#saveArticle").click(function () {
+            $("#articleStatus").val("2");
+            submitArticle();
+        });
+        $("#addArticle").click(function () {
+            $("#articleStatus").val("1");
+            submitArticle();
+        });
+        $("#closeArticle").click(function () {
+            history.back(-1);
+        });
+
+        tinymce.init({
+            selector: "#articleContent",
+            height: 400,
+            menubar: false,
+            font_formats: "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;楷体-GB2312=楷体-GB2312",
+            language: 'zh_CN',
+            setup: function (editor) {
+                editor.ui.registry.addButton('myImage', {
+                    icon: "image",
+                    onAction: function (_) {
+                        $.modal.dialogIframe('选择图片',
+                            '${basePath}/dialog/fileDialog?fileType=img', '600', '',
+                            function (index, layero) {
+                                var body = layer.getChildFrame('body', index).contents();
+                                var content = body.find("#selectCurrFile");
+                                var url = content.val();
+                                if (url != '') {
+                                    var a = '<img src="' + url + '"/>';
+                                    editor.insertContent(a);
+                                }
+                                return true;
+                            });
+                    }
+                });
+            },
+            plugins: [
+                "advlist autolink lists link image imagetools charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor "
+            ],
+            toolbar1: "styleselect | fontselect | formatselect | fontsizeselect | forecolor | bold italic underline strikethrough charmap ",
+            toolbar2: "myImage media | table | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | code link unlink | undo redo | emoticons preview fullscreen |"
+        });
+    });
+</script>

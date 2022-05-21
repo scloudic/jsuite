@@ -1,0 +1,158 @@
+<script type="text/javascript">
+    <#if addMenu?length gt 0>
+
+    function menuAdd(id) {
+        $.form.clearForm();
+        $("#addParentId").val(id);
+        $.modal.dialog('添加菜单', 'addMenu', '', '',
+            function () {
+                var rules = {
+                    menuName: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formAddMenu", rules)) {
+                    return false;
+                }
+
+                var data = $.common.formToJSON("formAddMenu");
+                $.loading();
+                $.postAjax("${addMenu}",
+                    data, function (status, respData) {
+                        $.treeTable.search();
+                    });
+                return true;
+            });
+    };
+    </#if>
+    <#if updateMenu?length gt 0>
+
+    function menuEdit(id) {
+        $.form.clearForm();
+        var currMenu = $.treeTable.getSelection(id);
+        $("#editMenuName").val(currMenu.menuName);
+        $("#editMenuId").val(id);
+        $("#editFrontEndUrl").val(currMenu.frontEndUrl);
+        $("#editBackEndUrl").val(currMenu.backEndUrl);
+        $("#editFrontEndParamName").val(currMenu.frontEndParamName);
+        $("#editMenuCode").val(currMenu.menuCode);
+        $("#formEditMenu input[name='btnFlag']").each(function () {
+            if (currMenu.btnFlag == this.value) {
+                this.checked = true;
+                return false;
+            }
+        });
+        $("#editSortNum").val(currMenu.sortNum);
+        $("#editMenuDesc").val(currMenu.menuDesc);
+        $.modal.dialog('修改菜单', 'editMenu', '', '',
+            function () {
+                var rules = {
+                    menuName: {
+                        required: true
+                    },
+                };
+                if (!$.form.validate("formEditMenu", rules)) {
+                    return false;
+                }
+                var data = $.common.formToJSON("formEditMenu");
+                $.loading();
+                $.postAjax("${updateMenu}",
+                    data, function (status, respData) {
+                        $.treeTable.search();
+                    });
+                return true;
+            });
+    };
+    </#if>
+    $(function () {
+        var options = {
+            menuId: "sysMenuId",
+            delKey: 'sysMenuId',
+            parentMenuId: "parentMenuId",
+            delUrl: "${delMenu}",
+            url: "${basePath}/jsuite/menuMgr/listMenu",
+            columns: [{
+                title: '菜单名称',
+                field: 'menuName',
+                width: '20%',
+            }, {
+                field: 'frontEndUrl',
+                title: '请求前端地址',
+                width: '15%',
+                align: "left"
+            }, {
+                field: 'backEndUrl',
+                title: '请求后端地址',
+                width: '15%',
+                align: "left"
+            }, {
+                field: 'menuCode',
+                title: '标识',
+                width: '8%',
+                align: "left"
+            }, {
+                title: '按钮标记',
+                field: 'btnFlag',
+                width: '10%',
+                align: "center",
+                valign: "middle",
+                formatter: function (value, item, index) {
+                    if (item.btnFlag == 2) {
+                        return '<span class="label label-primary">菜单</span>';
+                    } else if (item.btnFlag == 1) {
+                        return '<span class="label label-warning">按钮</span>';
+                    }
+                }
+            }, {
+                field: 'menuLevel',
+                title: '级别',
+                width: '7%',
+                align: "center",
+                valign: "bottom",
+            }, {
+                field: 'sortNum',
+                title: '排序',
+                width: '7%',
+                align: "center",
+                valign: "bottom",
+            }, {
+                field: 'menuDesc',
+                title: '菜单描述',
+                width: '15%',
+                align: "center",
+                valign: "bottom",
+            }, {
+                field: 'createTime',
+                title: '创建时间',
+                width: '18%',
+                align: "center",
+                valign: "bottom",
+                formatter: function (value, row, index) {
+                    return $.formatDate(row.createTime, 'YYYY-MM-DD');
+                }
+            }, {
+                title: '操作',
+                width: '25%',
+                align: "center",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    <#if addMenu?length gt 0>
+                    actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="menuAdd(\''+ row.sysMenuId+'\')"><i class="fa fa-plus"></i>新增</a> ');
+                    </#if>
+                    <#if updateMenu?length gt 0>
+                    actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="menuEdit(\''+ row.sysMenuId+'\')"><i class="fa fa-edit"></i>编辑</a> ');
+                    </#if>
+                    <#if delMenu?length gt 0>
+                    actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.treeTable.del(\''+ row.sysMenuId+'\')"><i class="fa fa-remove"></i>删除</a>');
+                    </#if>
+                    if (actions.length > 0) {
+                        return actions.join('');
+                    } else {
+                        return "-";
+                    }
+                }
+            }],
+        };
+        $.treeTable.load(options);
+    });
+</script>

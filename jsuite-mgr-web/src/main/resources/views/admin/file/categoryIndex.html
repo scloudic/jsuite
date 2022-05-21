@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#include "/admin/include/layout.html"/>
+    <@header>
+        <@bootstrapTableLink/>
+    </@header>
+    <body class="gray-bg">
+        <#include "/admin/include/loading.html"/>
+        <#include "/admin/file/categoryOper.html"/>
+        <@permission url="/jsuite/file/categoryMgr/add">
+            <#if isPermission==true>
+                <#assign saveCategory="${basePath}/jsuite/file/categoryMgr/add"/>
+            <#else>
+                <#assign saveCategory=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/file/categoryMgr/update">
+            <#if isPermission==true>
+                <#assign updateCategory="${basePath}/jsuite/file/categoryMgr/update"/>
+            <#else>
+                <#assign updateCategory=""/>
+            </#if>
+        </@permission>
+        <@permission url="/jsuite/file/categoryMgr/del">
+            <#if isPermission==true>
+                <#assign delCategory="${basePath}/jsuite/file/categoryMgr/del"/>
+            <#else>
+                <#assign delCategory=""/>
+            </#if>
+        </@permission>
+        <div class="jsuite-wrapper">
+            <div class="row m-t-md">
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <#if saveCategory?length gt 0>
+                        <a class="btn btn-success" id="categoryAdd" href="javascript:void(0)">
+                            <i class="fa fa-plus"></i> 新增</a>
+                    </#if>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="categoryTable"></table>
+                </div>
+            </div>
+        </div>
+        <@script>
+            <@bootstraptable/>
+            <@moment/>
+            <#include "/admin/file/categoryScript.html"/>
+        </@script>
+    </body>
+</html>

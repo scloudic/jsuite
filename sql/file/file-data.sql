@@ -1,0 +1,1 @@
+insert into file_category ( sort_num, file_category_name_code, user_id, file_category_name, create_time, file_category_id) values ( '-1', 'other', '1', '其它', '2021-08-15 17:12:32', '1');

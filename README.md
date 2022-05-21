@@ -1,0 +1,34 @@
+### jsuite 企业级快速开发平台
+
+1、jsuite是一个企业级快速开发平台，也是一个基于业务的业务组件框架,提供业务管理及api接口调用，便于二次开发及集成,
+通过此平台可以开发OA,CMS,CRM等系统，平台组件主要分为：
+
+    1、jsuite-article：文章管理
+    2、jsuite-common：公用管理，包括：地区管理、社区管理、文件上传
+    3、jsuite-log:日志模块，提供内部操作日志相关的拦截
+    4、jsuite-user：用户模块，主要是系统后台管理模块,提供首页菜单、用户管理、菜单管理、角色管理
+    5、jsuite-mgr-web：jsuite平台web管理系统
+    6、jsuite-file-pom：文件上传管理
+       A、本地上传模块
+       B、阿里云上传模块
+    7、jsuite-third-pom: 微信等第三方接口
+     A、微信公众号：
+        a.获取微信access_token
+        b.验证消息真实性
+        c.接收普通消息：消息异步存库
+        d.用户管理：获取用户基本信息、获取用户列表
+2、采用技术
+
+| 名称 |描述 |
+| :-----:| :----: |
+| rabbit-framework | [rabbit框架](https://github.com/scloudic/rabbit-framework) |
+| jquery | 前端框架 |
+| hplus | 前端框架 |
+| springboot | spring框架 |
+| freemarker | 模板框架 |
+| shiro | 安全框架 |
+| Druid | 数据库连接池 |
+| Fastjson | json解释器 |
+   
+3、示例地址：<a href="http://jsuitedemo.scloudic.com/jsuiteMgr" target="_blank">示例地址</a>
+   

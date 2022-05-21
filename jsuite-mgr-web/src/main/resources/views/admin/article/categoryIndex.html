@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<#include "/admin/include/layout.html" />
+<@header>
+    <@bootstrapTableLink />
+    <@ztreeLink />
+</@header>
+
+<body class="gray-bg">
+    <#include "/admin/include/loading.html" />
+    <#include "/admin/article/categoryAdd.html" />
+    <#include "/admin/article/categoryEdit.html" />
+    <@permission url="/jsuite/articleCategoryMgr/add">
+        <#if isPermission==true>
+            <#assign addCategory="${basePath}/jsuite/articleCategoryMgr/add" />
+            <#else>
+                <#assign addCategory="" />
+        </#if>
+    </@permission>
+    <@permission url="/jsuite/articleCategoryMgr/update">
+        <#if isPermission>
+            <#assign updateCategory="${basePath}/jsuite/articleCategoryMgr/update" />
+            <#else>
+                <#assign updateCategory="" />
+        </#if>
+    </@permission>
+    <@permission url="/jsuite/articleCategoryMgr/del">
+        <#if isPermission>
+            <#assign delCategory="${basePath}/jsuite/articleCategoryMgr/del" />
+            <#else>
+                <#assign delCategory="" />
+        </#if>
+    </@permission>
+    <div class="jsuite-wrapper">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="categoryForm" name="categoryForm" class="form-horizontal">
+                    <label class="col-label">分类名称：</label>
+                    <input type="text" name="articleCategoryName" id="articleCategoryName" class="col-form width-sm" />
+                    <a href="javascript:void(0)" style="margin-left: 10px" class="btn btn-primary btn-rounded"
+                        onclick="$.table.search('categoryForm')">
+                        <i class="fa fa-search"></i> 搜索</a>
+                    <a style="margin-left: 10px" class="btn btn-warning btn-rounded" onclick="$.form.clearForm()">
+                        <i class="fa fa-refresh"></i> 重置</a>
+                </form>
+            </div>
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <#if addCategory?length gt 0>
+                    <a class="btn btn-success" id="categoryAdd" href="javascript:void(0)">
+                        <i class="fa fa-plus"></i>新增</a>
+                </#if>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="categoryTable"></table>
+            </div>
+        </div>
+    </div>
+    <@script>
+        <@bootstraptable />
+        <@moment />
+        <#include "/admin/article/categoryScript.html" />
+    </@script>
+</body>
+
+</html>
