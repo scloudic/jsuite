@@ -29,7 +29,7 @@
         <developer>
             <name>justin</name>
             <email>28554768@qq.com</email>
-            <url>https://github.com/scloudic/jsuite</url>
+            <url>https://github.com/scloudic</url>
         </developer>
     </developers>
     <scm>
@@ -237,14 +237,4 @@
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>mavencenter</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>mavencenter</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 </project>
