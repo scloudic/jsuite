@@ -16,6 +16,27 @@
         <bouncycastle.version>1.64</bouncycastle.version>
         <httpcore.version>4.4.14</httpcore.version>
     </properties>
+    <name>jsuite</name>
+    <description>jsuite</description>
+    <url>https://github.com/scloudic/jsuite.git</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>justin</name>
+            <email>28554768@qq.com</email>
+            <url>https://github.com/scloudic/jsuite</url>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/scloudic/jsuite</url>
+        <connection>https://github.com/scloudic/jsuite.git</connection>
+        <developerConnection>https://github.com/scloudic/jsuite</developerConnection>
+    </scm>
     <modules>
         <module>jsuite-core</module>
         <module>jsuite-log-pom</module>
@@ -216,4 +237,14 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>mavencenter</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>mavencenter</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
