@@ -12,12 +12,10 @@ public class WeiXinException extends RabbitFrameworkException {
 
     public WeiXinException(String message, Throwable cause) {
         super(message, cause);
-        this.description = message;
     }
 
     public WeiXinException(String message) {
         super(message);
-        this.description = message;
     }
 
     public WeiXinException(Throwable cause) {
