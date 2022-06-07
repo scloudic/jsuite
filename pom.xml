@@ -14,7 +14,6 @@
         <jsuite.version>1.0.1-SNAPSHOT</jsuite.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <bouncycastle.version>1.64</bouncycastle.version>
-        <httpcore.version>4.4.14</httpcore.version>
     </properties>
     <name>jsuite</name>
     <description>jsuite</description>
@@ -48,11 +47,6 @@
     </modules>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>${httpcore.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
