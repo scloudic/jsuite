@@ -116,25 +116,4 @@ public class Enums {
             return message;
         }
     }
-
-    public enum ThirdKey {
-        WEIXIN_MP("weiXinMp", "微信公众号"),
-        WEIXIN_MINI("weiXinMini", "微信小程序"),
-        ;
-        private String value;
-        private String message;
-
-        ThirdKey(String value, String message) {
-            this.message = message;
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
 }

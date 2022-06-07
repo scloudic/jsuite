@@ -1,12 +1,8 @@
 package com.scloudic.jsuite.weixin.mgr.web.controllers;
 
-import com.scloudic.jsuite.core.utils.Enums;
-import com.scloudic.jsuite.third.entity.ThirdBindInfo;
-import com.scloudic.jsuite.third.service.ThirdBindInfoService;
 import com.scloudic.jsuite.weixin.core.exception.CryptException;
 import com.scloudic.jsuite.weixin.mp.model.WeiXinMpProperties;
 import com.scloudic.jsuite.weixin.mp.service.WeiXinMpService;
-import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.slf4j.Logger;
@@ -23,8 +19,7 @@ public class WeiXinMpController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(WeiXinMpController.class);
     @Autowired
     private WeiXinMpService weiXinMpService;
-    @Autowired
-    private ThirdBindInfoService thirdBindInfoService;
+
 
     /**
      * 公众号配置消息验证
@@ -47,14 +42,8 @@ public class WeiXinMpController extends AbstractRabbitController {
         throw new CryptException(CryptException.ValidateSignatureError);
     }
 
-
     private WeiXinMpProperties getWeiXinMpProperties() {
-        ThirdBindInfo thirdBindInfo = thirdBindInfoService.getThirdBinInfoByCode(Enums.ThirdKey.WEIXIN_MP.getValue());
-        if (thirdBindInfo == null) {
-            throw new CryptException(CryptException.ValidateSignatureError);
-        }
-        String bindParams = thirdBindInfo.getThirdBindParams();
-        WeiXinMpProperties weiXinMpProperties = JsonUtils.getObject(bindParams, WeiXinMpProperties.class);
+        WeiXinMpProperties weiXinMpProperties = new WeiXinMpProperties();
         return weiXinMpProperties;
     }
 

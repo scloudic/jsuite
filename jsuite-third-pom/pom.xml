@@ -9,7 +9,6 @@
     <artifactId>jsuite-third-pom</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>jsuite-third-service</module>
         <module>jsuite-weixin-pom</module>
     </modules>
 </project>

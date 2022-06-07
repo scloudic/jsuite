@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.scloudic</groupId>
-            <artifactId>jsuite-third-service</artifactId>
+            <artifactId>jsuite-core</artifactId>
         </dependency>
     </dependencies>
 </project>

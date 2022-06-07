@@ -140,11 +140,6 @@
             </dependency>
             <dependency>
                 <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-third-service</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-weixin-core</artifactId>
                 <version>${jsuite.version}</version>
             </dependency>
