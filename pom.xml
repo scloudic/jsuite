@@ -4,14 +4,14 @@
     <parent>
         <groupId>com.scloudic</groupId>
         <artifactId>parent</artifactId>
-        <version>3.6.4</version>
+        <version>3.6.5</version>
     </parent>
     <artifactId>jsuite</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <properties>
         <aliyunoss.version>2.8.3</aliyunoss.version>
-        <jsuite.version>1.0.1-SNAPSHOT</jsuite.version>
+        <jsuite.version>1.0.2-SNAPSHOT</jsuite.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <bouncycastle.version>1.64</bouncycastle.version>
     </properties>
