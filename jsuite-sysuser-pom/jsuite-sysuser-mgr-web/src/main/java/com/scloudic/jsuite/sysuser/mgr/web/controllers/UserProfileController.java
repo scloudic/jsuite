@@ -1,6 +1,7 @@
 package com.scloudic.jsuite.sysuser.mgr.web.controllers;
 
 
+import com.scloudic.jsuite.core.configure.JsuiteProperties;
 import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.file.api.model.FileBaseInfo;
 import com.scloudic.jsuite.file.api.service.FileService;
@@ -13,7 +14,6 @@ import com.scloudic.jsuite.sysuser.mgr.service.SysDeptService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysPostService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserRoleService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
-import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
 import com.scloudic.jsuite.sysuser.mgr.web.model.SysUserDto;
 import com.scloudic.jsuite.sysuser.mgr.web.model.UpdatePwdDto;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
@@ -53,7 +53,7 @@ public class UserProfileController extends AbstractRabbitController {
     @Autowired
     private FileService fileService;
     @Autowired
-    private JsuiteSysUserProperties jsuiteSysUserProperties;
+    private JsuiteProperties jsuiteProperties;
 
     @GetMapping("profile")
     @UserAuthentication
@@ -95,7 +95,7 @@ public class UserProfileController extends AbstractRabbitController {
     }
 
     @PostMapping("update")
-    @FormValid(fieldFilter = {"sysUserId","loginName","activeStatus"})
+    @FormValid(fieldFilter = {"sysUserId", "loginName", "activeStatus"})
     @UserAuthentication
     @Log(operatorType = Log.OperateType.UPDATE, remark = "修改当前登录用户信息")
     public Result update(@RequestBody SysUserDto sysUserDto) {
@@ -125,7 +125,7 @@ public class UserProfileController extends AbstractRabbitController {
     public Result<String> upload(@RequestPart("file") MultipartFile multipartFile) {
         InputStream is = null;
         try {
-            String fileCategoryName = jsuiteSysUserProperties.getAvatarPath();
+            String fileCategoryName = jsuiteProperties.getAvatarPath();
             String userId = SecurityUtils.getUserId();
             SysUser sysUser = sysUserService.getSysUserByUserId(userId);
             if (sysUser == null) {

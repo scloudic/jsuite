@@ -8,7 +8,6 @@ import com.scloudic.jsuite.sysuser.mgr.entity.SysUser;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysUserRole;
 import com.scloudic.jsuite.sysuser.mgr.service.SysRoleService;
 import com.scloudic.jsuite.sysuser.mgr.service.SysUserService;
-import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
 import com.scloudic.jsuite.sysuser.mgr.web.model.SysUserDto;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.*;
@@ -37,8 +36,6 @@ public class UserController extends AbstractRabbitController {
     private SysRoleService sysRoleService;
     @Autowired
     private JsuiteProperties jsuiteProperties;
-    @Autowired
-    private JsuiteSysUserProperties jsuiteSysUserProperties;
 
     /**
      * 分页查询用户信息
@@ -66,7 +63,7 @@ public class UserController extends AbstractRabbitController {
             activeStatus = null;
         }
         PageBean<SysUser> sysUserPageBean = sysUserService.findUserInfoByParams(name, userPhone, pageNum,
-                pageSize, activeStatus, startDate, endDate, jsuiteSysUserProperties.isShowAdmin());
+                pageSize, activeStatus, startDate, endDate, jsuiteProperties.isShowAdmin());
         return success(sysUserPageBean);
     }
 

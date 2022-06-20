@@ -1,6 +1,5 @@
 package com.scloudic.jsuite.mgr.web.controllers;
 
-import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
@@ -32,8 +31,6 @@ import java.util.Map;
 @RequestMapping("/")
 public class AdminIndexController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(AdminIndexController.class);
-    @Autowired
-    private MgrJsuiteProperties mgrJsuiteProperties;
     @Autowired
     private SysMenuService sysMenuService;
 

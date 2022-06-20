@@ -1,6 +1,7 @@
 package com.scloudic.jsuite.common.api.web.component;
 
 import com.google.code.kaptcha.Constants;
+import com.scloudic.jsuite.core.configure.JsuiteProperties;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
@@ -16,14 +17,15 @@ public class CaptchaVerify {
     @Autowired(required = false)
     private RedisCache redisCache;
     @Autowired
-    private CaptchaProperties captchaProperties;
+    private JsuiteProperties jsuiteProperties;
 
     public boolean verify(HttpServletRequest request, String key, String verifyValue) {
         String id = Constants.KAPTCHA_SESSION_KEY;
         String value = "";
-        if ("redis".equals(captchaProperties.getKaptchaCache())) {
+        if ("redis".equals(jsuiteProperties.getKaptchaCache())) {
             id = ":" + key;
             value = redisCache.get(id);
+            redisCache.del(id);
         } else {
             HttpSession session = WebUtils.getOrigRequest(request).getSession();
             //session机制不考虑过期
@@ -39,9 +41,9 @@ public class CaptchaVerify {
 
     public void setCaptcha(HttpServletRequest request, String key, String value) {
         String id = Constants.KAPTCHA_SESSION_KEY;
-        if ("redis".equals(captchaProperties.getKaptchaCache())) {
+        if ("redis".equals(jsuiteProperties.getKaptchaCache())) {
             id = ":" + key;
-            redisCache.set(id, value, captchaProperties.getKaptchaCacheExpire());
+            redisCache.set(id, value, jsuiteProperties.getKaptchaCacheExpire());
         } else {
             HttpSession session = WebUtils.getOrigRequest(request).getSession();
             session.setAttribute(id, value);

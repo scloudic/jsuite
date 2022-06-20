@@ -1,10 +1,8 @@
 package com.scloudic.jsuite.common.api.web.controllers;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.scloudic.jsuite.common.api.web.component.CaptchaProperties;
 import com.scloudic.jsuite.common.api.web.component.CaptchaVerify;
 import com.scloudic.rabbitframework.core.exceptions.ServiceException;
-import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.web.AbstractRabbitController;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +22,6 @@ import java.awt.image.BufferedImage;
 public class CaptchaController extends AbstractRabbitController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
-    @Autowired(required = false)
-    private RedisCache redisCache;
-    @Autowired
-    private CaptchaProperties captchaProperties;
     @Autowired
     private CaptchaVerify captchaVerify;
 

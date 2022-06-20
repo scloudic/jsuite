@@ -6,7 +6,6 @@ import com.scloudic.jsuite.core.configure.JsuiteProperties;
 import com.scloudic.jsuite.file.api.model.FileBaseInfo;
 import com.scloudic.jsuite.file.api.service.FileService;
 import com.scloudic.jsuite.file.api.utils.FileUtils;
-import com.scloudic.jsuite.filealioss.provider.FileAliOssProperties;
 import com.scloudic.rabbitframework.core.exceptions.BizException;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
 import com.scloudic.rabbitframework.core.utils.UUIDUtils;
@@ -32,8 +31,6 @@ import java.io.*;
 @Service
 public class FileAliOssServiceImpl implements FileService {
     private static final Logger logger = LoggerFactory.getLogger(FileAliOssServiceImpl.class);
-    @Autowired
-    private FileAliOssProperties fileAliOssProperties;
     @Autowired
     private JsuiteProperties jsuiteProperties;
 
@@ -159,11 +156,11 @@ public class FileAliOssServiceImpl implements FileService {
         OSSClient ossClient = null;
         String objectKey = "";
         try {
-            String fileRootPath = fileAliOssProperties.getAliOssFirstPath();
-            String endPoint = fileAliOssProperties.getAliOssEndPoint();
-            String accessKey = fileAliOssProperties.getAliOssAccessKey();
-            String accessKeySecret = fileAliOssProperties.getAliOssAccessKeySecret();
-            String bucket = fileAliOssProperties.getAliOssBucket();
+            String fileRootPath = jsuiteProperties.getAliOssFirstPath();
+            String endPoint = jsuiteProperties.getAliOssEndPoint();
+            String accessKey = jsuiteProperties.getAliOssAccessKey();
+            String accessKeySecret = jsuiteProperties.getAliOssAccessKeySecret();
+            String bucket = jsuiteProperties.getAliOssBucket();
             ossClient = new OSSClient(endPoint, accessKey, accessKeySecret);
             if (StringUtils.isNotBlank(fileRootPath)) {
                 objectKey = fileRootPath;

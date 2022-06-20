@@ -5,11 +5,9 @@ import com.scloudic.jsuite.core.utils.Enums;
 import com.scloudic.jsuite.log.annotation.Log;
 import com.scloudic.jsuite.log.model.LogBean;
 import com.scloudic.jsuite.log.notification.OperateLogEvent;
-import com.scloudic.jsuite.mgr.web.MgrJsuiteProperties;
 import com.scloudic.jsuite.mgr.web.model.UserLoginDto;
 import com.scloudic.jsuite.sysuser.mgr.entity.SysMenu;
 import com.scloudic.jsuite.sysuser.mgr.service.SysMenuService;
-import com.scloudic.jsuite.sysuser.mgr.web.component.JsuiteSysUserProperties;
 import com.scloudic.rabbitframework.core.notification.NotificationServerManager;
 import com.scloudic.rabbitframework.security.LoginFailException;
 import com.scloudic.rabbitframework.security.SecurityUser;
@@ -35,16 +33,14 @@ import java.util.*;
 @RequestMapping("/")
 public class LoginController extends AbstractRabbitController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-    @Autowired
-    private MgrJsuiteProperties mgrJsuiteProperties;
+
     @Autowired
     private SysMenuService sysMenuService;
     @Autowired
     private NotificationServerManager notificationServerManager;
     @Autowired
     private CaptchaVerify captchaVerify;
-    @Autowired
-    private JsuiteSysUserProperties jsuiteSysUserProperties;
+
 
     @RequestMapping(value = "userLogin", method = RequestMethod.POST)
     @ResponseBody
