@@ -1,13 +1,15 @@
 package com.scloudic.jsuite.core.configure;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource("classpath:jsuite.properties")
-@Data
+@Getter
+@Setter
 public class JsuiteProperties {
     @Value("${file.local.store:}")
     private String localFileStore;
