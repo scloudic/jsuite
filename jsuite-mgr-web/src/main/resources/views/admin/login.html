@@ -127,12 +127,14 @@
                         $(element).removeClass('has-error');
                     }
                 });
-                var uuid = Math.uuidFast();
-                $("#verifyKey").val(uuid);
-                var url = "${basePath}/jsuite/captcha/captchaImage/"+uuid;
-                $('.captchaImage').attr("src", url);
-                $('.captchaImage').click(function () {
+
+                $.getAjax("${basePath}/jsuite/captcha/getCaptchaUid",function(status, data,message) {
+                    $("#verifyKey").val(data);
+                    var url = "${basePath}/jsuite/captcha/captchaImage/"+data;
                     $('.captchaImage').attr("src", url);
+                    $('.captchaImage').click(function () {
+                        $('.captchaImage').attr("src", url);
+                    });
                 });
             });
         </script>

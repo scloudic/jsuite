@@ -3,6 +3,7 @@ package com.scloudic.jsuite.common.api.web.component;
 import com.google.code.kaptcha.Constants;
 import com.scloudic.jsuite.core.configure.JsuiteProperties;
 import com.scloudic.rabbitframework.core.utils.StringUtils;
+import com.scloudic.rabbitframework.core.utils.UUIDUtils;
 import com.scloudic.rabbitframework.redisson.RedisCache;
 import com.scloudic.rabbitframework.security.web.servlet.SecurityHttpServletRequest;
 import com.scloudic.rabbitframework.web.utils.WebUtils;
@@ -23,7 +24,7 @@ public class CaptchaVerify {
         String id = Constants.KAPTCHA_SESSION_KEY;
         String value = "";
         if ("redis".equals(jsuiteProperties.getKaptchaCache())) {
-            id = ":" + key;
+            id = id + ":" + key;
             value = redisCache.get(id);
             redisCache.del(id);
         } else {
@@ -42,7 +43,11 @@ public class CaptchaVerify {
     public void setCaptcha(HttpServletRequest request, String key, String value) {
         String id = Constants.KAPTCHA_SESSION_KEY;
         if ("redis".equals(jsuiteProperties.getKaptchaCache())) {
-            id = ":" + key;
+            id = id + ":" + key;
+            String currValue = redisCache.get(id);
+            if (StringUtils.isBlank(currValue)) {
+                return;
+            }
             redisCache.set(id, value, jsuiteProperties.getKaptchaCacheExpire());
         } else {
             HttpSession session = WebUtils.getOrigRequest(request).getSession();
