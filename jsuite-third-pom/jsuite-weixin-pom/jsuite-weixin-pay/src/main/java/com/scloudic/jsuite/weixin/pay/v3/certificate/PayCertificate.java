@@ -1,4 +1,4 @@
-package com.scloudic.jsuite.weixin.pay.v3;
+package com.scloudic.jsuite.weixin.pay.v3.certificate;
 
 import com.alibaba.fastjson.JSONObject;
 import com.scloudic.jsuite.weixin.pay.utils.AesUtils;
@@ -22,12 +22,13 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 微信平台证书,此抽象类需要业务实现
  */
-public abstract class WeiXinCertificate {
-    private static final Logger logger = LoggerFactory.getLogger(WeiXinCertificate.class);
+public abstract class PayCertificate {
+    private static final Logger logger = LoggerFactory.getLogger(PayCertificate.class);
 
     /**
      * 下载平台证书
@@ -35,7 +36,7 @@ public abstract class WeiXinCertificate {
      * @param payerParams
      * @return
      */
-    public Map<String, String> downLoadCertificate(PayerParams payerParams) {
+    public ConcurrentHashMap<String, String> downLoadCertificate(PayerParams payerParams) {
         String url = "https://api.mch.weixin.qq.com/v3/certificates";
         String token = V3RequestUtils.getToken(payerParams, "GET", HttpUrl.parse(url));
         ResponseBody responseBody = HttpClientUtils.get(url, null, V3RequestUtils.getHeaders(token));
@@ -44,8 +45,7 @@ public abstract class WeiXinCertificate {
         String data = jsonObject.getString("data");
         logger.debug("请求地址：" + url + ",token:" + token);
         List<DownloadCertificatesResponse> responseList = JsonUtils.getListObject(data, DownloadCertificatesResponse.class);
-        Map<String, String> certificateStrMap = new HashMap<>();
-        X509Certificate x509Cert = null;
+        ConcurrentHashMap<String, String> certificateStrMap = new ConcurrentHashMap<>();
         for (DownloadCertificatesResponse response : responseList) {
             EncryptCertificate encryptCertificate = response.getEncrypt_certificate();
             String result = AesUtils.v3DecryptToStr(
@@ -55,47 +55,18 @@ public abstract class WeiXinCertificate {
                     encryptCertificate.getCiphertext());
             logger.info("商户标识:" + payerParams.getMerchantId() + ",平台证书：" + response.getSerial_no());
             certificateStrMap.put(response.getSerial_no(), result);
-            if (v3Response.getSerial().equals(response.getSerial_no())) {
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
-                x509Cert = CertificateUtils.loadCertificate(byteArrayInputStream);
-                try {
-                    byteArrayInputStream.close();
-                } catch (IOException e) {
-
-                }
-            }
         }
         // BigInteger val = new BigInteger(v3Response.getSerial(), 16);
-        if (x509Cert == null) {
-            logger.error("证书下载生成失败");
-            return new HashMap<>();
-        }
-        boolean verify = v3Response.verify(x509Cert);
-        if (!verify) {
-            logger.error("平台证书下载验证错误");
-            return new HashMap<>();
-        }
         return certificateStrMap;
     }
 
     /**
-     * 获取平台证书,如果不传预列号,从证书中取第一个
+     * 获取平台证书,如果不传序列号,从证书中取第一个
      *
      * @param serialNumber
      * @return
      */
     public abstract X509Certificate getCertificate(PayerParams payerParams, String serialNumber);
 
-
-    public abstract Map<String,X509Certificate> getCertificate(PayerParams payerParams);
-
-    /**
-     * 设置平台证书
-     *
-     * @param serialNumber
-     * @param merchantId
-     * @param certificateStr
-     * @return
-     */
-    public abstract void setCertificate(String serialNumber, String merchantId, String certificateStr);
+    public abstract Map<String, X509Certificate> getCertificate(PayerParams payerParams);
 }

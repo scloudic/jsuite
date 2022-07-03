@@ -1,5 +1,10 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ShareRevResult {
     /**
      * 单位分
@@ -39,77 +44,5 @@ public class ShareRevResult {
      * 分账明细单号
      */
     private String detail_id;
-
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public String getFail_reason() {
-        return fail_reason;
-    }
-
-    public void setFail_reason(String fail_reason) {
-        this.fail_reason = fail_reason;
-    }
-
-    public String getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
-    }
-
-    public String getFinish_time() {
-        return finish_time;
-    }
-
-    public void setFinish_time(String finish_time) {
-        this.finish_time = finish_time;
-    }
-
-    public String getDetail_id() {
-        return detail_id;
-    }
-
-    public void setDetail_id(String detail_id) {
-        this.detail_id = detail_id;
-    }
 }
 

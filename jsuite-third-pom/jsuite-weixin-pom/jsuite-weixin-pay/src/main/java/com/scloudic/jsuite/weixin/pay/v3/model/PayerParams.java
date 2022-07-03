@@ -1,5 +1,10 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PayerParams {
     /**
      * 商户号
@@ -22,43 +27,4 @@ public class PayerParams {
      */
     private String appId;
 
-    public String getCertificateSerialNumber() {
-        return certificateSerialNumber;
-    }
-
-    public void setCertificateSerialNumber(String certificateSerialNumber) {
-        this.certificateSerialNumber = certificateSerialNumber;
-    }
-
-    public String getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public String getApiV3Key() {
-        return apiV3Key;
-    }
-
-    public void setApiV3Key(String apiV3Key) {
-        this.apiV3Key = apiV3Key;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
 }

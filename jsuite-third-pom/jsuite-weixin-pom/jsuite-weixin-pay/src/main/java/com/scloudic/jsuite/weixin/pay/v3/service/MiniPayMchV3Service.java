@@ -1,6 +1,6 @@
 package com.scloudic.jsuite.weixin.pay.v3.service;
 
-import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
+import com.scloudic.jsuite.weixin.pay.v3.certificate.PayCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
 
 /**
@@ -50,5 +50,5 @@ public interface MiniPayMchV3Service {
      */
     public V3PayResponse<RefundResult> refundsSearch(PayerParams payerParams, String outRefundNo);
 
-    public void setCertificate(WeiXinCertificate weiXinCertificate);
+    public void setPayCertificate(PayCertificate payCertificate);
 }

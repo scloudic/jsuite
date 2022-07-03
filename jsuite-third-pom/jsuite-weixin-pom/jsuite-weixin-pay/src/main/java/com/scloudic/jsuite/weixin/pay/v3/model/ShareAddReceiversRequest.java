@@ -1,7 +1,11 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ShareAddReceiversRequest {
     private String appid;
     private String type;
@@ -18,60 +22,4 @@ public class ShareAddReceiversRequest {
      * 当字段relation_type的值不为CUSTOM时，本字段无需填写
      */
     private String customRelation;
-
-    public String getAppid() {
-        return appid;
-    }
-
-    public void setAppid(String appid) {
-        this.appid = appid;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public WeiXinEnums.RelationType getRelationType() {
-        return relationType;
-    }
-
-    public void setRelationType(WeiXinEnums.RelationType relationType) {
-        this.relationType = relationType;
-    }
-
-    public String getCustomRelation() {
-        return customRelation;
-    }
-
-    public void setCustomRelation(String customRelation) {
-        this.customRelation = customRelation;
-    }
-
-    public boolean isMerchant() {
-        return merchant;
-    }
-
-    public void setMerchant(boolean merchant) {
-        this.merchant = merchant;
-    }
 }

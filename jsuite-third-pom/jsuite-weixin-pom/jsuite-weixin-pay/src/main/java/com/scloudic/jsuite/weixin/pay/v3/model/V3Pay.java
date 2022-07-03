@@ -1,5 +1,10 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class V3Pay {
     private String timeStamp;
     private String nonceStr;
@@ -7,52 +12,4 @@ public class V3Pay {
     private String signType;
     private String paySign;
     private String appId;
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getNonceStr() {
-        return nonceStr;
-    }
-
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
-    }
-
-    public String getPrepayIdPackage() {
-        return prepayIdPackage;
-    }
-
-    public void setPrepayIdPackage(String prepayIdPackage) {
-        this.prepayIdPackage = prepayIdPackage;
-    }
-
-    public String getSignType() {
-        return signType;
-    }
-
-    public void setSignType(String signType) {
-        this.signType = signType;
-    }
-
-    public String getPaySign() {
-        return paySign;
-    }
-
-    public void setPaySign(String paySign) {
-        this.paySign = paySign;
-    }
 }

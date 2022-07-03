@@ -1,5 +1,6 @@
 package com.scloudic.jsuite.weixin.pay.v3.service;
 
+import com.scloudic.jsuite.weixin.pay.v3.certificate.PayCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
 
 /**
@@ -88,4 +89,8 @@ public interface SharePayMchService {
      */
     public V3PayResponse<ShareDelReceiversResult> delReceivers(PayerParams payerParams,
                                                                ShareDelReceiversRequest request);
+
+
+
+    public void setPayCertificate(PayCertificate payCertificate);
 }

@@ -3,7 +3,7 @@ package com.scloudic.jsuite.weixin.pay.v3.service.impl;
 import com.scloudic.jsuite.weixin.pay.utils.CertificateUtils;
 import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
-import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
+import com.scloudic.jsuite.weixin.pay.v3.certificate.PayCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
 import com.scloudic.jsuite.weixin.pay.v3.service.SharePayMchService;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
@@ -12,15 +12,13 @@ import com.scloudic.rabbitframework.core.utils.JsonUtils;
 import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SharePayMchServiceImpl implements SharePayMchService {
-    @Autowired
-    private WeiXinCertificate weiXinCertificate;
+    private PayCertificate payCertificate;
 
     private static final Logger logger = LoggerFactory.getLogger(SharePayMchServiceImpl.class);
 
@@ -51,7 +49,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -98,7 +96,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -146,7 +144,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -194,7 +192,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -243,7 +241,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -290,7 +288,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -326,7 +324,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             params.put("account", request.getAccount());
             String weixinNo = "";
             if ("MERCHANT_ID".equals(request.getType())) {
-                Map<String, X509Certificate> x509Certificate = weiXinCertificate.getCertificate(payerParams);
+                Map<String, X509Certificate> x509Certificate = payCertificate.getCertificate(payerParams);
                 weixinNo = x509Certificate.keySet().iterator().next();
                 X509Certificate cate = x509Certificate.values().iterator().next();
                 String msg = CertificateUtils.rsaEncryptOAEP(request.getName(), cate);
@@ -357,7 +355,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -407,7 +405,7 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -427,5 +425,10 @@ public class SharePayMchServiceImpl implements SharePayMchService {
             v3PayResponse.setMsg(e.getMessage());
         }
         return v3PayResponse;
+    }
+
+    @Override
+    public void setPayCertificate(PayCertificate payCertificate) {
+        
     }
 }

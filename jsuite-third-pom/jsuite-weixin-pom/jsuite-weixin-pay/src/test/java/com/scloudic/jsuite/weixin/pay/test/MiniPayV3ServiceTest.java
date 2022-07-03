@@ -1,6 +1,7 @@
 package com.scloudic.jsuite.weixin.pay.test;
 
 import com.scloudic.jsuite.weixin.pay.utils.CertificateUtils;
+import com.scloudic.jsuite.weixin.pay.v3.certificate.DefaultCertificates;
 import com.scloudic.jsuite.weixin.pay.v3.model.JsapiRequest;
 import com.scloudic.jsuite.weixin.pay.v3.model.PayerParams;
 import com.scloudic.jsuite.weixin.pay.v3.model.V3Pay;
@@ -36,7 +37,7 @@ public class MiniPayV3ServiceTest {
         jsapiRequest.setTotal(100);
         jsapiRequest.setPayerClientIp("127.0.0.1");
         MiniPayMchV3Service payV3Service = new MiniPayMchV3ServiceImpl();
-        payV3Service.setCertificate(new WeiXinCertificateImpl());
+        payV3Service.setPayCertificate(new DefaultCertificates());
         V3PayResponse<V3Pay> v3PayResponse = payV3Service.pay(payerParams, jsapiRequest);
         logger.debug("返回结果：" + JsonUtils.toJson(v3PayResponse));
     }

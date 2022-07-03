@@ -1,8 +1,13 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 分账接收方
  */
+@Setter
+@Getter
 public class ShareRevRequest {
     /**
      * 1、MERCHANT_ID：商户号
@@ -35,44 +40,4 @@ public class ShareRevRequest {
      * 分账的原因描述，分账账单中需要体现
      */
     private String description;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

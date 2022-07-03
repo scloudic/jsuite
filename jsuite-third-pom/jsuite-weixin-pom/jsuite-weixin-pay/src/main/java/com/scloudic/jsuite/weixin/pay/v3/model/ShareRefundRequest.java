@@ -1,8 +1,13 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 分账回退请求
  */
+@Setter
+@Getter
 public class ShareRefundRequest {
     /**
      * 微信分账单号,
@@ -33,52 +38,4 @@ public class ShareRefundRequest {
      * 回退描述
      */
     private String description;
-
-    public String getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
-    }
-
-    public String getOut_order_no() {
-        return out_order_no;
-    }
-
-    public void setOut_order_no(String out_order_no) {
-        this.out_order_no = out_order_no;
-    }
-
-    public String getOut_return_no() {
-        return out_return_no;
-    }
-
-    public void setOut_return_no(String out_return_no) {
-        this.out_return_no = out_return_no;
-    }
-
-    public String getReturn_mchid() {
-        return return_mchid;
-    }
-
-    public void setReturn_mchid(String return_mchid) {
-        this.return_mchid = return_mchid;
-    }
-
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

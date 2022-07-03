@@ -1,5 +1,10 @@
 package com.scloudic.jsuite.weixin.pay.v3.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ShareUnfreezeRequest {
     /**
      * 微信订单号
@@ -16,28 +21,4 @@ public class ShareUnfreezeRequest {
      * 分账的原因描述，分账账单中需要体现
      */
     private String description;
-
-    public String getTransaction_id() {
-        return transaction_id;
-    }
-
-    public void setTransaction_id(String transaction_id) {
-        this.transaction_id = transaction_id;
-    }
-
-    public String getOut_order_no() {
-        return out_order_no;
-    }
-
-    public void setOut_order_no(String out_order_no) {
-        this.out_order_no = out_order_no;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

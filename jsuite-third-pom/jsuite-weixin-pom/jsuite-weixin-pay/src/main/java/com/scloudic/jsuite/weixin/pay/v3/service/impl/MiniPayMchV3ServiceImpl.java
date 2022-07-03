@@ -3,7 +3,7 @@ package com.scloudic.jsuite.weixin.pay.v3.service.impl;
 import com.scloudic.jsuite.weixin.pay.utils.PayUtils;
 import com.scloudic.jsuite.weixin.pay.utils.V3RequestUtils;
 import com.scloudic.jsuite.weixin.pay.utils.WeiXinEnums;
-import com.scloudic.jsuite.weixin.pay.v3.WeiXinCertificate;
+import com.scloudic.jsuite.weixin.pay.v3.certificate.PayCertificate;
 import com.scloudic.jsuite.weixin.pay.v3.model.*;
 import com.scloudic.jsuite.weixin.pay.v3.service.MiniPayMchV3Service;
 import com.scloudic.rabbitframework.core.httpclient.HttpClientUtils;
@@ -22,11 +22,15 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+
 public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
     private static final Logger logger = LoggerFactory.getLogger(MiniPayMchV3ServiceImpl.class);
-    @Autowired
-    private WeiXinCertificate weiXinCertificate;
+    private PayCertificate payCertificate;
+
+    @Override
+    public void setPayCertificate(PayCertificate payCertificate) {
+        this.payCertificate = payCertificate;
+    }
 
     @Override
     public V3PayResponse<V3Pay> pay(PayerParams payerParams, JsapiRequest jsapiRequest) {
@@ -111,7 +115,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -157,7 +161,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -178,6 +182,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
         }
         return v3PayResponse;
     }
+
 
     private V3PayResponse<SearchPayResult> getSearchPayResult(PayerParams payerParams, String url) {
         V3PayResponse<SearchPayResult> v3PayResponse = new V3PayResponse<>();
@@ -201,7 +206,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -222,7 +227,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
         }
         return v3PayResponse;
     }
-    
+
     private V3PayResponse<Jsapi> jsapi(PayerParams payerParams, JsapiRequest jsapiRequest) {
         V3PayResponse<Jsapi> v3PayResponse = new V3PayResponse<>();
         String url = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
@@ -264,7 +269,7 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
             }
             v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.SUCCESS);
             String serial = v3Response.getSerial();
-            X509Certificate x509Cert = weiXinCertificate.getCertificate(payerParams, serial);
+            X509Certificate x509Cert = payCertificate.getCertificate(payerParams, serial);
             if (x509Cert == null) {
                 v3PayResponse.setPayStatus(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR);
                 v3PayResponse.setMsg(WeiXinEnums.WeiXinPayStatus.CERTIFICATE_ERROR.getMessage());
@@ -284,9 +289,5 @@ public class MiniPayMchV3ServiceImpl implements MiniPayMchV3Service {
             v3PayResponse.setMsg(e.getMessage());
         }
         return v3PayResponse;
-    }
-
-    public void setCertificate(WeiXinCertificate weiXinCertificate) {
-        this.weiXinCertificate = weiXinCertificate;
     }
 }
