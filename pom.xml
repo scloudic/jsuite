@@ -13,7 +13,6 @@
         <aliyunoss.version>2.8.3</aliyunoss.version>
         <jsuite.version>1.0.2-SNAPSHOT</jsuite.version>
         <kaptcha.version>2.3.2</kaptcha.version>
-        <bouncycastle.version>1.64</bouncycastle.version>
     </properties>
     <name>jsuite</name>
     <description>jsuite</description>
@@ -28,7 +27,7 @@
         <developer>
             <name>justin</name>
             <email>28554768@qq.com</email>
-            <url>https://github.com/scloudic</url>
+            <url>https://github.com/jsuite</url>
         </developer>
     </developers>
     <scm>
@@ -42,7 +41,6 @@
         <module>jsuite-common-pom</module>
         <module>jsuite-file-pom</module>
         <module>jsuite-sysuser-pom</module>
-        <module>jsuite-third-pom</module>
         <module>jsuite-article-pom</module>
     </modules>
     <dependencyManagement>
@@ -138,26 +136,6 @@
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-weixin-core</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-weixin-mp</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-weixin-mini</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.scloudic</groupId>
-                <artifactId>jsuite-weixin-pay</artifactId>
-                <version>${jsuite.version}</version>
-            </dependency>
             <!--文章-->
             <dependency>
                 <groupId>com.scloudic</groupId>
@@ -173,11 +151,6 @@
                 <groupId>com.scloudic</groupId>
                 <artifactId>jsuite-article-mgr-web</artifactId>
                 <version>${jsuite.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
-                <version>${bouncycastle.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
